@@ -5,7 +5,8 @@ using UnityEngine;
 public sealed class SlotDataSingleton
 {
 	// 変数(仮)
-	public float[]	reelPos { get; set; }
+	//public float[]	reelPos { get; set; }
+	public List<ReelBasicData>	reelData { get; set; }
 	
     // Singletonインスタンス
     private static SlotDataSingleton ins = new SlotDataSingleton();
@@ -15,8 +16,15 @@ public sealed class SlotDataSingleton
 	/// </summary>
 	private SlotDataSingleton()
 	{
-		reelPos = new float[SlotMaker2022.LocalDataSet.REEL_MAX];
-		for(int i=0; i<reelPos.Length; ++i) reelPos[i] = 11.0f + i;
+		reelData = new List<ReelBasicData>();
+		
+		// 読み込み処理
+		
+		if (reelData.Count == 0){
+			for (int i=0; i<SlotMaker2022.LocalDataSet.REEL_MAX; ++i){
+				reelData.Add(new ReelBasicData(12));
+			}
+		}
 	}
 	
 	/// <summary>

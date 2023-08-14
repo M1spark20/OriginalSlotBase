@@ -21,13 +21,20 @@ public class SlotDataManager : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		for(int i=0; i<slotData.reelPos.Length; ++i){
-			//slotData.reelPos[i] += 0.01f;
-			
-			// リール位置補正
-			int comaMax = SlotMaker2022.LocalDataSet.COMA_MAX;
-			while (slotData.reelPos[i] > comaMax) slotData.reelPos[i] -= comaMax;
-			while (slotData.reelPos[i] < 0) slotData.reelPos[i] += comaMax;
+		for(int i=0; i<slotData.reelData.Count; ++i){
+			slotData.reelData[i].Process();
 		}
+		
+		// リール始動テスト
+		if (Input.GetKey(KeyCode.UpArrow)){
+			for(int i=0; i<slotData.reelData.Count; ++i){
+				slotData.reelData[i].Start();
+			}
+		}
+		
+		// リール停止テスト
+		if (Input.GetKeyDown(KeyCode.LeftArrow )) slotData.reelData[0].SetStopPos(0);
+		if (Input.GetKeyDown(KeyCode.DownArrow )) slotData.reelData[1].SetStopPos(0);
+		if (Input.GetKeyDown(KeyCode.RightArrow)) slotData.reelData[2].SetStopPos(0);
 	}
 }

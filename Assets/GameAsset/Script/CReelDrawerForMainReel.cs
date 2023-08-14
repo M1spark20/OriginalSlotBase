@@ -66,10 +66,11 @@ public class CReelDrawerForMainReel : MonoBehaviour
 			}
 			
 			// リールの座標を取得し、描画の基準となるコマをCeilingで取得する。1未満の数値をfloorで取得する
-			float reelPos = SlotDataSingleton.GetInstance().reelPos[reelC];
-			int baseComaID = (int)Math.Ceiling(reelPos);
-			float margin = reelPos - (float)Math.Floor(reelPos);
-			float posYOffset = spH * margin;	// Y座標のミクロ増分値
+			var reelData = SlotDataSingleton.GetInstance().reelData[reelC];
+			float reelPos = reelData.GetReelPos();
+			byte baseComaID = reelData.GetReelComaID();
+			float margin = (float)baseComaID - reelPos;
+			float posYOffset = spH * margin;	// Y座標のミクロ未達値
 			
 			// 描画すべきオブジェクトを選んでY座標を指定、Activeにする
 			for(int posC=START_INDEX; posC<START_INDEX + DRAW_NUM; ++posC){
@@ -80,7 +81,7 @@ public class CReelDrawerForMainReel : MonoBehaviour
 				// GameObjectをActiveにする
 				mComaInstance[reelC][posCtrl].SetActive(true);
 				// Y座標を入力する
-				float posY = spH * posC - posYOffset;
+				float posY = spH * posC + posYOffset;	// 未達分を足す
 				Vector3 pos = mComaInstance[reelC][posCtrl].transform.localPosition;
 				pos.y = posY;
 				mComaInstance[reelC][posCtrl].transform.localPosition = pos;
