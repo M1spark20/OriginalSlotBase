@@ -90,7 +90,7 @@ public class ReelBasicData : SlotMaker2022.ILocalDataInterface
 			// 等加速度運動成分を計算する
 			float accTime = 0.0f;	// 等加速度運動時間
 			float v0 = reelSpeed;	// 等加速度運動における初速度[rpm]
-			if (reelSpeed < maxSpeed){
+			if (Math.Abs(reelSpeed) < Math.Abs(maxSpeed)){
 				// 最高速度到達までの時間を計算し、等加速度運動の時間を計算する
 				float accDuration = (maxSpeed - reelSpeed) / acc;
 				if (accDuration < dt) { accTime = accDuration; reelSpeed = maxSpeed; }
