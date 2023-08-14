@@ -7,7 +7,7 @@ namespace SlotMaker2022
 {
     class ProgressRWConstant
     {
-        public const string FILE_NAME = "Assets/GameAsset/mainROM.bin";
+        public const string FILE_NAME = "Assets/Resources/mainROM.bin";
         public const int FILE_VERSION = 0;
     }
     class ProgressRead

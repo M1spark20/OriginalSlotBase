@@ -35,9 +35,11 @@ public class CReelDrawerForMainReel : MonoBehaviour
 		const int comaNum = SlotMaker2022.LocalDataSet.COMA_MAX;
 		for(int reelC=0; reelC<reelNum; ++reelC){
 			mComaInstance[reelC] = new GameObject[comaNum];
+			string test = "";
 			for(int posC=0; posC<comaNum; ++posC){
 				// データは逆順に格納されていることに注意する。横方向のみ予め移動させておく
 				int comaIndex = mainROM.ReelArray[reelC][posC].Coma;
+				test += comaIndex.ToString();
 				Vector3 initPos = new Vector3(POS_WBASE * reelC, 0.0f, 0.0f);
 				mComaInstance[reelC][comaNum - posC - 1] = Instantiate(prehab, parent);
 				mComaInstance[reelC][comaNum - posC - 1].transform.localPosition = initPos;
@@ -45,6 +47,7 @@ public class CReelDrawerForMainReel : MonoBehaviour
 				SpriteRenderer sp = mComaInstance[reelC][comaNum - posC - 1].GetComponent<SpriteRenderer>();
 				sp.sprite = mImageBuilder.Extract(comaIndex);
 			}
+			Debug.Log(test);
 		}
 	}
 
