@@ -225,6 +225,8 @@ public class SCReelOperation : ISlotControllerBase {
 	int   slip1st;			// 第1停止すべり数
 	int   stopReelCount;	// 停止処理済みリール数
 	
+	SlotMaker2022.main_function.MainReelManager reelManager;	// リール制御クラス
+	
 	// 使用Singleton
 	SlotMaker2022.MainROMDataManagerSingleton mainROM;
 	SlotTimerManagerSingleton timer;
@@ -247,6 +249,9 @@ public class SCReelOperation : ISlotControllerBase {
 		stop1st = reelNum * comaNum;
 		slip1st = -1;
 		stopReelCount = 0;
+		
+		// リール制御クラス初期化
+		reelManager = new SlotMaker2022.main_function.MainReelManager();
 		
 		// 全リールを始動させる
 		for(int i=0; i<reelNum; ++i){ slotData.reelData[i].Start(); }
@@ -329,10 +334,14 @@ public class SCReelOperation : ISlotControllerBase {
 		// リールが停止制御できる状態にない場合処理をしない
 		if (!stopReel.CanStop()) return;
 		
-		// ここにリール制御を入れる
-		int slipNum = 0;
+		// リール制御データからすべりコマ数を算出する
+		var bs = slotData.basicData;
+		// 今回停止するリールにはstopHistoryにpushPosを入れて計算する
+		stopHistory[reelIndex] = stopReel.GetReelComaIDFixed();
+		int slipNum = reelManager.GetReelControl3R(reelIndex, stopHistory, stop1st, slip1st, bs.betCount-1, bs.gameMode, bs.bonusFlag, bs.castFlag);
 		
 		stopReel.SetStopPos(slipNum);
+		Debug.Log("Push: " + stopReel.pushPos.ToString() + ", Stop: " + stopReel.stopPos.ToString() + " (" + stopReel.slipCount.ToString() + ")");
 		// 変数を制御する
 		stopHistory[reelIndex] = stopReel.stopPos;
 		stopOrder[stopReelCount] = reelIndex;

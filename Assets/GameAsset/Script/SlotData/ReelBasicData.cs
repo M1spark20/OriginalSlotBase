@@ -69,8 +69,19 @@ public class ReelBasicData : SlotMaker2022.ILocalDataInterface
 		pushPos = REEL_NPOS;
 		slipCount = REEL_NPOS;
 	}
-	// リールが参照するコマを取得する
-	public byte GetReelComaID() { return reelSpeed >= 0 ? (byte)Math.Ceiling(reelPos) : (byte)Math.Floor(reelPos); }
+	// リールが参照するコマを取得する(位置補正なし: リール回転用)
+	public byte GetReelComaID() {
+		return reelSpeed >= 0 ? (byte)Math.Ceiling(reelPos) : (byte)Math.Floor(reelPos);
+	}
+	// リールが参照するコマを取得する(位置補正あり: リール制御用)
+	public byte GetReelComaIDFixed() {
+		int ans = GetReelComaID();
+		
+		const int comaNum = SlotMaker2022.LocalDataSet.COMA_MAX;
+		while(ans >= comaNum) ans -= comaNum;
+		while(ans < 0)        ans += comaNum;
+		return (byte)ans;
+	}
 	
 	// リールが停止処理可能か返す
 	// リール回転中 and 速度一定 and 停止制御未実施なら、停止処理可能
@@ -83,7 +94,7 @@ public class ReelBasicData : SlotMaker2022.ILocalDataInterface
 		
 		const int comaNum = SlotMaker2022.LocalDataSet.COMA_MAX;
 		slipCount = (byte)pSlipCount;
-		pushPos = GetReelComaID();
+		pushPos = GetReelComaIDFixed();
 		stopPos = (byte)((pushPos + slipCount) % comaNum);
 	}
 	// リールの回転処理を行う
