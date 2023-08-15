@@ -163,6 +163,15 @@ public class SCWaitBeforeReelStart : ISlotControllerBase {
 		// Wait終了判定を行う(waitEndが無効か、最大wait時間以上経過しているとき)
 		bool waitEnd = !timer.GetTimer("waitEnd").isActivate;
 		if(!waitEnd) waitEnd = timer.GetTimer("waitEnd").elapsedTime > (float)WAIT_MAX / 1000f;
+		
+		if (waitEnd) {
+			// タイマをクリアしてSCReelOperationへ移行
+			timer.GetTimer("waitStart").SetDisabled();
+			timer.GetTimer("waitEnd").Activate();
+			timer.GetTimer("waitEnd").Reset();
+			return new SCReelOperation();
+		}
+		
 		return this;
 	}
 	
@@ -188,7 +197,6 @@ public class SCWaitBeforeReelStart : ISlotControllerBase {
 			// 減算する乱数を抽出して減算する
 			uint checkIndex = randItem.CommonSet ? 0u : (uint)basicData.slotSetting;
 			randValue -= (int)randItem.RandValue.GetData(checkIndex);
-			Debug.Log("randV: " + randValue.ToString() + " / dec: " + randItem.RandValue.GetData(checkIndex).ToString());
 			
 			// 乱数が0を下回ったらフラグ確定
 			if (randValue < 0){
@@ -200,5 +208,144 @@ public class SCWaitBeforeReelStart : ISlotControllerBase {
 		
 		// basicDataにフラグを設定する
 		basicData.SetCastFlag(bonusFlag, castFlag);
+	}
+}
+
+// リール回転中処理を行う
+public class SCReelOperation : ISlotControllerBase {
+	// 定数
+	const int reelNum = SlotMaker2022.LocalDataSet.REEL_MAX;
+	const int comaNum = SlotMaker2022.LocalDataSet.COMA_MAX;
+	
+	// 変数
+	bool  isAllReleased;	// すべての停止ボタンが押下されていない状態か
+	int[] stopHistory;		// 各リールの停止履歴
+	int[] stopOrder;		// リール停止順
+	int   stop1st;			// 第1停止停止箇所(0-62,63:1st)
+	int   slip1st;			// 第1停止すべり数
+	int   stopReelCount;	// 停止処理済みリール数
+	
+	// 使用Singleton
+	SlotMaker2022.MainROMDataManagerSingleton mainROM;
+	SlotTimerManagerSingleton timer;
+	SlotDataSingleton slotData;
+	
+	public SCReelOperation(){
+		// Singleton取得
+		mainROM  = SlotMaker2022.MainROMDataManagerSingleton.GetInstance();
+		timer    = SlotTimerManagerSingleton.GetInstance();
+		slotData = SlotDataSingleton.GetInstance();
+		
+		// 制御用変数初期化
+		isAllReleased = false;
+		stopHistory = new int[reelNum];
+		stopOrder = new int[reelNum];
+		for (int i=0; i<stopHistory.Length; ++i){
+			stopHistory[i] = -1;
+			stopOrder[i]   = -1;
+		}
+		stop1st = reelNum * comaNum;
+		slip1st = -1;
+		stopReelCount = 0;
+		
+		// 全リールを始動させる
+		for(int i=0; i<reelNum; ++i){ slotData.reelData[i].Start(); }
+		
+		// タイマを初期化する
+		timer.GetTimer("reelStart").Activate();
+		ResetPushStopTimer();
+	}
+	
+	public void OnGetKeyDown(EGameButtonID pKeyID){
+		// リール停止入力を行う
+		if (pKeyID == EGameButtonID.e1Reel) StopReel(0);
+		if (pKeyID == EGameButtonID.e2Reel) StopReel(1);
+		if (pKeyID == EGameButtonID.e3Reel) StopReel(2);
+	}
+	public void OnGetKey(EGameButtonID pKeyID){
+		// ねじり処理を行う
+		isAllReleased &= !(pKeyID == EGameButtonID.e1Reel);
+		isAllReleased &= !(pKeyID == EGameButtonID.e2Reel);
+		isAllReleased &= !(pKeyID == EGameButtonID.e3Reel);
+	}
+	public ISlotControllerBase ProcessAfterInput(){
+		// 各リールの処理を行い、停止済みか判定を行う
+		bool isAllStopped = true;
+		for(int i=0; i<reelNum; ++i){
+			var checkReel = slotData.reelData[i];
+			checkReel.Process();
+			isAllStopped &= !checkReel.isRotate;
+			
+			// タイマ関係の処理
+			if (!checkReel.isRotate){
+				// Pos & Common
+				SlotTimer checkTimer = timer.GetTimer("reelStopPos[" + i + "]");
+				if (!checkTimer.isActivate) {
+					checkTimer.Activate();
+					timer.GetTimer("anyReelStop").Activate();
+					timer.GetTimer("anyReelStop").Reset();
+				}
+				// Order
+				int orderPos;
+				for(orderPos = 0; orderPos < reelNum; ++orderPos) { if(stopOrder[orderPos] == i) break; }
+				checkTimer = timer.GetTimer("reelStopOrder[" + orderPos + "]");
+				if (!checkTimer.isActivate) checkTimer.Activate();
+			}
+		}
+		
+		// 全リールが停止済みの場合、ねじりがなければフェーズ移行
+		if (isAllStopped && isAllReleased){
+			// タイマ処理
+			timer.GetTimer("allReelStop").Activate();
+			timer.GetTimer("reelStart").SetDisabled();
+			ResetPushStopTimer();
+			// 暫定的に制御をwaitbetに戻す
+			slotData.basicData.FlushBet();
+			return new SCWaitBet();
+		}
+		
+		// 次回のProcessに備えisAllReleasedを初期化
+		isAllReleased = true;
+		return this;
+	}
+	
+	// 全リールのpush/stopタイマをリセットする
+	private void ResetPushStopTimer(){
+		timer.GetTimer("anyReelPush").SetDisabled();
+		timer.GetTimer("anyReelStop").SetDisabled();
+		timer.GetTimer("allReelStop").SetDisabled();
+		for(int i=0; i<reelNum; ++i){
+			timer.GetTimer("reelPushPos[" + i + "]").SetDisabled();		// 特定リール[0-reelMax)停止ボタン押下からの定義時間
+			timer.GetTimer("reelStopPos[" + i + "]").SetDisabled();		// 特定リール[0-reelMax)停止からの定義時間
+			timer.GetTimer("reelPushOrder[" + i + "]").SetDisabled();	// 第n停止ボタン押下からの定義時間
+			timer.GetTimer("reelStopOrder[" + i + "]").SetDisabled();	// 第n停止からの定義時間
+		}
+	}
+	
+	// 指定したリールを停止させる
+	private void StopReel(int reelIndex){
+		var stopReel = slotData.reelData[reelIndex];
+		
+		// リールが停止制御できる状態にない場合処理をしない
+		if (!stopReel.CanStop()) return;
+		
+		// ここにリール制御を入れる
+		int slipNum = 0;
+		
+		stopReel.SetStopPos(slipNum);
+		// 変数を制御する
+		stopHistory[reelIndex] = stopReel.stopPos;
+		stopOrder[stopReelCount] = reelIndex;
+		if (stopReelCount == 0) {
+			stop1st = reelIndex * comaNum + stopReel.stopPos;
+			slip1st = stopReel.slipCount;
+		}
+		
+		// タイマ処理を行う
+		timer.GetTimer("reelPushPos[" + reelIndex + "]").Activate();
+		timer.GetTimer("reelPushOrder[" + stopReelCount + "]").Activate();
+		
+		// ストップ数加算
+		++stopReelCount;
 	}
 }

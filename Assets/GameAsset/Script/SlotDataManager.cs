@@ -32,21 +32,21 @@ public class SlotDataManager : MonoBehaviour
 		// 各SingletonのProcess
 		timer.Process(Time.deltaTime);
 		
-		// リール停止テスト
-		if (Input.GetKeyDown(KeyCode.LeftArrow )) slotData.reelData[0].SetStopPos(0);
-		if (Input.GetKeyDown(KeyCode.DownArrow )) slotData.reelData[1].SetStopPos(0);
-		if (Input.GetKeyDown(KeyCode.RightArrow)) slotData.reelData[2].SetStopPos(0);
-		
 		// KeyDown設定
-		if(Input.GetKeyDown(KeyCode.UpArrow    )) controller.OnGetKeyDown(EGameButtonID.eMaxBetAndStart);
-		if(Input.GetKey    (KeyCode.UpArrow    )) controller.OnGetKey    (EGameButtonID.eMaxBetAndStart);
 		if(Input.GetKeyDown("1")) controller.OnGetKeyDown(EGameButtonID.e1Bet);
 		if(Input.GetKey    ("1")) controller.OnGetKey    (EGameButtonID.e1Bet);
 		if(Input.GetKeyDown("3")) controller.OnGetKeyDown(EGameButtonID.eMaxBet);
 		if(Input.GetKey    ("3")) controller.OnGetKey    (EGameButtonID.eMaxBet);
+		if(Input.GetKeyDown(KeyCode.UpArrow   )) controller.OnGetKeyDown(EGameButtonID.eMaxBetAndStart);
+		if(Input.GetKey    (KeyCode.UpArrow   )) controller.OnGetKey    (EGameButtonID.eMaxBetAndStart);
+		if(Input.GetKeyDown(KeyCode.LeftArrow )) controller.OnGetKeyDown(EGameButtonID.e1Reel);
+		if(Input.GetKey    (KeyCode.LeftArrow )) controller.OnGetKey    (EGameButtonID.e1Reel);
+		if(Input.GetKeyDown(KeyCode.DownArrow )) controller.OnGetKeyDown(EGameButtonID.e2Reel);
+		if(Input.GetKey    (KeyCode.DownArrow )) controller.OnGetKey    (EGameButtonID.e2Reel);
+		if(Input.GetKeyDown(KeyCode.RightArrow)) controller.OnGetKeyDown(EGameButtonID.e3Reel);
+		if(Input.GetKey    (KeyCode.RightArrow)) controller.OnGetKey    (EGameButtonID.e3Reel);
 		
 		// キー入力後プロセス
 		controller = controller.ProcessAfterInput();
-		for(int i=0; i<slotData.reelData.Count; ++i){ slotData.reelData[i].Process(); }
 	}
 }

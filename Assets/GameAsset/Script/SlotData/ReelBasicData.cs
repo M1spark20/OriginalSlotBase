@@ -18,6 +18,7 @@ public class ReelBasicData : SlotMaker2022.ILocalDataInterface
 	public byte  pushPos	{ get; private set; }	// リール押下位置
 	public byte  slipCount	{ get; private set; }	// 停止時すべりコマ数
 	public bool  isRotate	{ get; private set; }	// リールが回転中か
+	public bool  accEnd		{ get; private set; }	// リールが加速を終えたか
 	
 	public ReelBasicData(){
 		reelPos		= 0.0f;
@@ -26,6 +27,7 @@ public class ReelBasicData : SlotMaker2022.ILocalDataInterface
 		pushPos		= 0;
 		slipCount	= 0;
 		isRotate	= false;
+		accEnd		= false;
 	}
 	public ReelBasicData(byte defaultPos){
 		reelPos		= (float)defaultPos;
@@ -34,6 +36,7 @@ public class ReelBasicData : SlotMaker2022.ILocalDataInterface
 		pushPos		= defaultPos;
 		slipCount	= 0;
 		isRotate	= false;
+		accEnd		= false;
 	}
 	public bool StoreData(ref BinaryWriter fs, int version){
 		fs.Write(reelPos);
@@ -42,6 +45,7 @@ public class ReelBasicData : SlotMaker2022.ILocalDataInterface
 		fs.Write(pushPos);
 		fs.Write(slipCount);
 		fs.Write(isRotate);
+		fs.Write(accEnd);
 		return true;
 	}
 	public bool ReadData(ref BinaryReader fs, int version){
@@ -51,6 +55,7 @@ public class ReelBasicData : SlotMaker2022.ILocalDataInterface
 		pushPos		= fs.ReadByte();
 		slipCount	= fs.ReadByte();
 		isRotate	= fs.ReadBoolean();
+		accEnd		= fs.ReadBoolean();
 		return true;
 	}
 	
@@ -59,6 +64,7 @@ public class ReelBasicData : SlotMaker2022.ILocalDataInterface
 	// リールを始動させる
 	public void Start() {
 		isRotate = true;
+		accEnd = false;
 		stopPos = REEL_NPOS;
 		pushPos = REEL_NPOS;
 		slipCount = REEL_NPOS;
@@ -66,8 +72,15 @@ public class ReelBasicData : SlotMaker2022.ILocalDataInterface
 	// リールが参照するコマを取得する
 	public byte GetReelComaID() { return reelSpeed >= 0 ? (byte)Math.Ceiling(reelPos) : (byte)Math.Floor(reelPos); }
 	
+	// リールが停止処理可能か返す
+	// リール回転中 and 速度一定 and 停止制御未実施なら、停止処理可能
+	public bool CanStop() { return (isRotate && accEnd && pushPos == REEL_NPOS); }
+	
 	// リールの停目を設定し、停止制御を行う
 	public void SetStopPos(int pSlipCount){
+		// リールが回転していない or 速度が一定でない or 停止制御済みの場合、処理を行わない
+		if (!CanStop()) return;
+		
 		const int comaNum = SlotMaker2022.LocalDataSet.COMA_MAX;
 		slipCount = (byte)pSlipCount;
 		pushPos = GetReelComaID();
@@ -80,7 +93,7 @@ public class ReelBasicData : SlotMaker2022.ILocalDataInterface
 		
 		// 前回フレームからの経過時間と座標更新前の位置を取得する
 		float y0 = reelPos;	// 座標更新前のリール位置
-		float dt = Time.deltaTime;	// 暫定
+		float dt = Time.deltaTime;
 		
 		/* リール速度から座標を変化させる */{
 			// 等加速度運動成分を計算する
@@ -100,6 +113,8 @@ public class ReelBasicData : SlotMaker2022.ILocalDataInterface
 			// 等速直線運動成分を計算(rpmから換算)
 			float slipTime = dt - accTime;	// 等速直線運動時間
 			reelPos += slipTime * reelSpeed * speedBase;
+			// 等速直線運動要素があった場合、accEndをtrueにする
+			accEnd = slipTime > 0f;
 		}
 		
 		// リール停止制御がある場合、停止判定を行う

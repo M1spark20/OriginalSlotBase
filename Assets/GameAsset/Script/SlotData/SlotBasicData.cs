@@ -67,15 +67,19 @@ public class SlotBasicData : SlotMaker2022.ILocalDataInterface
 	}
 	
 	// 変数設定用メソッド
+	// BETをクレジットから1転送する
 	public void AddBetCount(){
 		++betCount;
 		--creditShow;
 		payoutShow = 0;
 	}
+	// BETをクレジットに戻す
 	public void ClearBetCount(){
 		creditShow = (byte)Math.Max(creditShow + betCount, CREDIT_MAX);
 		betCount = 0;
 	}
+	// BETをクレジットに戻さず消化する
+	public void FlushBet() { betCount = 0; }
 	
 	// フラグ設定
 	public void SetCastFlag(byte pBonusFlag, byte pCastFlag){
