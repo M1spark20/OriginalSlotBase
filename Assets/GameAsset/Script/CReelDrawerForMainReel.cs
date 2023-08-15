@@ -67,7 +67,7 @@ public class CReelDrawerForMainReel : MonoBehaviour
 			
 			// リールの座標を取得し、描画の基準となるコマをCeilingで取得する。1未満の数値をfloorで取得する
 			var reelData = SlotDataSingleton.GetInstance().reelData[reelC];
-			float reelPos = reelData.GetReelPos();
+			float reelPos = reelData.reelPos;
 			byte baseComaID = reelData.GetReelComaID();
 			float margin = (float)baseComaID - reelPos;
 			float posYOffset = spH * margin;	// Y座標のミクロ未達値

@@ -12,12 +12,12 @@ public class ReelBasicData : SlotMaker2022.ILocalDataInterface
 	const float maxSpeed	=  79.5f;	// リール最高速度[rpm]
 	
 	// 定義変数
-	float	reelPos;	// 現在のリール座標[0, COMA_MAX)
-	float	reelSpeed;	// 現在のリール速度[rpm](+:下向き)
-	byte	stopPos;	// 停止目標
-	byte	pushPos;	// リール押下位置
-	byte	slipCount;	// 停止時すべりコマ数
-	bool	isRotate;	// リールが回転中か
+	public float reelPos	{ get; private set; }	// 現在のリール座標[0, COMA_MAX)
+	public float reelSpeed	{ get; private set; }	// 現在のリール速度[rpm](+:下向き)
+	public byte  stopPos	{ get; private set; }	// 停止目標
+	public byte  pushPos	{ get; private set; }	// リール押下位置
+	public byte  slipCount	{ get; private set; }	// 停止時すべりコマ数
+	public bool  isRotate	{ get; private set; }	// リールが回転中か
 	
 	public ReelBasicData(){
 		reelPos		= 0.0f;
@@ -63,10 +63,6 @@ public class ReelBasicData : SlotMaker2022.ILocalDataInterface
 		pushPos = REEL_NPOS;
 		slipCount = REEL_NPOS;
 	}
-	// リールが回転中か取得する
-	public bool IsStopped() { return !isRotate; }
-	// リールの絶対位置を取得する
-	public float GetReelPos() { return reelPos; }
 	// リールが参照するコマを取得する
 	public byte GetReelComaID() { return reelSpeed >= 0 ? (byte)Math.Ceiling(reelPos) : (byte)Math.Floor(reelPos); }
 	
