@@ -46,7 +46,7 @@ public class SlotDataManager : MonoBehaviour
 		if(Input.GetKey    ("3")) controller.OnGetKey    (EGameButtonID.eMaxBet);
 		
 		// キー入力後プロセス
-		controller.ProcessAfterInput();
+		controller = controller.ProcessAfterInput();
 		for(int i=0; i<slotData.reelData.Count; ++i){ slotData.reelData[i].Process(); }
 	}
 }

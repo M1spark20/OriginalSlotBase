@@ -61,6 +61,7 @@ public class SlotTimerManagerSingleton
 		CreateTimer("betInput");		// BET開始からの経過時間
 		CreateTimer("leverAvailable");	// レバー有効化からの経過時間
 		CreateTimer("waitStart");		// wait開始からの経過時間
+		CreateTimer("waitEnd");			// wait終了からの経過時間(次Gのwait算出に使用)
 		CreateTimer("reelStart");		// リール始動からの経過時間
 		CreateTimer("anyReelPush");		// いずれかの停止ボタン押下からの経過時間
 		CreateTimer("anyReelStop");		// いずれかのリール停止からの経過時間

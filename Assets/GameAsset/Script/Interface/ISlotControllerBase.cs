@@ -99,8 +99,13 @@ public class SCWaitBet : ISlotControllerBase {
 	public ISlotControllerBase ProcessAfterInput(){
 		// reelActivateが有効ならリールを始動させる
 		if (reelActivate){
-			for(int i=0; i<slotData.reelData.Count; ++i){ slotData.reelData[i].Start(); }
-			reelActivate = false;
+			// タイマ関係の停止処理
+			timer.GetTimer("betWait").SetDisabled();
+			timer.GetTimer("betInput").SetDisabled();
+			timer.GetTimer("leverAvailable").SetDisabled();
+			
+			// 次フレームはSCWaitBeforeReelStartへ移行
+			return new SCWaitBeforeReelStart();
 		}
 		
 		// タイマの時刻を取得してBET加算処理を行う
@@ -132,3 +137,68 @@ public class SCWaitBet : ISlotControllerBase {
 	}
 }
 
+// レバー後Wait処理
+public class SCWaitBeforeReelStart : ISlotControllerBase {
+	// 定数
+	const int WAIT_MAX = 4100;	// 最大wait時間[ms]
+
+	// 使用Singleton
+	SlotTimerManagerSingleton timer;
+
+	// SC移行時処理
+	public SCWaitBeforeReelStart(){
+		// Singleton取得
+		timer = SlotTimerManagerSingleton.GetInstance();
+		
+		// タイマ処理
+		timer.GetTimer("waitStart").Activate();
+		
+		// 乱数抽選処理
+		SetCastFlag();
+	}
+	
+	public void OnGetKeyDown(EGameButtonID pKeyID){ /* None */ }
+	public void OnGetKey(EGameButtonID pKeyID){ /* None */ }
+	public ISlotControllerBase ProcessAfterInput(){
+		// Wait終了判定を行う(waitEndが無効か、最大wait時間以上経過しているとき)
+		bool waitEnd = !timer.GetTimer("waitEnd").isActivate;
+		if(!waitEnd) waitEnd = timer.GetTimer("waitEnd").elapsedTime > (float)WAIT_MAX / 1000f;
+		return this;
+	}
+	
+	// フラグ抽選処理を行う
+	private void SetCastFlag(){
+		// 乱数を取得する
+		int randValue = UnityEngine.Random.Range(0, SlotMaker2022.LocalDataSet.FlagCommonData.RAND_MAX);
+		
+		// Singleton取得, 変数初期化
+		var basicData = SlotDataSingleton.GetInstance().basicData;
+		var randList  = SlotMaker2022.MainROMDataManagerSingleton.GetInstance().FlagRandData;
+		byte castFlag  = 0;
+		byte bonusFlag = 0;
+		
+		// 現在の条件に合った乱数のみrandValueから引いていく
+		for (int randC=0; randC < randList.Count; ++randC){
+			var randItem = randList[randC];
+			if (randItem.CondBet+1 != basicData.betCount) continue;		// BET(CondBet側は0-2で定義)
+			if (randItem.CondGameMode != basicData.gameMode) continue;	// Mode
+			// RT(共通設定の場合は比較省略)
+			if (randItem.CondRTMode != basicData.RTMode && randItem.CondRTMode < SlotMaker2022.LocalDataSet.RTMODE_MAX) continue;
+			
+			// 減算する乱数を抽出して減算する
+			uint checkIndex = randItem.CommonSet ? 0u : (uint)basicData.slotSetting;
+			randValue -= (int)randItem.RandValue.GetData(checkIndex);
+			Debug.Log("randV: " + randValue.ToString() + " / dec: " + randItem.RandValue.GetData(checkIndex).ToString());
+			
+			// 乱数が0を下回ったらフラグ確定
+			if (randValue < 0){
+				castFlag  = randItem.LaunchFlagID;
+				bonusFlag = randItem.BonusFlag;
+				break;
+			}
+		}
+		
+		// basicDataにフラグを設定する
+		basicData.SetCastFlag(bonusFlag, castFlag);
+	}
+}

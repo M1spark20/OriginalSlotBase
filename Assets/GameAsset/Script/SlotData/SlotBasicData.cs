@@ -76,4 +76,11 @@ public class SlotBasicData : SlotMaker2022.ILocalDataInterface
 		creditShow = (byte)Math.Max(creditShow + betCount, CREDIT_MAX);
 		betCount = 0;
 	}
+	
+	// フラグ設定
+	public void SetCastFlag(byte pBonusFlag, byte pCastFlag){
+		if (bonusFlag == 0) bonusFlag = pBonusFlag;
+		castFlag = pCastFlag;
+		Debug.Log("FlagSet: bonus->" + bonusFlag.ToString() + " cast->" + castFlag.ToString());
+	}
 }
