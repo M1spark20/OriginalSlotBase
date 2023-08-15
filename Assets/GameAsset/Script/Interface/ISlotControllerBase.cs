@@ -54,7 +54,7 @@ public class SCWaitBet : ISlotControllerBase {
 		if (slotData.basicData.betCount == applyBet) return;
 		
 		nextAddBetTime = 0;
-		reelActivate = false;
+		timer.GetTimer("leverAvailable").SetDisabled();
 		timer.GetTimer("betInput").Activate();
 		timer.GetTimer("betInput").Reset();
 		
@@ -65,22 +65,20 @@ public class SCWaitBet : ISlotControllerBase {
 	public void OnGetKeyDown(EGameButtonID pKeyID){
 		// 定数,Singleton取得
 		const int betMax = SlotMaker2022.LocalDataSet.BET_MAX;
-		byte currentGameMode = slotData.basicData.gameMode;
 		
 		// BETアクション中は入力をカットする
 		if (!(nextAddBetTime < 0)) return;
 		
-		// レバー時の処理: BET処理が完了していればリールを始動させる
-		if (pKeyID == EGameButtonID.eMaxBetAndStart && applyBet > 0){
-			uint checkIndex = (uint)(betMax * currentGameMode + applyBet - 1);
-			if (mainROM.CastCommonData.CanUseBet.GetData(checkIndex) != 0) { reelActivate = true; return; }
+		// レバー時の処理: レバー有効ならリールを始動させる
+		if (pKeyID == EGameButtonID.eMaxBetAndStart && applyBet > 0 && timer.GetTimer("leverAvailable").isActivate){
+			reelActivate = true; return;
 		}
 		
 		// 現在モードでのMaxBetを取得する
 		byte currentMaxBet = 0;
+		byte currentGameMode = slotData.basicData.gameMode;
 		for (int betC=betMax; betC > 0; --betC){
-			uint checkIndex = (uint)(betMax * currentGameMode + betC - 1);
-			if (mainROM.CastCommonData.CanUseBet.GetData(checkIndex) != 0) { currentMaxBet = (byte)betC; break; }
+			if (CheckBet((byte)betC)) { currentMaxBet = (byte)betC; break; }
 		}
 		
 		// MaxBet押下時の処理: 選択モードでの最大BET数を指定
@@ -110,11 +108,27 @@ public class SCWaitBet : ISlotControllerBase {
 		while (nextAddBetTime >= 0 && betInput > (float)nextAddBetTime / 1000f){
 			slotData.basicData.AddBetCount();
 			Debug.Log("Bet Countup: " + slotData.basicData.betCount.ToString());
-			if (slotData.basicData.betCount == applyBet) nextAddBetTime = -1;
-			else nextAddBetTime += BET_SPAN_BASIC;
+			if (slotData.basicData.betCount == applyBet) {
+				// BET処理終了
+				nextAddBetTime = -1;
+				// レバー有効かの判定、有効ならタイマを作動させる
+				if(CheckBet(applyBet)) timer.GetTimer("leverAvailable").Activate();
+			} else {
+				// 次BETの時間取得
+				nextAddBetTime += BET_SPAN_BASIC;
+			}
 		}
 		
 		return this;
+	}
+	
+	// 現モードで指定したBet数が有効か取得する
+	private bool CheckBet(byte betNum){
+		byte currentGameMode = slotData.basicData.gameMode;
+		const int betMax = SlotMaker2022.LocalDataSet.BET_MAX;
+		
+		uint checkIndex = (uint)(betMax * currentGameMode + betNum - 1);
+		return (mainROM.CastCommonData.CanUseBet.GetData(checkIndex) != 0);
 	}
 }
 
