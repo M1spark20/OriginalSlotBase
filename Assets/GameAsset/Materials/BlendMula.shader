@@ -8,6 +8,7 @@ Shader "Hidden/BlendMula"
     }
     SubShader
     {
+    	Tags { "RenderType"="Transparent" "Queue" = "Transparent" }
         // No culling or depth
         Cull Off ZWrite Off ZTest Always
         // 乗算ブレンド(白黒マスク向け/白部分を暗くする)

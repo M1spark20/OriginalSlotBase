@@ -8,6 +8,7 @@ Shader "Hidden/BlendAdd"
     }
     SubShader
     {
+    	Tags { "RenderType"="Transparent" "Queue" = "Transparent" }
         // No culling or depth
         Cull Off ZWrite Off ZTest Always
         // 加算ブレンド
