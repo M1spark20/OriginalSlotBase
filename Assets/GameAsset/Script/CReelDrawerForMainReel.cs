@@ -16,6 +16,11 @@ public class CReelDrawerForMainReel : MonoBehaviour
 	MultiImageBuilder	mImageBuilder;	// Sprite生成用クラス(各コマを格納)
 	GameObject[][]		mComaInstance;	// このクラスでInstantiateしたGameObject 実装元:Prehab_MainComa
 	
+	// ReelBlur用変数
+	const int  BLUR_BASEFPS = 90;	// ブラー計算のベースとなるfps値
+	float[]    mLastPosDelta;		// 各リールの前回位置からの差分[reelNum]
+	Material[] mReelMat;			// 各リールのマテリアル[reelNum]
+	
 	// Start is called before the first frame update
 	void Start()
 	{
@@ -25,6 +30,9 @@ public class CReelDrawerForMainReel : MonoBehaviour
 		mComaInstance = new GameObject[reelNum][];
 		Texture2D tex = Resources.Load<Texture2D>("coma330x150");
 		mImageBuilder.BuildSprite(tex, "reelMain", DIV_X, DIV_Y, false);
+		
+		// ReelBlur用変数初期化
+		mReelMat      = new Material[reelNum];
 		
 		// GameObjectの生成元となるPrehabと親objectを定義する
 		GameObject prehab = Resources.Load<GameObject>("Prehab_MainComa");
@@ -36,6 +44,11 @@ public class CReelDrawerForMainReel : MonoBehaviour
 		for(int reelC=0; reelC<reelNum; ++reelC){
 			mComaInstance[reelC] = new GameObject[comaNum];
 			string test = "";
+			
+			// リールブラー用Material新規生成(Prehabからコピー)
+			mReelMat[reelC]      = new Material(prehab.GetComponent<SpriteRenderer>().sharedMaterial);
+			
+			// 各コマにSpriteとMaterialを割り当てる
 			for(int posC=0; posC<comaNum; ++posC){
 				// データは逆順に格納されていることに注意する。横方向のみ予め移動させておく
 				int comaIndex = mainROM.ReelArray[reelC][posC].Coma;
@@ -43,12 +56,14 @@ public class CReelDrawerForMainReel : MonoBehaviour
 				Vector3 initPos = new Vector3(POS_WBASE * reelC, 0.0f, 0.0f);
 				mComaInstance[reelC][comaNum - posC - 1] = Instantiate(prehab, parent);
 				mComaInstance[reelC][comaNum - posC - 1].transform.localPosition = initPos;
-				// SpriteRendererを呼び出してSpriteを変更する
+				// SpriteRendererを呼び出してSpriteを変更し、sharedMaterialを割り当てる
 				SpriteRenderer sp = mComaInstance[reelC][comaNum - posC - 1].GetComponent<SpriteRenderer>();
 				sp.sprite = mImageBuilder.Extract(comaIndex);
+				mComaInstance[reelC][comaNum - posC - 1].GetComponent<SpriteRenderer>().sharedMaterial = mReelMat[reelC];
 			}
 			Debug.Log(test);
 		}
+		
 	}
 
 	// Update is called once per frame
@@ -86,13 +101,20 @@ public class CReelDrawerForMainReel : MonoBehaviour
 				pos.y = posY;
 				mComaInstance[reelC][posCtrl].transform.localPosition = pos;
 			}
+			
+			// リール速度に応じたブラー範囲を取得して、material経由でshaderに差分値を設定する
+			float reelSpeed = reelData.reelSpeed; // [rpm]
+			float delta = (reelSpeed * comaNum / 60f / (float)BLUR_BASEFPS) * spH;
+			mReelMat[reelC].SetFloat("_BlurRange", delta);
 		}
 	}
 	
 	// オブジェクト終了時の処理
 	void OnDestroy()
 	{
+		// TextureとMaterialの破棄
 		mImageBuilder.DestroySprite();
+		for(int i=0; i<mReelMat.Length; ++i) Destroy(mReelMat[i]);
 		Debug.Log("Destroy");
 	}
 }
