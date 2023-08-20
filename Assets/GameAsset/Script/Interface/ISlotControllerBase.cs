@@ -127,7 +127,6 @@ public class SCWaitBet : ISlotControllerBase {
 		float betInput = timer.GetTimer("betInput").elapsedTime;
 		while (nextAddBetTime >= 0 && betInput > (float)nextAddBetTime / 1000f){
 			slotData.basicData.AddBetCount();
-			Debug.Log("Bet Countup: " + slotData.basicData.betCount.ToString());
 			if (slotData.basicData.betCount == applyBet) {
 				// BET処理終了
 				nextAddBetTime = -1;
@@ -360,7 +359,7 @@ public class SCReelOperation : ISlotControllerBase {
 		int slipNum = reelManager.GetReelControl3R(reelIndex, stopHistory, stop1st, slip1st, bs.betCount-1, bs.gameMode, bs.bonusFlag, bs.castFlag);
 		
 		stopReel.SetStopPos(slipNum);
-		Debug.Log("Push: " + stopReel.pushPos.ToString() + ", Stop: " + stopReel.stopPos.ToString() + " (" + stopReel.slipCount.ToString() + ")");
+		//Debug.Log("Push: " + stopReel.pushPos.ToString() + ", Stop: " + stopReel.stopPos.ToString() + " (" + stopReel.slipCount.ToString() + ")");
 		// 変数を制御する
 		stopHistory[reelIndex] = stopReel.stopPos;
 		stopOrder[stopReelCount] = reelIndex;

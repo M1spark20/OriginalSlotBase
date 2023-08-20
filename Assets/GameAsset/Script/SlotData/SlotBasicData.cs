@@ -90,7 +90,6 @@ public class SlotBasicData : SlotMaker2022.ILocalDataInterface
 		if(!isReplay) creditShow = (byte)Math.Max(0, creditShow - 1);
 		payoutShow = 0;
 		isBetLatched = false;
-		Debug.Log("BET: " + creditShow.ToString() + " - " + payoutShow.ToString());
 	}
 	// BETをクリアする。ゲーム消化されていなければクレジットにメダルを戻す
 	public void ClearBetCount(){
@@ -150,6 +149,5 @@ public class SlotBasicData : SlotMaker2022.ILocalDataInterface
 		++outCount;
 		++payoutShow;
 		creditShow = (byte)Math.Min(creditShow + 1, CREDIT_MAX);
-		Debug.Log("payout: " + creditShow.ToString() + " - " + payoutShow.ToString());
 	}
 }

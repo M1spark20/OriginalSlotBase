@@ -117,8 +117,8 @@ public class MultiImageBuilder
 		for (int spC=0; spC<mDrawSprite.Length; ++spC){
 			if (mDrawSprite[spC]){
 				UnityEngine.Object.Destroy(this.mDrawSprite[spC]);
-				Debug.Log("Destroy called.");
 			}
 		}
+		Debug.Log("Destroy called.");
 	}
 }

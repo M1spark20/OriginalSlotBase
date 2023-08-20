@@ -45,7 +45,6 @@ public class SlotTimer : SlotMaker2022.ILocalDataInterface
 		if (isActivate) return;
 		isActivate = true;
 		Reset(offset);
-		Debug.Log("Timer has Activated: " + timerName + " >" + elapsedTime);
 	}
 	public void Activate() { Activate(0f); }
 	

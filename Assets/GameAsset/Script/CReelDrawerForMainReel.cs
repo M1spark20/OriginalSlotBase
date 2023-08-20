@@ -115,6 +115,5 @@ public class CReelDrawerForMainReel : MonoBehaviour
 		// TextureとMaterialの破棄
 		mImageBuilder.DestroySprite();
 		for(int i=0; i<mReelMat.Length; ++i) Destroy(mReelMat[i]);
-		Debug.Log("Destroy");
 	}
 }
