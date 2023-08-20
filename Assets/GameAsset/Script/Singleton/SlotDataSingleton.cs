@@ -7,6 +7,9 @@ public sealed class SlotDataSingleton
 	public List<ReelBasicData>	reelData  { get; set; }
 	public SlotBasicData		basicData { get; set; }
 	
+	// エフェクト用変数
+	public SlotValManager		valManager { get; set; }
+	
     // Singletonインスタンス
     private static SlotDataSingleton ins = new SlotDataSingleton();
     
@@ -17,6 +20,7 @@ public sealed class SlotDataSingleton
 	{
 		reelData = new List<ReelBasicData>();
 		basicData = new SlotBasicData();
+		valManager = new SlotValManager();
 	}
 	
 	/// <summary>
@@ -28,6 +32,7 @@ public sealed class SlotDataSingleton
 		// 読み込み処理
 		// reelData
 		// basicData
+		valManager.ReadData();
 		
 		// データが読み込めなかった場合にリール情報を新規生成する
 		if (reelData.Count == 0){
@@ -36,5 +41,15 @@ public sealed class SlotDataSingleton
 			}
 		}
 		return true;
+	}
+	
+	/// <summary>
+	/// システム変数を更新します。
+	/// </summary>
+	public void Process(){
+		valManager.GetVariable("_betCount")		.val = basicData.betCount;
+		valManager.GetVariable("_creditCount")	.val = basicData.creditShow;
+		valManager.GetVariable("_payoutCount")	.val = basicData.payoutShow;
+		valManager.GetVariable("_isReplay")		.SetBool(basicData.isReplay);
 	}
 }

@@ -48,5 +48,7 @@ public class SlotDataManager : MonoBehaviour
 		
 		// キー入力後プロセス
 		controller = controller.ProcessAfterInput();
+		// システム変数更新
+		slotData.Process();
 	}
 }
