@@ -44,8 +44,16 @@ public class SCWaitBet : ISlotControllerBase {
 		timer    = SlotTimerManagerSingleton.GetInstance();
 		slotData = SlotDataSingleton.GetInstance();
 		
+		// リプレイ入賞時は即時前回のBET入力を行う(basicDataには前GのBET数が入っている)
+		if (slotData.basicData.isReplay) applyBet = slotData.basicData.betCount;
+		
+		// 前回BET状況を初期化する - basicData.betCount=0としてSetBetTime()の処理を有効化する
+		slotData.basicData.ClearBetCount();
+		
 		// タイマをActivateする
 		timer.GetTimer("betWait").Activate();
+		
+		SetBetTime();
 	}
 	
 	// 目標BET数に応じてタイマを設定する
@@ -55,6 +63,7 @@ public class SCWaitBet : ISlotControllerBase {
 		
 		nextAddBetTime = 0;
 		timer.GetTimer("leverAvailable").SetDisabled();
+		timer.GetTimer("Pay-Bet").SetDisabled();
 		timer.GetTimer("betInput").Activate();
 		timer.GetTimer("betInput").Reset();
 		
@@ -74,20 +83,23 @@ public class SCWaitBet : ISlotControllerBase {
 			reelActivate = true; return;
 		}
 		
-		// 現在モードでのMaxBetを取得する
-		byte currentMaxBet = 0;
-		byte currentGameMode = slotData.basicData.gameMode;
-		for (int betC=betMax; betC > 0; --betC){
-			if (CheckBet((byte)betC)) { currentMaxBet = (byte)betC; break; }
-		}
-		
-		// MaxBet押下時の処理: 選択モードでの最大BET数を指定
-		if (pKeyID == EGameButtonID.eMaxBetAndStart || pKeyID == EGameButtonID.eMaxBet){ applyBet = currentMaxBet; }
-		
-		// 1BET押下時の処理: 有効/無効はさておき+1BETする。ただし最大値を超えた場合は1BETに戻す
-		if (pKeyID == EGameButtonID.e1Bet){
-			applyBet += 1;
-			if (applyBet > currentMaxBet) applyBet = 1;
+		// リプレイ以外ならBETに関する入力を受け付ける
+		if (!slotData.basicData.isReplay){
+			// 現在モードでのMaxBetを取得する
+			byte currentMaxBet = 0;
+			byte currentGameMode = slotData.basicData.gameMode;
+			for (int betC=betMax; betC > 0; --betC){
+				if (CheckBet((byte)betC)) { currentMaxBet = (byte)betC; break; }
+			}
+			
+			// MaxBet押下時の処理: 選択モードでの最大BET数を指定
+			if (pKeyID == EGameButtonID.eMaxBetAndStart || pKeyID == EGameButtonID.eMaxBet){ applyBet = currentMaxBet; }
+			
+			// 1BET押下時の処理: 有効/無効はさておき+1BETする。ただし最大値を超えた場合は1BETに戻す
+			if (pKeyID == EGameButtonID.e1Bet){
+				applyBet += 1;
+				if (applyBet > currentMaxBet) applyBet = 1;
+			}
 		}
 		
 		// BET変化時処理を行う
@@ -103,11 +115,14 @@ public class SCWaitBet : ISlotControllerBase {
 			timer.GetTimer("betWait").SetDisabled();
 			timer.GetTimer("betInput").SetDisabled();
 			timer.GetTimer("leverAvailable").SetDisabled();
+			timer.GetTimer("Pay-Lever").SetDisabled();
 			
 			// 次フレームはSCWaitBeforeReelStartへ移行
 			return new SCWaitBeforeReelStart();
 		}
 		
+		// bet入力なしなら以降の操作を行わない
+		if (!timer.GetTimer("betInput").isActivate) return this;
 		// タイマの時刻を取得してBET加算処理を行う
 		float betInput = timer.GetTimer("betInput").elapsedTime;
 		while (nextAddBetTime >= 0 && betInput > (float)nextAddBetTime / 1000f){
@@ -120,7 +135,7 @@ public class SCWaitBet : ISlotControllerBase {
 				if(CheckBet(applyBet)) timer.GetTimer("leverAvailable").Activate();
 			} else {
 				// 次BETの時間取得
-				nextAddBetTime += BET_SPAN_BASIC;
+				nextAddBetTime += slotData.basicData.isReplay ? BET_SPAN_REP : BET_SPAN_BASIC;
 			}
 		}
 		
@@ -144,14 +159,19 @@ public class SCWaitBeforeReelStart : ISlotControllerBase {
 
 	// 使用Singleton
 	SlotTimerManagerSingleton timer;
+	SlotDataSingleton slotData;
 
 	// SC移行時処理
 	public SCWaitBeforeReelStart(){
 		// Singleton取得
 		timer = SlotTimerManagerSingleton.GetInstance();
+		slotData = SlotDataSingleton.GetInstance();
 		
 		// タイマ処理
 		timer.GetTimer("waitStart").Activate();
+		
+		// BET消化処理
+		slotData.basicData.LatchBet();
 		
 		// 乱数抽選処理
 		SetCastFlag();
@@ -304,9 +324,8 @@ public class SCReelOperation : ISlotControllerBase {
 			timer.GetTimer("allReelStop").Activate();
 			timer.GetTimer("reelStart").SetDisabled();
 			ResetPushStopTimer();
-			// 暫定的に制御をwaitbetに戻す
-			slotData.basicData.FlushBet();
-			return new SCWaitBet();
+			// 移行先: SCJudgeAndPayout
+			return new SCJudgeAndPayout();
 		}
 		
 		// 次回のProcessに備えisAllReleasedを初期化
@@ -356,5 +375,91 @@ public class SCReelOperation : ISlotControllerBase {
 		
 		// ストップ数加算
 		++stopReelCount;
+	}
+}
+
+// 停止後入賞役判定 & 払い出し
+public class SCJudgeAndPayout : ISlotControllerBase {
+	// 変数
+	int mPayoutNum;		// 描画払出枚数(-1:rep)
+	int mNextPayTime;	// 次回払出描画時間[ms]
+	int mNextPayBase;	// 払出間隔[ms]
+	
+	SlotMaker2022.main_function.MainReelManager reelManager;	// リール制御クラス
+	
+	// 使用Singleton
+	SlotMaker2022.MainROMDataManagerSingleton mainROM;
+	SlotTimerManagerSingleton timer;
+	SlotDataSingleton slotData;
+
+	// SC移行時処理
+	public SCJudgeAndPayout(){
+		// 変数初期化
+		mPayoutNum   = 0;
+		mNextPayTime = 0;
+		
+		// Singleton取得
+		mainROM  = SlotMaker2022.MainROMDataManagerSingleton.GetInstance();
+		timer    = SlotTimerManagerSingleton.GetInstance();
+		slotData = SlotDataSingleton.GetInstance();
+		
+		// リール制御クラス初期化
+		reelManager = new SlotMaker2022.main_function.MainReelManager();
+		
+		// 配当取得処理
+		GetCast();
+		
+		// 払出間隔設定
+		var castCommon = mainROM.CastCommonData;
+		mNextPayBase = (int)castCommon.IntervalPay;		// 払出待ち時間
+		if (slotData.basicData.isReplay){
+			mNextPayTime = (int)castCommon.IntervalRep;	// リプ待ち時間(1回のみのためpayTimeに直接指定)
+		}
+		
+		// タイマ処理
+		if(mPayoutNum != 0) timer.GetTimer("payoutTime").Activate();
+		timer.GetTimer("Pay-Bet").Activate();
+		timer.GetTimer("Pay-Lever").Activate();
+	}
+	
+	public void OnGetKeyDown(EGameButtonID pKeyID){ /* None */ }
+	public void OnGetKey(EGameButtonID pKeyID){ /* None */ }
+	public ISlotControllerBase ProcessAfterInput(){
+		// 現在経過時刻取得
+		float elapsed = timer.GetTimer("payoutTime").elapsedTime;
+		const float divMS = 1000f;
+		
+		// リプレイ: 指定時間経過後にmPayoutNumリセット
+		if (mPayoutNum < 0 && elapsed > mNextPayTime / divMS) mPayoutNum = 0;
+		
+		// 払出: 時間経過でカウントを増やす
+		while (mPayoutNum > 0 && elapsed > mNextPayTime / divMS){
+			slotData.basicData.AddPayout();
+			--mPayoutNum;
+			mNextPayTime += mNextPayBase;
+		}
+	
+		// 払出なし or 払い出し完了: 描画終了時に処理をBETに戻す
+		if(mPayoutNum == 0) {
+			timer.GetTimer("payoutTime").SetDisabled();
+			return new SCWaitBet();
+		}
+		
+		return this;
+	}
+	
+	// 配当取得を行う
+	private void GetCast() {
+		// 各リールの座標を得る
+		const int reelNum = SlotMaker2022.LocalDataSet.REEL_MAX;
+		int[] reelPos = new int[reelNum];
+		for (int i=0; i<reelNum; ++i) reelPos[i] = slotData.reelData[i].GetReelComaIDFixed();
+		
+		// 配当をmanagerから得る(フラグ関係は指定なし:-1)
+		var basicData = slotData.basicData;
+		var castResult = reelManager.GetCast(reelPos, basicData.betCount-1, basicData.gameMode, -1, -1);
+		
+		// 配当をbasicDataに転送する。戻り値として払出枚数を受ける
+		mPayoutNum = basicData.SetPayout(castResult);
 	}
 }

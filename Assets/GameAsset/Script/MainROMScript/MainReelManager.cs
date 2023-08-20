@@ -27,6 +27,7 @@ namespace SlotMaker2022.main_function
              * 00    : ボーナス
              */
             public List<LocalDataSet.CastElemData> matchCast;  // 入賞可能配当データ一覧
+            public List<int>                       payLine;    // 入賞ライン
 
             public GetCastResult()
             {
@@ -38,6 +39,7 @@ namespace SlotMaker2022.main_function
                 payPriority = 0;
                 stopAvailable = false;
                 matchCast = new List<LocalDataSet.CastElemData>();
+                payLine = new List<int>();
             }
         }
 
@@ -68,6 +70,7 @@ namespace SlotMaker2022.main_function
             int nonStopMask = 0;                        // 回転中リールマスク
             int launchFlagMask = 0;                     // 成立フラグマスク(全停止時は0のままとする)
             List<int> lineDataOpen = new List<int>();   // 解析を行う有効ラインの並び
+            List<int> lineDataID = new List<int>();     // 解析を行う有効ラインID
             List<int> lineDataClose = new List<int>();  // 配当を得た有効ラインの並び
 
             /* 停止済みor停止リールを抽出する。併せて回転中リールマスクを作成する */
@@ -105,6 +108,7 @@ namespace SlotMaker2022.main_function
                     reelBitData |= 1 << (LocalDataSet.SYMBOL_MAX * stopReel[reelC]) + comaID;
                 }
                 lineDataOpen.Add(reelBitData);
+                lineDataID.Add(lineC);
             }
 
             /* 全配当に対してチェックを入れる */
@@ -171,6 +175,8 @@ namespace SlotMaker2022.main_function
 
                     // closeリストに追加
                     lineDataClose.Add(lineDataOpen[lineC]);
+                    // 入賞ライン追加
+                    res.payLine.Add(lineDataID[lineC]);
                     // 入賞役データ追加
                     res.matchCast.Add(elem);
 

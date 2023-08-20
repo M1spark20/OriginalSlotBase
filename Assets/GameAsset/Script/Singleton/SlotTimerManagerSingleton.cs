@@ -66,7 +66,9 @@ public class SlotTimerManagerSingleton
 		CreateTimer("anyReelPush");		// いずれかの停止ボタン押下からの経過時間
 		CreateTimer("anyReelStop");		// いずれかのリール停止からの経過時間
 		CreateTimer("allReelStop");		// 全リール停止、ねじり終了からの経過時間
-		CreateTimer("payoutStart");		// ペイアウト開始からの定義時間(完了後に無効になる)
+		CreateTimer("payoutTime");		// ペイアウト開始からの経過時間(pay完了まで有効)
+		CreateTimer("Pay-Bet");			// ペイアウト開始からの経過時間(次回BETまで有効)
+		CreateTimer("Pay-Lever");		// ペイアウト開始からの経過時間(次ゲームレバーオンまで有効)
 		
 		for(int i=0; i<SlotMaker2022.LocalDataSet.REEL_MAX; ++i){
 			CreateTimer("reelPushPos[" + i + "]");		// 特定リール[0-reelMax)停止ボタン押下からの定義時間
