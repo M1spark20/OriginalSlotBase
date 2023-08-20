@@ -77,7 +77,7 @@ public class CReelDrawerForMainReel : MonoBehaviour
 		for(int reelC=0; reelC<mComaInstance.Length; ++reelC){
 			// 処理前に一度全GameObjectを無効化する
 			for(int posC=0; posC<mComaInstance[reelC].Length; ++posC){
-				mComaInstance[reelC][posC].SetActive(false);
+				mComaInstance[reelC][posC].GetComponent<SpriteRenderer>().enabled = false;
 			}
 			
 			// リールの座標を取得し、描画の基準となるコマをCeilingで取得する。1未満の数値をfloorで取得する
@@ -94,7 +94,7 @@ public class CReelDrawerForMainReel : MonoBehaviour
 				while (posCtrl >= comaNum) posCtrl -= comaNum;
 				while (posCtrl < 0) posCtrl += comaNum;
 				// GameObjectをActiveにする
-				mComaInstance[reelC][posCtrl].SetActive(true);
+				mComaInstance[reelC][posCtrl].GetComponent<SpriteRenderer>().enabled = true;
 				// Y座標を入力する
 				float posY = spH * posC + posYOffset;	// 未達分を足す
 				Vector3 pos = mComaInstance[reelC][posCtrl].transform.localPosition;
