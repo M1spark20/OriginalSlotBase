@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using UnityEngine;
 
 namespace SlotMaker2022
 {
@@ -8,6 +9,9 @@ namespace SlotMaker2022
     // データ上に1つだけ存在させたいためSingletonパターンを採用
     public sealed class MainROMDataManagerSingleton
     {
+        // ファイルバージョン
+        const int FILE_VERSION = 0;
+
         // Singletonインスタンス
         private static MainROMDataManagerSingleton ins = new MainROMDataManagerSingleton();
 
@@ -93,9 +97,10 @@ namespace SlotMaker2022
         }
         public bool ReadData()
         {
-           // ファイルから読み込み処理を行う
+           // Resourceから読み込み処理を行う
             var rd = new ProgressRead();
-            if (rd.OpenFile())
+            TextAsset bin = Resources.Load<TextAsset>("mainROM");
+            if (rd.OpenFile(bin.bytes))
             {
                 if (!rd.ReadData(SoftInfo)) return false;
                 for (int reelC = 0; reelC < LocalDataSet.REEL_MAX; ++reelC)
@@ -131,10 +136,6 @@ namespace SlotMaker2022
                 if (!rd.ReadData(ReelCtrlData)) return false;
 
                 rd.Close();
-
-                // バックアップ生成
-                BackupData();
-
                 return true;
             }
 
@@ -143,7 +144,7 @@ namespace SlotMaker2022
         public bool SaveData()
         {
             var sw = new ProgressWrite();
-            if (sw.OpenFile())
+            if (sw.OpenFile("mainROM.bin", FILE_VERSION))
             {
                 WriteOut(sw);
                 sw.Flush();
@@ -156,7 +157,7 @@ namespace SlotMaker2022
         public bool BackupData()
         {
             var sw = new ProgressWrite();
-            if (sw.OpenFile("backup.bak"))
+            if (sw.OpenFile("backup.bak", FILE_VERSION))
             {
                 WriteOut(sw);
                 sw.Flush();
