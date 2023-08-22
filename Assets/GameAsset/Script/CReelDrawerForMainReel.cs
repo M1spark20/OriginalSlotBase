@@ -7,8 +7,8 @@ using UnityEngine;
 public class CReelDrawerForMainReel : MonoBehaviour
 {
 	// 定数
-	const int DIV_X = 2;
-	const int DIV_Y = 5;
+	const int DIV_X = 1;
+	const int DIV_Y = 10;
 	const float POS_WBASE = 3.46f;
 	const int START_INDEX = -2;
 	const int DRAW_NUM    =  7;
