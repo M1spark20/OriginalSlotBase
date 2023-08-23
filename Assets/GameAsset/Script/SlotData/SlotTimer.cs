@@ -3,42 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 
-public class SlotTimer : SlotMaker2022.ILocalDataInterface
+public class SlotTimer
 {
-	const float DISABLE_TIME = -1f;
-
-	public string timerName  { get; private set; }	// タイマーの名前、呼び出し時の識別子になる
-	public float elapsedTime { get; private set; }	// 経過時間、Time.deltaTimeの積算で表現する。無効時: -1
-	public bool isActivate   { get; private set; }	// このタイマーが有効か
-	public bool isPaused     { get; private set; }	// このタイマーを一時停止しているか
+	public string timerName   { get; private set; }	// タイマーの名前、呼び出し時の識別子になる
+	public float? elapsedTime { get; private set; }	// 経過時間、Time.deltaTimeの積算で表現する。無効時:null
+	public bool isActivate    { get; private set; }	// このタイマーが有効か
+	public bool isPaused      { get; private set; }	// このタイマーを一時停止しているか
 	
-	public SlotTimer(ref BinaryReader fs, int version){
-		// データを外部から読み込んだ時のコンストラクタ: ReadData関数を直接動かしてデータを読む
-		ReadData(ref fs, version);
-	}
 	public SlotTimer(string pTimerName){
 		// タイマを新規に作成するときのコンストラクタ: タイマ名を指定して新規作成する。
 		// 呼び出し前にタイマ名が重複しないことを確認すること
 		timerName   = pTimerName;
-		elapsedTime = DISABLE_TIME;
+		elapsedTime = null;
 		isActivate  = false;
 		isPaused    = false;
 	}
-	public bool StoreData(ref BinaryWriter fs, int version){
-		fs.Write(timerName);
-		fs.Write(elapsedTime);
-		fs.Write(isActivate);
-		fs.Write(isPaused);
-		return true;
-	}
-	public bool ReadData(ref BinaryReader fs, int version){
-		timerName   = fs.ReadString();
-		elapsedTime = fs.ReadSingle();
-		isActivate  = fs.ReadBoolean();
-		isPaused    = fs.ReadBoolean();
-		return true;
-	}
-	
 	// 処理系関数
 	// タイマを有効にしてカウントを開始する。有効化済みの場合は何もしない
 	public void Activate(float offset){
@@ -66,7 +45,7 @@ public class SlotTimer : SlotMaker2022.ILocalDataInterface
 	public void SetDisabled(){
 		isActivate = false;
 		isPaused = false;
-		elapsedTime = DISABLE_TIME;
+		elapsedTime = null;
 	}
 	
 	// タイマを更新する

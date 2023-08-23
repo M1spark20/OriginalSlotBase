@@ -124,7 +124,7 @@ public class SCWaitBet : ISlotControllerBase {
 		// bet入力なしなら以降の操作を行わない
 		if (!timer.GetTimer("betInput").isActivate) return this;
 		// タイマの時刻を取得してBET加算処理を行う
-		float betInput = timer.GetTimer("betInput").elapsedTime;
+		float betInput = (float)timer.GetTimer("betInput").elapsedTime;
 		while (nextAddBetTime >= 0 && betInput > (float)nextAddBetTime / 1000f){
 			slotData.basicData.AddBetCount();
 			if (slotData.basicData.betCount == applyBet) {
@@ -425,17 +425,20 @@ public class SCJudgeAndPayout : ISlotControllerBase {
 	public void OnGetKey(EGameButtonID pKeyID){ /* None */ }
 	public ISlotControllerBase ProcessAfterInput(){
 		// 現在経過時刻取得
-		float elapsed = timer.GetTimer("payoutTime").elapsedTime;
+		float? elapsedNullable = timer.GetTimer("payoutTime").elapsedTime;
 		const float divMS = 1000f;
 		
-		// リプレイ: 指定時間経過後にmPayoutNumリセット
-		if (mPayoutNum < 0 && elapsed > mNextPayTime / divMS) mPayoutNum = 0;
-		
-		// 払出: 時間経過でカウントを増やす
-		while (mPayoutNum > 0 && elapsed > mNextPayTime / divMS){
-			slotData.basicData.AddPayout();
-			--mPayoutNum;
-			mNextPayTime += mNextPayBase;
+		// elapsedが値を持つ場合(=payoutTimeが有効)に処理を行う
+		if (elapsedNullable.HasValue){
+			float elapsed = (float)elapsedNullable;
+			// リプレイ: 指定時間経過後にmPayoutNumリセット
+			if (mPayoutNum < 0 && elapsed > mNextPayTime / divMS) mPayoutNum = 0;
+			// 払出: 時間経過でカウントを増やす
+			while (mPayoutNum > 0 && elapsed > mNextPayTime / divMS){
+				slotData.basicData.AddPayout();
+				--mPayoutNum;
+				mNextPayTime += mNextPayBase;
+			}
 		}
 	
 		// 払出なし or 払い出し完了: 描画終了時に処理をBETに戻す
