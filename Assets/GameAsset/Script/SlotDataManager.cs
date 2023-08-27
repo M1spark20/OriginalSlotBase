@@ -17,10 +17,13 @@ public class SlotDataManager : MonoBehaviour
 		slotData = SlotDataSingleton.GetInstance();
 		timer    = SlotTimerManagerSingleton.GetInstance();
 		
+		// タイマ作成用データ生成
+		TimerList tList = new TimerList();
+		
 		// ファイルからデータを読み込む
-		if (!mainROM .ReadData()) Debug.Log("mainROM Read: Error");  else Debug.Log("mainROM Read: Done");
-		if (!slotData.ReadData()) Debug.Log("slotData Read: Error"); else Debug.Log("slotData Read: Done");
-		if (!timer   .ReadData()) Debug.Log("timer Read: Error");    else Debug.Log("timer Read: Done");
+		if (!mainROM .ReadData())      Debug.Log("mainROM Read: Error");  else Debug.Log("mainROM Read: Done");
+		if (!slotData.ReadData())      Debug.Log("slotData Read: Error"); else Debug.Log("slotData Read: Done");
+		if (!timer   .ReadData(tList)) Debug.Log("timer Read: Error");    else Debug.Log("timer Read: Done");
 		
 		// コントローラー初期インスタンス生成
 		controller = new SCWaitBet();

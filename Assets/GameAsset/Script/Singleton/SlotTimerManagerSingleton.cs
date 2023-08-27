@@ -2,9 +2,72 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public class SlotTimer
+{
+	public string timerName   { get; private set; }	// タイマーの名前、呼び出し時の識別子になる
+	public float? elapsedTime { get; private set; }	// 経過時間、Time.deltaTimeの積算で表現する。無効時:null
+	public bool isActivate    { get; private set; }	// このタイマーが有効か
+	public bool isPaused      { get; private set; }	// このタイマーを一時停止しているか
+	
+	private bool isStoreFlag;	// このタイマーの作動状況を保存するか
+	
+	public SlotTimer(string pTimerName, bool pStoreActivate){
+		// タイマを新規に作成するときのコンストラクタ: タイマ名を指定して新規作成する。
+		// 作成時に作動状況を保存するか選択する(pStoreActivate)
+		// 呼び出し前にタイマ名が重複しないことを確認すること
+		timerName   = pTimerName;
+		elapsedTime = null;
+		isActivate  = false;
+		isPaused    = false;
+		isStoreFlag = pStoreActivate;
+	}
+	// 処理系関数
+	// タイマを有効にしてカウントを開始する。有効化済みの場合は何もしない
+	public void Activate(float offset){
+		if (isActivate) return;
+		isActivate = true;
+		Reset(offset);
+	}
+	public void Activate() { Activate(0f); }
+	
+	// タイマの経過時間をリセットする
+	public void Reset(float offset){
+		if (!isActivate) return;
+		elapsedTime = 0f;
+		if (offset > 0f) elapsedTime = offset;
+	}
+	public void Reset() { Reset(0f); }
+	
+	// カウントを一時中断するか指定する
+	public void SetPaused(bool pauseFlag){
+		if (!isActivate) return;
+		isPaused = pauseFlag;
+	}
+	
+	// タイマーを無効にする
+	public void SetDisabled(){
+		isActivate = false;
+		isPaused = false;
+		elapsedTime = null;
+	}
+	
+	// タイマを更新する
+	public void Update(float deltaTime){
+		if (!isActivate || isPaused) return;
+		elapsedTime += deltaTime;
+	}
+	
+	// タイマの保存条件「タイマが稼働しており、保存フラグが有効か」を確認する
+	public bool GetStoreFlag(){
+		return isStoreFlag && isActivate;
+	}
+}
+
 public class SlotTimerManagerSingleton
 {
-	// タイマ一覧
+	// タイマ一覧データ
+	TimerList timerList;
+	// ゲーム上タイマデータ
 	public List<SlotTimer> timerData { get; set; }
 	
 	// Singletonインスタンス
@@ -16,6 +79,7 @@ public class SlotTimerManagerSingleton
 	private SlotTimerManagerSingleton()
 	{
 		timerData = new List<SlotTimer>();
+		timerList = null;
 	}
 	
 	/// <summary>
@@ -23,22 +87,27 @@ public class SlotTimerManagerSingleton
 	/// </summary>
 	public static SlotTimerManagerSingleton GetInstance() { return ins; }
 	
-	// timerDataの読み込みを行う
-	public bool ReadData(){
-		// 読み込み処理(あとで実装)
+	// timerDataの読み込みをTimerListから行う
+	public bool ReadData(TimerList pList){
+		// リストをインポートしてタイマを作成する
+		timerList = pList;
+		foreach(var data in timerList.TData){
+			CreateTimer(data.UserTimerName, data.StoreActivation);
+		}
 		
-		// タイマを新規作成する。読み込み処理で作成済みの場合は重複定義しない
-		AddSystemTimer();
+		// generalのみActivateする
+		GetTimer("general")?.Activate();
+
 		return true;
 	}
 	
 	// 名前に重複がないことを確認してタイマを新規作成する。
 	// [ret]タイマを追加したか
-	public bool CreateTimer(string pTimerName){
+	public bool CreateTimer(string pTimerName, bool pStoreActivate){
 		for(int i=0; i<timerData.Count; ++i){
 			if (timerData[i].timerName == pTimerName) return false;
 		}
-		timerData.Add(new SlotTimer(pTimerName));
+		timerData.Add(new SlotTimer(pTimerName, pStoreActivate));
 		return true;
 	}
 	// 名前に一致したタイマを取得する
@@ -52,32 +121,5 @@ public class SlotTimerManagerSingleton
 	// タイマの加算処理を行う
 	public void Process(float deltaTime){
 		for(int i=0; i<timerData.Count; ++i) timerData[i].Update(deltaTime);
-	}
-	
-	// スロット本体側で追加するタイマ一覧
-	private void AddSystemTimer(){
-		CreateTimer("general");			// ゲーム開始からの経過時間
-		CreateTimer("betWait");			// BET待ち開始からの経過時間
-		CreateTimer("betInput");		// BET開始からの経過時間
-		CreateTimer("leverAvailable");	// レバー有効化からの経過時間
-		CreateTimer("waitStart");		// wait開始からの経過時間
-		CreateTimer("waitEnd");			// wait終了からの経過時間(次Gのwait算出に使用)
-		CreateTimer("reelStart");		// リール始動からの経過時間
-		CreateTimer("anyReelPush");		// いずれかの停止ボタン押下からの経過時間
-		CreateTimer("anyReelStop");		// いずれかのリール停止からの経過時間
-		CreateTimer("allReelStop");		// 全リール停止、ねじり終了からの経過時間
-		CreateTimer("payoutTime");		// ペイアウト開始からの経過時間(pay完了まで有効)
-		CreateTimer("Pay-Bet");			// ペイアウト開始からの経過時間(次回BETまで有効)
-		CreateTimer("Pay-Lever");		// ペイアウト開始からの経過時間(次ゲームレバーオンまで有効)
-		
-		for(int i=0; i<SlotMaker2022.LocalDataSet.REEL_MAX; ++i){
-			CreateTimer("reelPushPos[" + i + "]");		// 特定リール[0-reelMax)停止ボタン押下からの定義時間
-			CreateTimer("reelStopPos[" + i + "]");		// 特定リール[0-reelMax)停止からの定義時間
-			CreateTimer("reelPushOrder[" + i + "]");	// 第n停止ボタン押下からの定義時間
-			CreateTimer("reelStopOrder[" + i + "]");	// 第n停止からの定義時間
-		}
-		
-		// generalのみActivateする
-		GetTimer("general")?.Activate();
 	}
 }
