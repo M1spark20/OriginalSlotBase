@@ -114,6 +114,7 @@ public class SCWaitBet : ISlotControllerBase {
 			// タイマ関係の停止処理
 			timer.GetTimer("betWait").SetDisabled();
 			timer.GetTimer("betInput").SetDisabled();
+			timer.GetTimer("betShot").SetDisabled();
 			timer.GetTimer("leverAvailable").SetDisabled();
 			timer.GetTimer("Pay-Lever").SetDisabled();
 			
@@ -127,6 +128,10 @@ public class SCWaitBet : ISlotControllerBase {
 		float betInput = (float)timer.GetTimer("betInput").elapsedTime;
 		while (nextAddBetTime >= 0 && betInput > (float)nextAddBetTime / 1000f){
 			slotData.basicData.AddBetCount();
+			// タイマを更新する
+			timer.GetTimer("betShot")?.Activate();
+			timer.GetTimer("betShot")?.Reset();
+			// BET終了判定
 			if (slotData.basicData.betCount == applyBet) {
 				// BET処理終了
 				nextAddBetTime = -1;
@@ -369,6 +374,8 @@ public class SCReelOperation : ISlotControllerBase {
 		}
 		
 		// タイマ処理を行う
+		timer.GetTimer("anyReelPush").Activate();
+		timer.GetTimer("anyReelPush").Reset();
 		timer.GetTimer("reelPushPos[" + reelIndex + "]").Activate();
 		timer.GetTimer("reelPushOrder[" + stopReelCount + "]").Activate();
 		
@@ -463,5 +470,13 @@ public class SCJudgeAndPayout : ISlotControllerBase {
 		
 		// 配当をbasicDataに転送する。戻り値として払出枚数を受ける
 		mPayoutNum = basicData.SetPayout(castResult);
+		
+		// 音源変更テスト
+		int soundSource = 0;
+		if (basicData.castFlag == 1) soundSource = 4;
+		if (basicData.castFlag >= 2 && basicData.castFlag <= 3) soundSource = 7;
+		if (basicData.castFlag == 4) soundSource = 8;
+		if (basicData.castFlag >= 5 && basicData.castFlag <= 7) soundSource = 5;
+		slotData.soundData.ChangeSoundID(4, soundSource);
 	}
 }

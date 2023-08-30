@@ -32,6 +32,7 @@ public class TimerList {
 		CreateTimer("general",        true);	// ゲーム開始からの経過時間
 		CreateTimer("betWait",        true);	// BET待ち開始からの経過時間
 		CreateTimer("betInput",       true);	// BET開始からの経過時間
+		CreateTimer("betShot",        true);	// 1BET処理からの経過時間
 		CreateTimer("leverAvailable", true);	// レバー有効化からの経過時間
 		CreateTimer("waitStart",      true);	// wait開始からの経過時間
 		CreateTimer("waitEnd",        true);	// wait終了からの経過時間(次Gのwait算出に使用)

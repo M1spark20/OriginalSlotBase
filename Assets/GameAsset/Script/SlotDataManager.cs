@@ -21,9 +21,9 @@ public class SlotDataManager : MonoBehaviour
 		TimerList tList = new TimerList();
 		
 		// ファイルからデータを読み込む
-		if (!mainROM .ReadData())      Debug.Log("mainROM Read: Error");  else Debug.Log("mainROM Read: Done");
-		if (!slotData.ReadData())      Debug.Log("slotData Read: Error"); else Debug.Log("slotData Read: Done");
-		if (!timer   .ReadData(tList)) Debug.Log("timer Read: Error");    else Debug.Log("timer Read: Done");
+		if (!mainROM .ReadData())          Debug.Log("mainROM Read: Error");  else Debug.Log("mainROM Read: Done");
+		if (!slotData.ReadData(ref tList)) Debug.Log("slotData Read: Error"); else Debug.Log("slotData Read: Done");
+		if (!timer   .ReadData(tList))     Debug.Log("timer Read: Error");    else Debug.Log("timer Read: Done");
 		
 		// コントローラー初期インスタンス生成
 		controller = new SCWaitBet();

@@ -39,3 +39,6 @@ sysinfo.txt
 #Logs/Backups
 *.log
 *.bak
+
+# sound raw file
+*.wav

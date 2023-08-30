@@ -10,6 +10,9 @@ public sealed class SlotDataSingleton
 	// エフェクト用変数
 	public SlotValManager		valManager { get; set; }
 	
+	// 音源データ
+	public SoundDataList		soundData { get; set; }
+	
     // Singletonインスタンス
     private static SlotDataSingleton ins = new SlotDataSingleton();
     
@@ -21,6 +24,7 @@ public sealed class SlotDataSingleton
 		reelData = new List<ReelBasicData>();
 		basicData = new SlotBasicData();
 		valManager = new SlotValManager();
+		soundData = new SoundDataList();
 	}
 	
 	/// <summary>
@@ -28,7 +32,7 @@ public sealed class SlotDataSingleton
 	/// </summary>
 	public static SlotDataSingleton GetInstance() { return ins; }
 	
-	public bool ReadData(){
+	public bool ReadData(ref TimerList timerList){
 		// 読み込み処理
 		// reelData
 		// basicData
@@ -40,6 +44,10 @@ public sealed class SlotDataSingleton
 				reelData.Add(new ReelBasicData(12));
 			}
 		}
+		
+		// soundData
+		soundData.DataStab(ref timerList);
+		
 		return true;
 	}
 	
