@@ -543,7 +543,8 @@ namespace SlotMaker2022.main_function
                 List<int> slipPri_Step1 = new List<int>();
                 ushort payPriMax = 0;
                 int payNumMax = int.MinValue;
-                uint combiMax = 0; // 全停止形の最大組合せ
+                uint combiMax = 0;              // 全停止形の最大組合せ
+                int combiPayMax = int.MinValue; // 最大組合せ時の最大配当
 
                 for (int slipC = 0; slipC < LocalDataSet.SLIP_MAX; ++slipC)
                 {
@@ -564,6 +565,13 @@ namespace SlotMaker2022.main_function
                 // step1の段階で停止可能な位置がない場合は-1を返す
                 if (slipPri_Step1.Count == 0) return -1;
 
+                // combiPriMax抽出
+                foreach (var item in slipPri_Step1)
+                {
+                    if (posJudge[item].castPattern == combiMax)
+                        combiPayMax = Math.Max(combiPayMax, posJudge[item].payoutNum);
+                }
+
                 // step2: 停止優先度が最も高いデータのみを抽出する
                 List<int> slipPri_Step2 = new List<int>();
                 foreach (var item in slipPri_Step1)
@@ -572,8 +580,8 @@ namespace SlotMaker2022.main_function
                     bool addFlag = posJudge[item].payoutNum >= 0 && posJudge[item].payPriority == payPriMax && posJudge[item].payoutNum == payNumMax;
                     // 回転中リールがある場合、最大払出配当が揃えられるものを優先
                     addFlag |= posJudge[item].payoutNum < 0 && posJudge[item].payPriority == payPriMax;
-                    // 組合せ優先許可が出ている場合、組合せ数が最大の物も許容
-                    addFlag |= posJudge[item].castPattern == combiMax && isPriority;
+                    // 組合せ優先許可が出ている場合、組合せ数が最大かつその中で配当が最大となる物も許容
+                    addFlag |= posJudge[item].castPattern == combiMax && posJudge[item].payoutNum == combiPayMax && isPriority;
                     
                     if (addFlag) slipPri_Step2.Add(item);
                 }
