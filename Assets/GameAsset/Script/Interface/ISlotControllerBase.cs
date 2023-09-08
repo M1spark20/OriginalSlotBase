@@ -450,7 +450,10 @@ public class SCJudgeAndPayout : ISlotControllerBase {
 	
 		// 払出なし or 払い出し完了: 描画終了時に処理をBETに戻す
 		if(mPayoutNum == 0) {
+			// 払出タイマを無効にする
 			timer.GetTimer("payoutTime").SetDisabled();
+			// モード移行処理(終了側)を行う
+			slotData.basicData.ModeReset();
 			return new SCWaitBet();
 		}
 		
@@ -470,6 +473,9 @@ public class SCJudgeAndPayout : ISlotControllerBase {
 		
 		// 配当をbasicDataに転送する。戻り値として払出枚数を受ける
 		mPayoutNum = basicData.SetPayout(castResult);
+		// モードとRTの変更処理を行う。変更された場合はタイマを作動させる。
+		// SetPayoutより後で呼び出すことで当該Gのゲーム数減算をさせない。
+		basicData.ModeChange(castResult);
 		
 		// 音源変更テスト
 		int soundSource = 0;
@@ -477,6 +483,10 @@ public class SCJudgeAndPayout : ISlotControllerBase {
 		if (basicData.castFlag >= 2 && basicData.castFlag <= 3) soundSource = 7;
 		if (basicData.castFlag == 4) soundSource = 8;
 		if (basicData.castFlag >= 5 && basicData.castFlag <= 7) soundSource = 5;
+		if (basicData.castFlag == 12) soundSource = 9;
+		if (basicData.castFlag == 12 && mPayoutNum == 12) soundSource = 10;
+		if (basicData.castFlag >= 13 && basicData.castFlag <= 14) soundSource = 7;
+		if (basicData.castFlag == 13 && mPayoutNum == 14) soundSource = 10;
 		slotData.soundData.ChangeSoundID(4, soundSource);
 	}
 }

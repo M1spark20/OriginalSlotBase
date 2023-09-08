@@ -192,6 +192,17 @@ public class SoundDataList : SlotMaker2022.ILocalDataInterface
 		sid.LoopBegin   = 0;
 		AddID(sid);
 		
+		sid = new SoundID();
+		sid.DataName    = "PayoutJac";
+		sid.LoopResName = "SE_PayoutJac";
+		sid.LoopBegin   = 0;
+		AddID(sid);
+		
+		sid = new SoundID();
+		sid.DataName    = "PayoutTech";
+		sid.ShotResName = "SE_PayoutTech";
+		AddID(sid);
+		
 		// 再生側のデータ
 		SoundPlayData pid  = new SoundPlayData();
 		pid.PlayerName     = "Bet";

@@ -43,6 +43,10 @@ public class TimerList {
 		CreateTimer("payoutTime",     true);	// ペイアウト開始からの経過時間(pay完了まで有効)
 		CreateTimer("Pay-Bet",        true);	// ペイアウト開始からの経過時間(次回BETまで有効)
 		CreateTimer("Pay-Lever",      true);	// ペイアウト開始からの経過時間(次ゲームレバーオンまで有効)
+		CreateTimer("changeMode",     true);	// モード移行からの経過時間
+		CreateTimer("changeRT",       true);	// RT移行からの経過時間
+		CreateTimer("resetMode",      true);	// モードリセットからの経過時間
+		CreateTimer("resetRT",        true);	// RTリセットからの経過時間
 		
 		for(int i=0; i<SlotMaker2022.LocalDataSet.REEL_MAX; ++i){
 			CreateTimer("reelPushPos[" + i + "]",   true);	// 特定リール[0-reelMax)停止ボタン押下からの定義時間
