@@ -15,11 +15,13 @@ public class CReelDrawerForMainReel : MonoBehaviour
 	
 	MultiImageBuilder	mImageBuilder;	// Sprite生成用クラス(各コマを格納)
 	GameObject[][]		mComaInstance;	// このクラスでInstantiateしたGameObject 実装元:Prehab_MainComa
+	GameObject[]		mCutLine;		// 切れ目用オブジェクト 実装元:Prehab_MainComa
 	
 	// ReelBlur用変数
 	const int  BLUR_BASEFPS = 90;	// ブラー計算のベースとなるfps値
 	float[]    mLastPosDelta;		// 各リールの前回位置からの差分[reelNum]
 	Material[] mReelMat;			// 各リールのマテリアル[reelNum]
+	Material[] mCutMat;				// 各リール切れ目のマテリアル[reelNum]
 	
 	// Start is called before the first frame update
 	void Start()
@@ -28,14 +30,17 @@ public class CReelDrawerForMainReel : MonoBehaviour
 		const int reelNum = SlotMaker2022.LocalDataSet.REEL_MAX;
 		mImageBuilder = new MultiImageBuilder();
 		mComaInstance = new GameObject[reelNum][];
+		mCutLine      = new GameObject[reelNum];
 		Texture2D tex = Resources.Load<Texture2D>("coma330x150");
 		mImageBuilder.BuildSprite(tex, "reelMain", DIV_X, DIV_Y, false);
 		
 		// ReelBlur用変数初期化
 		mReelMat      = new Material[reelNum];
+		mCutMat       = new Material[reelNum];
 		
 		// GameObjectの生成元となるPrehabと親objectを定義する
-		GameObject prehab = Resources.Load<GameObject>("Prehab_MainComa");
+		GameObject prehab    = Resources.Load<GameObject>("Prehab_MainComa");
+		GameObject prehabCut = Resources.Load<GameObject>("Prehab_CutLine");
 		Transform parent = this.transform;
 		
 		// リール配列を取得、各リールのSpriteを変更しながらPrehabをInstantiateする
@@ -44,6 +49,13 @@ public class CReelDrawerForMainReel : MonoBehaviour
 		for(int reelC=0; reelC<reelNum; ++reelC){
 			mComaInstance[reelC] = new GameObject[comaNum];
 			string test = "";
+			
+			// 切れ目関係のobjectを生成する
+			mCutLine[reelC] = Instantiate(prehabCut, parent);
+			mCutMat [reelC] = new Material(prehabCut.GetComponent<SpriteRenderer>().sharedMaterial);
+			mCutMat [reelC].SetInt("_Weight", 48);
+			mCutLine[reelC].GetComponent<SpriteRenderer>().sharedMaterial = mCutMat[reelC];
+
 			
 			// リールブラー用Material新規生成(Prehabからコピー)
 			mReelMat[reelC]      = new Material(prehab.GetComponent<SpriteRenderer>().sharedMaterial);
@@ -59,11 +71,10 @@ public class CReelDrawerForMainReel : MonoBehaviour
 				// SpriteRendererを呼び出してSpriteを変更し、sharedMaterialを割り当てる
 				SpriteRenderer sp = mComaInstance[reelC][comaNum - posC - 1].GetComponent<SpriteRenderer>();
 				sp.sprite = mImageBuilder.Extract(comaIndex);
-				mComaInstance[reelC][comaNum - posC - 1].GetComponent<SpriteRenderer>().sharedMaterial = mReelMat[reelC];
+				sp.sharedMaterial = mReelMat[reelC];
 			}
 			Debug.Log(test);
 		}
-		
 	}
 
 	// Update is called once per frame
@@ -76,6 +87,7 @@ public class CReelDrawerForMainReel : MonoBehaviour
 		// 各リールに対して処理を行う
 		for(int reelC=0; reelC<mComaInstance.Length; ++reelC){
 			// 処理前に一度全GameObjectを無効化する
+			mCutLine[reelC].GetComponent<SpriteRenderer>().enabled = false;
 			for(int posC=0; posC<mComaInstance[reelC].Length; ++posC){
 				mComaInstance[reelC][posC].GetComponent<SpriteRenderer>().enabled = false;
 			}
@@ -100,6 +112,12 @@ public class CReelDrawerForMainReel : MonoBehaviour
 				Vector3 pos = mComaInstance[reelC][posCtrl].transform.localPosition;
 				pos.y = posY;
 				mComaInstance[reelC][posCtrl].transform.localPosition = pos;
+				// 切れ目を描画する
+				if (posCtrl == 0){
+					pos.y -= 0.5f * spH;
+					mCutLine[reelC].transform.localPosition = pos;
+					mCutLine[reelC].GetComponent<SpriteRenderer>().enabled = true;
+				}
 			}
 			
 			// リール速度に応じたブラー範囲を取得して、material経由でshaderに差分値を設定する
@@ -115,5 +133,7 @@ public class CReelDrawerForMainReel : MonoBehaviour
 		// TextureとMaterialの破棄
 		mImageBuilder.DestroySprite();
 		for(int i=0; i<mReelMat.Length; ++i) Destroy(mReelMat[i]);
+		for(int i=0; i<mCutLine.Length; ++i) Destroy(mCutLine[i]);
+		for(int i=0; i<mCutMat.Length; ++i) Destroy(mCutMat[i]);
 	}
 }
