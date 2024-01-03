@@ -5,7 +5,7 @@ using UnityEngine;
 // サウンド再生データ
 public class SoundPlayerData {
 	// 変数
-	SoundPlayData PlayData;			// 参照する再生データ
+	SlotEffectMaker2023.Data.SoundPlayData PlayData;			// 参照する再生データ
 	AudioSource   SManagerShot;		// Shot音源を再生するGameObject
 	AudioSource   SManagerLoop;		// Loop音源を再生するGameObject
 	AudioClip     SClipShot;		// Shot音源
@@ -14,17 +14,19 @@ public class SoundPlayerData {
 	bool          SoundPlayFlag;	// 音を流しているとtrue, 音を止めているとfalse
 	bool          SoundStopFlag;	// 音を中断する場合trueにする
 	
-	SlotTimer     ConditionTimer;	// 条件判定に使用するタイマ
-	SlotTimer     ShotTimer;		// Shot音源に使用するタイマ
-	SlotTimer     LoopTimer;		// Loop音源に使用するタイマ
+	SlotEffectMaker2023.Action.SlotTimer     ConditionTimer;	// 条件判定に使用するタイマ
+	SlotEffectMaker2023.Action.SlotTimer     ShotTimer;		// Shot音源に使用するタイマ
+	SlotEffectMaker2023.Action.SlotTimer     LoopTimer;		// Loop音源に使用するタイマ
 	int           LoopBegin;		// ループ音源鳴動開始時間
 	float?        LastCondTime;		// 前回コンディションタイマ値
 	
-	public int    LastSoundID { get; private set; } // 前回サウンドID値
+	const float TIME_DIV = SlotEffectMaker2023.Data.SoundPlayData.TIME_DIV;
+	
+	public string LastSoundID { get; private set; } // 前回サウンドID値
 	
 	// timerの初期化後にこのコンストラクタを呼ぶこと
 	// また、音源はChangeSoundIDより初期化すること
-	public SoundPlayerData(SoundPlayData pPlayData, AudioSource pSoundObjectShot, AudioSource pSoundObjectLoop){
+	public SoundPlayerData(SlotEffectMaker2023.Data.SoundPlayData pPlayData, AudioSource pSoundObjectShot, AudioSource pSoundObjectLoop){
 		PlayData      = pPlayData;
 		SManagerShot  = pSoundObjectShot;
 		SManagerLoop  = pSoundObjectLoop;
@@ -35,7 +37,7 @@ public class SoundPlayerData {
 		SoundPlayFlag = false;
 		SoundStopFlag = false;
 		
-		var timer = SlotTimerManagerSingleton.GetInstance();
+		var timer = SlotEffectMaker2023.Singleton.SlotDataSingleton.GetInstance().timerData;
 		ConditionTimer = timer.GetTimer(PlayData.UseTimerName);
 		ShotTimer = timer.GetTimer(PlayData.GetShotTimerName());
 		LoopTimer = timer.GetTimer(PlayData.GetLoopTimerName());
@@ -44,7 +46,7 @@ public class SoundPlayerData {
 	}
 	
 	// 鳴らす音を変える
-	public void ChangeSoundID(AudioClip pShotClip, AudioClip pLoopClip, int pLoopBegin, int pSoundID){
+	public void ChangeSoundID(AudioClip pShotClip, AudioClip pLoopClip, int pLoopBegin, string pSoundID){
 		// 音源切り替え時の前処理を行う
 		SoundStopFlag = true;
 		StopObject();
@@ -74,7 +76,7 @@ public class SoundPlayerData {
 		}
 		// Loopの再生
 		if (LoopBegin >= 0 && SClipLoop != null) {
-			float delay = LoopBegin / SoundPlayData.TIME_DIV;
+			float delay = LoopBegin / TIME_DIV;
 			SManagerLoop.clip = SClipLoop;
 			SManagerLoop.loop = true;
 			SManagerLoop.PlayDelayed(delay);
@@ -98,7 +100,7 @@ public class SoundPlayerData {
 			if (!ConditionTimer.isActivate) SoundStopFlag = true;
 			else {
 				// 停止時間を超過した場合
-				SoundStopFlag |= (float)ConditionTimer.elapsedTime >= PlayData.StopTime / SoundPlayData.TIME_DIV && PlayData.StopTime >= 0;
+				SoundStopFlag |= (float)ConditionTimer.elapsedTime >= PlayData.StopTime / TIME_DIV && PlayData.StopTime >= 0;
 				// 経過時間が巻き戻った場合
 				if (LastCondTime.HasValue) SoundStopFlag |= (float)ConditionTimer.elapsedTime < (float)LastCondTime;
 			}
@@ -116,13 +118,13 @@ public class SoundPlayerData {
 			// 条件タイマが無効なら処理しない
 			if (!ConditionTimer.isActivate) activate = false;
 			// 条件タイマが鳴動条件未達なら処理終了
-			else if ((float)ConditionTimer.elapsedTime < PlayData.BeginTime / SoundPlayData.TIME_DIV) activate = false;
+			else if ((float)ConditionTimer.elapsedTime < PlayData.BeginTime / TIME_DIV) activate = false;
 			// 前回タイマ値が無効なら鳴動させる。
 			else if (!LastCondTime.HasValue) activate = true;
 			// 経過時間が巻き戻った場合、鳴動させる。
 			else if ((float)ConditionTimer.elapsedTime < (float)LastCondTime) activate = true;
 			// 前回タイマ値が無効なら、前回経過時間が鳴動条件未達であれば鳴動させる。
-			else if ((float)LastCondTime < PlayData.BeginTime / SoundPlayData.TIME_DIV) activate = true;
+			else if ((float)LastCondTime < PlayData.BeginTime / TIME_DIV) activate = true;
 			
 			// 音を鳴らす処理
 			if (activate) PlayObject();

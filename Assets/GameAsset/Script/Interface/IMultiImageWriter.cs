@@ -49,7 +49,7 @@ public abstract class IMultiImageWriter : MonoBehaviour
     void Update()
     {
     	// 表示させる値を取得する
-		var varData = SlotDataSingleton.GetInstance().valManager;
+		var varData = SlotEffectMaker2023.Singleton.SlotDataSingleton.GetInstance().valManager;
 		int? showVal = varData.GetVariable(DispVariable)?.val;
 		if (!showVal.HasValue) return;
 		

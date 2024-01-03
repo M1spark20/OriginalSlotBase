@@ -93,7 +93,7 @@ public class CReelDrawerForMainReel : MonoBehaviour
 			}
 			
 			// リールの座標を取得し、描画の基準となるコマをCeilingで取得する。1未満の数値をfloorで取得する
-			var reelData = SlotDataSingleton.GetInstance().reelData[reelC];
+			var reelData = SlotEffectMaker2023.Singleton.SlotDataSingleton.GetInstance().reelData[reelC];
 			float reelPos = reelData.reelPos;
 			byte baseComaID = reelData.GetReelComaID();
 			float margin = (float)baseComaID - reelPos;

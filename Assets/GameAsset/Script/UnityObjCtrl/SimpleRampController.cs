@@ -7,8 +7,7 @@ using System;
 public class SimpleRampController : MonoBehaviour
 {
 	// Singleton
-	SlotDataSingleton			slotData;	// スロット基本情報
-	SlotTimerManagerSingleton	timer;		// タイマー
+	SlotEffectMaker2023.Singleton.SlotDataSingleton	slotData;	// スロット基本情報
 	
 	// 制御用変数
 	[SerializeField] string VariableName;	// 条件判定を行う変数名。指定なしで判定しない
@@ -24,8 +23,7 @@ public class SimpleRampController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-		slotData = SlotDataSingleton.GetInstance();
-		timer    = SlotTimerManagerSingleton.GetInstance();
+		slotData = SlotEffectMaker2023.Singleton.SlotDataSingleton.GetInstance();
     }
 
     // Update is called once per frame
@@ -42,7 +40,7 @@ public class SimpleRampController : MonoBehaviour
         }
         // タイマの検証(タイマが見つからなかった場合無効判定)
         if (TimerName != string.Empty){
-        	var elem = timer.GetTimer(TimerName);
+        	var elem = slotData.timerData.GetTimer(TimerName);
         	if (elem == null) activated = false;
         	else {
         		if (!elem.isActivate) activated = false;		// タイマが無効な場合無効判定

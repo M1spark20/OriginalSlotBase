@@ -5,25 +5,30 @@ using UnityEngine;
 public class SlotDataManager : MonoBehaviour
 {
 	// GameData定義(Singleton含む)
-	SlotMaker2022.MainROMDataManagerSingleton	mainROM;	// mainROMツールデータ
-	SlotDataSingleton							slotData;	// スロット基本情報
-	SlotTimerManagerSingleton					timer;		// タイマー
-	ISlotControllerBase							controller;	// ゲーム制御用クラス
+	SlotMaker2022.MainROMDataManagerSingleton					mainROM;	// mainROMツールデータ
+	SlotEffectMaker2023.Singleton.EffectDataManagerSingleton	effectData;	// エフェクト固定データ
+	SlotEffectMaker2023.Singleton.SlotDataSingleton				slotData;	// スロット基本情報
+	SlotEffectMaker2023.Action.SlotTimerManager 				timer;		// タイマー(slotDataから抜粋)
+	ISlotControllerBase											controller;	// ゲーム制御用クラス
 	
 	// Start is called before the first frame update
 	void Start()
 	{
-		mainROM  = SlotMaker2022.MainROMDataManagerSingleton.GetInstance();
-		slotData = SlotDataSingleton.GetInstance();
-		timer    = SlotTimerManagerSingleton.GetInstance();
+		mainROM    = SlotMaker2022.MainROMDataManagerSingleton.GetInstance();
+		effectData = SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.GetInstance();
+		slotData   = SlotEffectMaker2023.Singleton.SlotDataSingleton.GetInstance();
+		timer      = slotData.timerData;
 		
 		// タイマ作成用データ生成
-		TimerList tList = new TimerList();
+		var tList = new SlotEffectMaker2023.Data.TimerList();
 		
 		// ファイルからデータを読み込む
-		if (!mainROM .ReadData())          Debug.Log("mainROM Read: Error");  else Debug.Log("mainROM Read: Done");
-		if (!slotData.ReadData(ref tList)) Debug.Log("slotData Read: Error"); else Debug.Log("slotData Read: Done");
-		if (!timer   .ReadData(tList))     Debug.Log("timer Read: Error");    else Debug.Log("timer Read: Done");
+		if (!mainROM   .ReadData())          Debug.Log("mainROM Read: Error");  else Debug.Log("mainROM Read: Done");
+		if (!effectData.ReadData())          Debug.Log("effectData Read: Error");  else Debug.Log("effectData Read: Done");
+		if (!slotData  .ReadData(ref tList)) Debug.Log("slotData Read: Error"); else Debug.Log("slotData Read: Done");
+		
+		// Singleton初期化
+		slotData.Init(effectData.SoundPlayList, effectData.TimerList, effectData.VarList);
 		
 		// コントローラー初期インスタンス生成
 		controller = new SCWaitBet();
@@ -32,7 +37,7 @@ public class SlotDataManager : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		// 各SingletonのProcess
+		// タイマーのみ先に更新
 		timer.Process(Time.deltaTime);
 		
 		// KeyDown設定

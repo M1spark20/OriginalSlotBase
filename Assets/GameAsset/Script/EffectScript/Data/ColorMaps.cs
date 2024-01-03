@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.IO;
 
 namespace SlotEffectMaker2023.Data
@@ -11,13 +10,13 @@ namespace SlotEffectMaker2023.Data
 	}
 
 	public class ColorMap : SlotMaker2022.ILocalDataInterface
-	{
-		public uint sizeW { get; private set; } // カラーマップのWサイズ
-		public uint sizeH { get; private set; } // カラーマップのHサイズ
-		public uint cardNum { get; private set; }   // カラーマップの描画枚数
-		public bool fadeFlag { get; set; }          // フェードアニメーション有無
-		public uint loopCount { get; set; }         // 繰り返し回数
-		public int beginTime { get; set; }          // 再生開始時間[ms]
+	{	// カラーマップアニメーションデータ(Sys,1データに複数画像入力可)
+		public uint sizeW { get; private set; }   // カラーマップのWサイズ
+		public uint sizeH { get; private set; }   // カラーマップのHサイズ
+		public uint cardNum { get; private set; } // カラーマップの描画枚数
+		public bool fadeFlag { get; set; }        // フェードアニメーション有無
+		public uint loopCount { get; set; }       // 繰り返し回数
+		public int  beginTime { get; set; }       // 再生開始時間[ms]
 
 		List<uint> mapData; // マップデータ本体
 
@@ -62,13 +61,13 @@ namespace SlotEffectMaker2023.Data
 		}
 
 		// 関数
-		void AddMapData(List<uint> pAddMap)
+		public void AddMapData(List<uint> pAddMap)
 		{
 			if ((uint)pAddMap.Count % (sizeW * sizeH) != 0) return;
 			mapData.AddRange(pAddMap);
 			cardNum = (uint)mapData.Count / (sizeW * sizeH);
 		}
-		uint GetMapData(uint card, uint y, uint x)
+		public uint GetMapData(uint card, uint y, uint x)
 		{
 			if (card >= cardNum) return 0u;
 			if (y >= sizeH) return 0u;
@@ -80,12 +79,12 @@ namespace SlotEffectMaker2023.Data
 			index += card * sizeH * sizeW;
 			return mapData[(int)index];
 		}
-		byte GetMapDataElem(uint card, uint y, uint x, ColorMapElem color)
+		public byte GetMapDataElem(uint card, uint y, uint x, ColorMapElem color)
 		{
 			uint map = GetMapData(card, y, x);
 			return (byte)(map >> (8 * (int)color) & 0xFF);
 		}
-		void ClearMapData()
+		public void ClearMapData()
 		{
 			mapData.Clear();
 			cardNum = 0u;
@@ -93,14 +92,14 @@ namespace SlotEffectMaker2023.Data
 	}
 
 	public class ColorMapList : SlotMaker2022.ILocalDataInterface
-	{
+	{	// カラーマップタイムラインデータ(Sys)
 		// 変数
-		public string useTimerName { get; set; }            // 制御に使用するタイマ名
-		public int loopTime { get; set; }           // ループ時間[ms]
-		public uint sizeW { get; private set; } // カラーマップのWサイズ
-		public uint sizeH { get; private set; } // カラーマップのHサイズ
+		public string useTimerName { get; set; } // 制御に使用するタイマ名
+		public int loopTime { get; set; }        // ループ時間[ms]
+		public uint sizeW { get; private set; }  // カラーマップのWサイズ
+		public uint sizeH { get; private set; }  // カラーマップのHサイズ
 
-		public List<ColorMap> elemData { get; set; }
+		public List<ColorMap> elemData { get; set; }	// カラーマップアニメーションまとめ
 
 		public ColorMapList(uint w, uint h)
 		{

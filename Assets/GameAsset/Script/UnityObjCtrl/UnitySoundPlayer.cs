@@ -2,21 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SoundPlayer : MonoBehaviour
+public class UnitySoundPlayer : MonoBehaviour
 {
 	List<SoundPlayerData>	player;
-	SlotDataSingleton		slotData;	// スロット基本情報
+	SlotEffectMaker2023.Action.SoundDataManager		SndManager;		// 音制御データ
+	List<SlotEffectMaker2023.Data.SoundPlayData>	SoundPlayData;	// 音再生データ
+	
+	SlotEffectMaker2023.Singleton.EffectDataManagerSingleton effectData;
 	
     // Start is called before the first frame update
     void Start()
     {
         player = new List<SoundPlayerData>();
-        slotData = SlotDataSingleton.GetInstance();
+        SndManager = SlotEffectMaker2023.Singleton.SlotDataSingleton.GetInstance().soundData;
+        effectData = SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.GetInstance();
+        SoundPlayData = effectData.SoundPlayList;
         
         // playerデータを作成する
         GameObject prehab = Resources.Load<GameObject>("PrehabSound");
         Transform parent = this.transform;
-        foreach(SoundPlayData data in slotData.soundData.PlayList){
+        foreach(var data in SoundPlayData){
         	GameObject shot = Instantiate(prehab, parent);
         	GameObject loop = Instantiate(prehab, parent);
         	player.Add(new SoundPlayerData(data, shot.GetComponent<AudioSource>(), loop.GetComponent<AudioSource>()));
@@ -32,7 +37,7 @@ public class SoundPlayer : MonoBehaviour
     	for(int i=0; i<player.Count; ++i){
     		var data = player[i];
     		// 音源の更新を行う
-    		if (data.LastSoundID != slotData.soundData.SoundID[i]) SetClip(i);
+    		if (data.LastSoundID != SndManager.ExportSoundIDName(SoundPlayData[i].PlayerName)) SetClip(i);
     		// 音の制御を行う
     		data.Process();
     	}
@@ -40,9 +45,9 @@ public class SoundPlayer : MonoBehaviour
     
     // 音源データを設定する
     void SetClip(int pPlayerID){
-    	var playData  = player[pPlayerID];
-    	int soundID = slotData.soundData.SoundID[pPlayerID];
-    	var soundData = slotData.soundData.IDList[soundID];
+    	var playData = player[pPlayerID];
+    	string soundIDName = SndManager.ExportSoundIDName(SoundPlayData[pPlayerID].PlayerName);
+    	var soundData = effectData.GetSoundID(soundIDName);
     	AudioClip shot = null;
     	AudioClip loop = null;
     	
@@ -50,6 +55,6 @@ public class SoundPlayer : MonoBehaviour
     	if (soundData.ShotResName != string.Empty) shot = Resources.Load<AudioClip>(soundData.ShotResName);
     	if (soundData.LoopResName != string.Empty) loop = Resources.Load<AudioClip>(soundData.LoopResName);
     	// 音源を設定する
-    	playData.ChangeSoundID(shot, loop, soundData.LoopBegin, soundID);
+    	playData.ChangeSoundID(shot, loop, soundData.LoopBegin, soundIDName);
     }
 }

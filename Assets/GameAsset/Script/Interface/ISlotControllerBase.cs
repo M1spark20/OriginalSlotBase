@@ -30,8 +30,8 @@ public class SCWaitBet : ISlotControllerBase {
 	
 	// 使用Singleton
 	SlotMaker2022.MainROMDataManagerSingleton mainROM;
-	SlotTimerManagerSingleton timer;
-	SlotDataSingleton slotData;
+	SlotEffectMaker2023.Action.SlotTimerManager timer;
+	SlotEffectMaker2023.Singleton.SlotDataSingleton slotData;
 	
 	// コンストラクタ: applyBet初期化
 	public SCWaitBet(){
@@ -41,8 +41,8 @@ public class SCWaitBet : ISlotControllerBase {
 		
 		// Singleton取得
 		mainROM  = SlotMaker2022.MainROMDataManagerSingleton.GetInstance();
-		timer    = SlotTimerManagerSingleton.GetInstance();
-		slotData = SlotDataSingleton.GetInstance();
+		slotData = SlotEffectMaker2023.Singleton.SlotDataSingleton.GetInstance();
+		timer    = slotData.timerData;
 		
 		// リプレイ入賞時は即時前回のBET入力を行う(basicDataには前GのBET数が入っている)
 		if (slotData.basicData.isReplay) applyBet = slotData.basicData.betCount;
@@ -162,14 +162,16 @@ public class SCWaitBeforeReelStart : ISlotControllerBase {
 	const int WAIT_MAX = 4100;	// 最大wait時間[ms]
 
 	// 使用Singleton
-	SlotTimerManagerSingleton timer;
-	SlotDataSingleton slotData;
+	SlotMaker2022.MainROMDataManagerSingleton mainROM;
+	SlotEffectMaker2023.Action.SlotTimerManager timer;
+	SlotEffectMaker2023.Singleton.SlotDataSingleton slotData;
 
 	// SC移行時処理
 	public SCWaitBeforeReelStart(){
 		// Singleton取得
-		timer = SlotTimerManagerSingleton.GetInstance();
-		slotData = SlotDataSingleton.GetInstance();
+		mainROM  = SlotMaker2022.MainROMDataManagerSingleton.GetInstance();
+		slotData = SlotEffectMaker2023.Singleton.SlotDataSingleton.GetInstance();
+		timer    = slotData.timerData;
 		
 		// タイマ処理
 		timer.GetTimer("waitStart").Activate();
@@ -205,7 +207,7 @@ public class SCWaitBeforeReelStart : ISlotControllerBase {
 		int randValue = UnityEngine.Random.Range(0, SlotMaker2022.LocalDataSet.FlagCommonData.RAND_MAX);
 		
 		// Singleton取得, 変数初期化
-		var basicData = SlotDataSingleton.GetInstance().basicData;
+		var basicData = slotData.basicData;
 		var randList  = SlotMaker2022.MainROMDataManagerSingleton.GetInstance().FlagRandData;
 		byte castFlag  = 0;
 		byte bonusFlag = 0;
@@ -231,7 +233,7 @@ public class SCWaitBeforeReelStart : ISlotControllerBase {
 		}
 		
 		// basicDataにフラグを設定する
-		basicData.SetCastFlag(bonusFlag, castFlag);
+		basicData.SetCastFlag(bonusFlag, castFlag, mainROM.CastCommonData, mainROM.RTCommonData, timer);
 	}
 }
 
@@ -253,14 +255,14 @@ public class SCReelOperation : ISlotControllerBase {
 	
 	// 使用Singleton
 	SlotMaker2022.MainROMDataManagerSingleton mainROM;
-	SlotTimerManagerSingleton timer;
-	SlotDataSingleton slotData;
+	SlotEffectMaker2023.Action.SlotTimerManager timer;
+	SlotEffectMaker2023.Singleton.SlotDataSingleton slotData;
 	
 	public SCReelOperation(){
 		// Singleton取得
 		mainROM  = SlotMaker2022.MainROMDataManagerSingleton.GetInstance();
-		timer    = SlotTimerManagerSingleton.GetInstance();
-		slotData = SlotDataSingleton.GetInstance();
+		slotData = SlotEffectMaker2023.Singleton.SlotDataSingleton.GetInstance();
+		timer    = slotData.timerData;
 		
 		// 制御用変数初期化
 		isAllReleased = false;
@@ -301,14 +303,16 @@ public class SCReelOperation : ISlotControllerBase {
 		// 各リールの処理を行い、停止済みか判定を行う
 		bool isAllStopped = true;
 		for(int i=0; i<reelNum; ++i){
+			var tm = timer.GetTimer("reelStart");
 			var checkReel = slotData.reelData[i];
-			checkReel.Process();
+			float elapsed = (tm.elapsedTime - tm.lastElapsed) ?? 0f;	// ??: null許容型がnullの場合のキャスト
+			checkReel.Process(elapsed);
 			isAllStopped &= !checkReel.isRotate;
 			
 			// タイマ関係の処理
 			if (!checkReel.isRotate){
 				// Pos & Common
-				SlotTimer checkTimer = timer.GetTimer("reelStopPos[" + i + "]");
+				var checkTimer = timer.GetTimer("reelStopPos[" + i + "]");
 				if (!checkTimer.isActivate) {
 					checkTimer.Activate();
 					timer.GetTimer("anyReelStop").Activate();
@@ -395,8 +399,8 @@ public class SCJudgeAndPayout : ISlotControllerBase {
 	
 	// 使用Singleton
 	SlotMaker2022.MainROMDataManagerSingleton mainROM;
-	SlotTimerManagerSingleton timer;
-	SlotDataSingleton slotData;
+	SlotEffectMaker2023.Action.SlotTimerManager timer;
+	SlotEffectMaker2023.Singleton.SlotDataSingleton slotData;
 
 	// SC移行時処理
 	public SCJudgeAndPayout(){
@@ -406,8 +410,8 @@ public class SCJudgeAndPayout : ISlotControllerBase {
 		
 		// Singleton取得
 		mainROM  = SlotMaker2022.MainROMDataManagerSingleton.GetInstance();
-		timer    = SlotTimerManagerSingleton.GetInstance();
-		slotData = SlotDataSingleton.GetInstance();
+		slotData = SlotEffectMaker2023.Singleton.SlotDataSingleton.GetInstance();
+		timer    = slotData.timerData;
 		
 		// リール制御クラス初期化
 		reelManager = new SlotMaker2022.main_function.MainReelManager();
@@ -453,7 +457,7 @@ public class SCJudgeAndPayout : ISlotControllerBase {
 			// 払出タイマを無効にする
 			timer.GetTimer("payoutTime").SetDisabled();
 			// モード移行処理(終了側)を行う
-			slotData.basicData.ModeReset();
+			slotData.basicData.ModeReset(mainROM.CastCommonData, mainROM.RTCommonData, mainROM.RTMoveData, timer);
 			return new SCWaitBet();
 		}
 		
@@ -472,13 +476,13 @@ public class SCJudgeAndPayout : ISlotControllerBase {
 		var castResult = reelManager.GetCast(reelPos, basicData.betCount-1, basicData.gameMode, -1, -1);
 		
 		// 配当をbasicDataに転送する。戻り値として払出枚数を受ける
-		mPayoutNum = basicData.SetPayout(castResult);
+		mPayoutNum = basicData.SetPayout(castResult, mainROM.CastCommonData);
 		// モードとRTの変更処理を行う。変更された場合はタイマを作動させる。
 		// SetPayoutより後で呼び出すことで当該Gのゲーム数減算をさせない。
-		basicData.ModeChange(castResult);
+		basicData.ModeChange(castResult, mainROM.CastCommonData, mainROM.RTCommonData, mainROM.RTMoveData, timer);
 		
 		// 音源変更テスト
-		int soundSource = 0;
+		/*int soundSource = 0;
 		if (basicData.castFlag == 1) soundSource = 4;
 		if (basicData.castFlag >= 2 && basicData.castFlag <= 3) soundSource = 7;
 		if (basicData.castFlag == 4) soundSource = 8;
@@ -487,6 +491,6 @@ public class SCJudgeAndPayout : ISlotControllerBase {
 		if (basicData.castFlag == 12 && mPayoutNum == 12) soundSource = 10;
 		if (basicData.castFlag >= 13 && basicData.castFlag <= 14) soundSource = 7;
 		if (basicData.castFlag == 13 && mPayoutNum == 14) soundSource = 10;
-		slotData.soundData.ChangeSoundID(4, soundSource);
+		slotData.soundData.ChangeSoundID(4, soundSource);*/
 	}
 }
