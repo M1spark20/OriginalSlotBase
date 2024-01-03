@@ -4,45 +4,9 @@ using System.Text;
 
 namespace SlotMaker2022.main_function
 {
-    public class MainReelManager
+    public partial class MainReelManager
     {
-        public class GetCastResult
-        {
-            public uint castPattern;    // 組み合わせ可能フラグ数
-            public int  payoutNum;      // 全停止時は総獲得枚数, それ以外は0
-            public uint maximumPayCast; // 1配当の最大払い出し枚数
-            public bool getBonus;       // ボーナスを揃えられるか
-            public bool canLose;        // 取りこぼしがあるか(全停止時はtrueとする)
-            public ushort payPriority;  // 停止位置優先度
-            public bool stopAvailable;  // 当該位置が停止可能か
-
-            /* PayPriorityの値
-             * [ボーナス優先制御の場合]
-             * ushort.MaxValue: リプレイ
-             * 15    : ボーナス
-             * 14～00: 小役(15枚～1枚、最大払い出し枚数のみ)
-             * [小役優先制御の場合]
-             * ushort.MaxValue: リプレイ
-             * 15～01: 小役(15枚～1枚、最大払い出し枚数のみ)
-             * 00    : ボーナス
-             */
-            public List<LocalDataSet.CastElemData> matchCast;  // 入賞可能配当データ一覧
-            public List<int>                       payLine;    // 入賞ライン
-
-            public GetCastResult()
-            {
-                castPattern = 0;
-                payoutNum = -1;
-                maximumPayCast = 0;
-                getBonus = false;
-                canLose = true;
-                payPriority = 0;
-                stopAvailable = false;
-                matchCast = new List<LocalDataSet.CastElemData>();
-                payLine = new List<int>();
-            }
-        }
-
+        // GetCastResultを別ファイルで定義する
         // pStopPos: index範囲外/負数で回転中を表現可能。全コマAnyで判定する。下段基準の停止位置を指定
         // 戻り値はAnyの場合を含む全停止形で止まる配当を重複ありで出力する
         public GetCastResult GetCast(int[] pStopPos, int pBetNum, uint pGameMode, int pFlagID, int pBonusID)
