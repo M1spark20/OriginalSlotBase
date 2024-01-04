@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class UnitySoundPlayer : MonoBehaviour
 {
+	// 使用する音源一覧をSerializableで登録する
+	[SerializeField] AudioClip[] SoundData;
+	
 	List<SoundPlayerData>	player;
 	SlotEffectMaker2023.Action.SoundDataManager		SndManager;		// 音制御データ
 	List<SlotEffectMaker2023.Data.SoundPlayData>	SoundPlayData;	// 音再生データ
@@ -48,13 +51,21 @@ public class UnitySoundPlayer : MonoBehaviour
     	var playData = player[pPlayerID];
     	string soundIDName = SndManager.ExportSoundIDName(SoundPlayData[pPlayerID].PlayerName);
     	var soundData = effectData.GetSoundID(soundIDName);
-    	AudioClip shot = null;
-    	AudioClip loop = null;
     	
     	// 音源を読み込む
-    	if (soundData.ShotResName != string.Empty) shot = Resources.Load<AudioClip>(soundData.ShotResName);
-    	if (soundData.LoopResName != string.Empty) loop = Resources.Load<AudioClip>(soundData.LoopResName);
+    	AudioClip shot = GetClipByName(soundData.ShotResName);
+    	AudioClip loop = GetClipByName(soundData.LoopResName);
     	// 音源を設定する
     	playData.ChangeSoundID(shot, loop, soundData.LoopBegin, soundIDName);
+    }
+    
+    // 読み込まれた音源データの名前から音源を取り出す
+    AudioClip GetClipByName(string name){
+    	if (name == string.Empty) return null;
+    	foreach (var item in SoundData){
+    		if (item == null) continue;
+    		if (item.name.Equals(name)) return item;
+    	}
+    	return null;
     }
 }
