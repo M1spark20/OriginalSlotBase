@@ -439,6 +439,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e2393d887626b84b9d6e50e6f0fe64e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SoundData:
+  - {fileID: 8300000, guid: b1e8297a366ca55458843c5398da0ac3, type: 3}
+  - {fileID: 8300000, guid: db1bfd58f689c9c4e9bf2ee68cff81fe, type: 3}
+  - {fileID: 8300000, guid: 849b85deba547674eb2949bc4cac8563, type: 3}
+  - {fileID: 8300000, guid: 1b7b873e15078c247a9825f8a111b1fc, type: 3}
+  - {fileID: 8300000, guid: 2a3d81a0c63e59540977abd911324f5f, type: 3}
+  - {fileID: 8300000, guid: 86e5b1c0459371646b0f2c660b662d74, type: 3}
+  - {fileID: 8300000, guid: 976dd105f6686f145b75228f1b611032, type: 3}
+  - {fileID: 8300000, guid: eddfa42506d653e47b0415e6f9f87a5b, type: 3}
+  - {fileID: 8300000, guid: 2cbb31f56971da4448fa2fafba28fa38, type: 3}
 --- !u!1 &658414420
 GameObject:
   m_ObjectHideFlags: 0
