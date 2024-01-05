@@ -65,6 +65,12 @@ namespace SlotEffectMaker2023.Singleton {
 			valManager.GetVariable("_creditCount")	.val = basicData.creditShow;
 			valManager.GetVariable("_payoutCount")	.val = basicData.payoutShow;
 			valManager.GetVariable("_isReplay")		.SetBool(basicData.isReplay);
+			valManager.GetVariable("_flagID")		.val = basicData.castFlag;
+			valManager.GetVariable("_bonusID")		.val = basicData.bonusFlag;
+
+			// タイムラインを運用する
+			var timeline = EffectDataManagerSingleton.GetInstance().Timeline.timerData;
+			foreach (var item in timeline) item.Action();
 		}
 	}
 }
