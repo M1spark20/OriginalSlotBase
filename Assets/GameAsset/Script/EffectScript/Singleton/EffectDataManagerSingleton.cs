@@ -50,9 +50,6 @@ namespace SlotEffectMaker2023.Singleton
                 if (!rd.ReadData(TimerList)) return false;
                 if (!rd.ReadData(Timeline)) return false;
                 rd.Close();
-
-                // バックアップ生成(Unity側では削除すること)
-                BackupData();
             }
             return ans;
         }
