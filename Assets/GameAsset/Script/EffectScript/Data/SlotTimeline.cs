@@ -13,6 +13,7 @@ namespace SlotEffectMaker2023.Data
 		public List<EfActValCond> condData;
 		public List<EfActTimerCond> timerData;
 		public List<EfActCtrlVal> valOpData;
+		public List<EfActCtrlTimer> ctrlTimer;
 
         public SlotTimeline()
         {
@@ -20,6 +21,7 @@ namespace SlotEffectMaker2023.Data
 			condData = new List<EfActValCond>();
 			timerData = new List<EfActTimerCond>();
 			valOpData = new List<EfActCtrlVal>();
+			ctrlTimer = new List<EfActCtrlTimer>();
         }
 		public bool StoreData(ref BinaryWriter fs, int version)
 		{
@@ -34,6 +36,9 @@ namespace SlotEffectMaker2023.Data
 				if (!item.StoreData(ref fs, version)) return false;
 			fs.Write(valOpData.Count);
 			foreach (var item in valOpData) 
+				if (!item.StoreData(ref fs, version)) return false;
+			fs.Write(ctrlTimer.Count);
+			foreach (var item in ctrlTimer) 
 				if (!item.StoreData(ref fs, version)) return false;
 			return true;
 		}
@@ -67,6 +72,13 @@ namespace SlotEffectMaker2023.Data
 				if (!cv.ReadData(ref fs, version)) return false;
 				valOpData.Add(cv);
 			}
+			dataCount = fs.ReadInt32();
+			for (int i = 0; i < dataCount; ++i)
+			{
+				EfActCtrlTimer ct = new EfActCtrlTimer();
+				if (!ct.ReadData(ref fs, version)) return false;
+				ctrlTimer.Add(ct);
+			}
 			return true;
 		}
 		// 全Actの名前を得る
@@ -76,6 +88,7 @@ namespace SlotEffectMaker2023.Data
 			foreach (var item in changeSound) vs.Add(item.dataName);
 			foreach (var item in condData) vs.Add(item.dataName);
 			foreach (var item in valOpData) vs.Add(item.dataName);
+			foreach (var item in ctrlTimer) vs.Add(item.dataName);
 			return vs.ToArray();
         }
 		// Actのデータを得る
@@ -85,6 +98,7 @@ namespace SlotEffectMaker2023.Data
 			foreach (var item in condData) if (item.dataName.Equals(name)) return item;
 			foreach (var item in timerData) if (item.dataName.Equals(name)) return item;
 			foreach (var item in valOpData) if (item.dataName.Equals(name)) return item;
+			foreach (var item in ctrlTimer) if (item.dataName.Equals(name)) return item;
 			return null;
         }
 		// 指定した名前のActが存在するか確認する

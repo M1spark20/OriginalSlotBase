@@ -74,7 +74,8 @@ namespace SlotEffectMaker2023.Data
                 new SlotVariable("_payoutCount", 0),
                 new SlotVariable("_isReplay", 0),
 				new SlotVariable("_flagID", 0),
-				new SlotVariable("_bonusID", 0)
+				new SlotVariable("_bonusID", 0),
+				new SlotVariable("_gameMode", 0)
             };
         }
 		public bool StoreData(ref BinaryWriter fs, int version)

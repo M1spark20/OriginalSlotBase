@@ -67,6 +67,7 @@ namespace SlotEffectMaker2023.Singleton {
 			valManager.GetVariable("_isReplay")		.SetBool(basicData.isReplay);
 			valManager.GetVariable("_flagID")		.val = basicData.castFlag;
 			valManager.GetVariable("_bonusID")		.val = basicData.bonusFlag;
+			valManager.GetVariable("_gameMode")		.val = basicData.gameMode;
 
 			// タイムラインを運用する
 			var timeline = EffectDataManagerSingleton.GetInstance().Timeline.timerData;

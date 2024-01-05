@@ -253,25 +253,17 @@ namespace SlotEffectMaker2023.Data
     public class EfActCtrlTimer : IEfAct
     {
         public string defName { get; set; }
-        public string arrValName { get; set; }
         public bool setActivate { get; set; }
         public bool forceReset { get; set; }
         public EfActCtrlTimer()
         {
             defName = string.Empty;
-            arrValName = string.Empty;
             setActivate = true;
             forceReset = false;
         }
         public override void Action()
         {   // タイマの有効化/無効化を行う: defName[arrValName::val]
             string ctrlTimerName = defName;
-            if (arrValName != string.Empty)
-            {   // 変数から配列を呼び出す
-                var vdata = Singleton.EffectDataManagerSingleton.GetInstance().VarList;
-                SlotVariable variable = vdata.GetData(arrValName);
-                if (variable != null) ctrlTimerName += "[" + variable.val +"]";
-            }
             // タイマデータを呼び出す
             var tdata = Singleton.SlotDataSingleton.GetInstance().timerData;
             Action.SlotTimer timer = tdata.GetTimer(ctrlTimerName);
@@ -291,7 +283,6 @@ namespace SlotEffectMaker2023.Data
         {
             if (!base.StoreData(ref fs, version)) return false;
             fs.Write(defName);
-            fs.Write(arrValName);
             fs.Write(setActivate);
             fs.Write(forceReset);
             return true;
@@ -300,7 +291,6 @@ namespace SlotEffectMaker2023.Data
         {
             if(!base.ReadData(ref fs, version)) return false;
             defName = fs.ReadString();
-            arrValName = fs.ReadString();
             setActivate = fs.ReadBoolean();
             forceReset = fs.ReadBoolean();
             return true;
