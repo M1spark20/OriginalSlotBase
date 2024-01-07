@@ -61,13 +61,23 @@ namespace SlotEffectMaker2023.Singleton {
 		/// システム変数を更新します。
 		/// </summary>
 		public void Process(){
-			valManager.GetVariable("_betCount")		.val = basicData.betCount;
-			valManager.GetVariable("_creditCount")	.val = basicData.creditShow;
-			valManager.GetVariable("_payoutCount")	.val = basicData.payoutShow;
-			valManager.GetVariable("_isReplay")		.SetBool(basicData.isReplay);
-			valManager.GetVariable("_flagID")		.val = basicData.castFlag;
-			valManager.GetVariable("_bonusID")		.val = basicData.bonusFlag;
-			valManager.GetVariable("_gameMode")		.val = basicData.gameMode;
+			valManager.GetVariable("_slotSetting")		.val = basicData.slotSetting;
+			valManager.GetVariable("_inCount")			.val = (int)basicData.inCount;
+			valManager.GetVariable("_outCount")			.val = (int)basicData.outCount;
+			valManager.GetVariable("_betCount")			.val = basicData.betCount;
+			valManager.GetVariable("_creditCount")		.val = basicData.creditShow;
+			valManager.GetVariable("_payoutCount")		.val = basicData.payoutShow;
+			valManager.GetVariable("_isBetLatched")		.SetBool(basicData.isBetLatched);
+			valManager.GetVariable("_isReplay")			.SetBool(basicData.isReplay);
+			valManager.GetVariable("_gameMode")			.val = basicData.gameMode;
+			valManager.GetVariable("_modeGameCount")	.val = basicData.modeGameCount;
+			valManager.GetVariable("_modeJacCount")		.val = basicData.modeJacCount;
+			valManager.GetVariable("_modeMedalCount")	.val = basicData.modeMedalCount;
+			valManager.GetVariable("_RTMode")			.val = basicData.RTMode;
+			valManager.GetVariable("_RTOverride")		.SetBool(basicData.RTOverride);
+			valManager.GetVariable("_RTGameCount")		.val = basicData.RTGameCount;
+			valManager.GetVariable("_flagID")			.val = basicData.castFlag;
+			valManager.GetVariable("_bonusID")			.val = basicData.bonusFlag;
 
 			// タイムラインを運用する
 			var timeline = EffectDataManagerSingleton.GetInstance().Timeline.timerData;

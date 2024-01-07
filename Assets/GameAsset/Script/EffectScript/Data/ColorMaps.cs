@@ -9,7 +9,7 @@ namespace SlotEffectMaker2023.Data
 		Red, Green, Blue, Alpha
 	}
 
-	public class ColorMap : SlotMaker2022.ILocalDataInterface
+	public class ColorMap : IEffectNameInterface
 	{	// カラーマップアニメーションデータ(Sys,1データに複数画像入力可)
 		public uint sizeW { get; private set; }   // カラーマップのWサイズ
 		public uint sizeH { get; private set; }   // カラーマップのHサイズ
@@ -59,6 +59,7 @@ namespace SlotEffectMaker2023.Data
 			for (int i = 0; i < mapSize; ++i) mapData.Add(fs.ReadUInt32());
 			return true;
 		}
+		public void Rename(EChangeNameType type, string src, string dst) { }
 
 		// 関数
 		public void AddMapData(List<uint> pAddMap)
@@ -91,9 +92,10 @@ namespace SlotEffectMaker2023.Data
 		}
 	}
 
-	public class ColorMapList : SlotMaker2022.ILocalDataInterface
-	{	// カラーマップタイムラインデータ(Sys)
+	public class ColorMapList : IEffectNameInterface
+	{   // カラーマップタイムラインデータ(Sys)
 		// 変数
+		public string dataName { get; set; }	 // カラーマップの名前
 		public string useTimerName { get; set; } // 制御に使用するタイマ名
 		public int loopTime { get; set; }        // ループ時間[ms]
 		public uint sizeW { get; private set; }  // カラーマップのWサイズ
@@ -103,6 +105,7 @@ namespace SlotEffectMaker2023.Data
 
 		public ColorMapList(uint w, uint h)
 		{
+			dataName = string.Empty;
 			sizeW = w;
 			sizeH = h;
 			useTimerName = string.Empty;
@@ -111,6 +114,7 @@ namespace SlotEffectMaker2023.Data
 
 		public bool StoreData(ref BinaryWriter fs, int version)
 		{
+			fs.Write(dataName);
 			fs.Write(useTimerName);
 			fs.Write(loopTime);
 			fs.Write(sizeW);
@@ -123,6 +127,7 @@ namespace SlotEffectMaker2023.Data
 		}
 		public bool ReadData(ref BinaryReader fs, int version)
 		{
+			dataName = fs.ReadString();
 			useTimerName = fs.ReadString();
 			loopTime = fs.ReadInt32();
 			sizeW = fs.ReadUInt32();
@@ -137,5 +142,10 @@ namespace SlotEffectMaker2023.Data
 			}
 			return true;
 		}
+		public void Rename(EChangeNameType type, string src, string dst)
+        {
+			if (type == EChangeNameType.Timer && useTimerName.Equals(src)) useTimerName = dst;
+			foreach (var cm in elemData) cm.Rename(type, src, dst);
+        }
 	}
 }

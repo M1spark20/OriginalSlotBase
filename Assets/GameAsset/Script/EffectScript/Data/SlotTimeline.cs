@@ -7,7 +7,7 @@ using System.IO;
 
 namespace SlotEffectMaker2023.Data
 {
-    public class SlotTimeline : SlotMaker2022.ILocalDataInterface
+    public class SlotTimeline : IEffectNameInterface
     {
         public List<EfActChangeSound> changeSound;
 		public List<EfActValCond> condData;
@@ -80,6 +80,14 @@ namespace SlotEffectMaker2023.Data
 				ctrlTimer.Add(ct);
 			}
 			return true;
+		}
+		public void Rename(EChangeNameType type, string src, string dst)
+        {
+			foreach (var item in changeSound) item.Rename(type, src, dst);
+			foreach (var item in condData) item.Rename(type, src, dst);
+			foreach (var item in timerData) item.Rename(type, src, dst);
+			foreach (var item in valOpData) item.Rename(type, src, dst);
+			foreach (var item in ctrlTimer) item.Rename(type, src, dst);
 		}
 		// 全Actの名前を得る
 		public string[] GetAllActName()

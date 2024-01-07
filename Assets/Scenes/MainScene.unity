@@ -424,9 +424,9 @@ Camera:
   m_FocalLength: 50
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.08281252
+    x: 0.08292583
     y: 0
-    width: 0.83437496
+    width: 0.83414835
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
@@ -594,6 +594,14 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 976dd105f6686f145b75228f1b611032, type: 3}
   - {fileID: 8300000, guid: eddfa42506d653e47b0415e6f9f87a5b, type: 3}
   - {fileID: 8300000, guid: 2cbb31f56971da4448fa2fafba28fa38, type: 3}
+  - {fileID: 8300000, guid: 205c9cd8d908fdb4db6be99098ee4d33, type: 3}
+  - {fileID: 8300000, guid: dd4bd92cb17fc584580af291b6e6e595, type: 3}
+  - {fileID: 8300000, guid: b689158cde4331d47aa75a8a87c96d03, type: 3}
+  - {fileID: 8300000, guid: 08136a0cee2aa43459e56ca66f43ce64, type: 3}
+  - {fileID: 8300000, guid: d109b3c93dea1a142ba59c3ab0ecd9e8, type: 3}
+  - {fileID: 8300000, guid: af0e428d97ea4ff4bb88a29aee19af9e, type: 3}
+  - {fileID: 8300000, guid: 4927637396646464583959371431a486, type: 3}
+  - {fileID: 8300000, guid: bbea20c6040e64b45a79a6161b5a86b6, type: 3}
 --- !u!1 &658414420
 GameObject:
   m_ObjectHideFlags: 0

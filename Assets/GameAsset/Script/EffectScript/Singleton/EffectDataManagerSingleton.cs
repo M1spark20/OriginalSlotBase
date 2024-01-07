@@ -90,6 +90,16 @@ namespace SlotEffectMaker2023.Singleton
             return true;
         }
 
+        // データ名変更処理
+        public void Rename(Data.EChangeNameType type, string src, string dst)
+        {
+            foreach (var item in SoundIDList) item.Rename(type, src, dst);
+            foreach (var item in SoundPlayList) item.Rename(type, src, dst);
+            VarList.Rename(type, src, dst);
+            TimerList.Rename(type, src, dst);
+            Timeline.Rename(type, src, dst);
+        }
+
         /* プログラム内共通機能(全体での共有事項をここで定義) */
         public string[] GetSoundIDNameList()
         {

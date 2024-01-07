@@ -5,7 +5,7 @@ using System.IO;
 namespace SlotEffectMaker2023.Data
 {
 	// ユーザが作成するタイマデータ(Sys: TimerListから読み書き)
-	public class UserTimerData : SlotMaker2022.ILocalDataInterface
+	public class UserTimerData : IEffectNameInterface
 	{
 		public string UserTimerName { get; set; }   // タイマ名
 		public bool StoreActivation { get; set; }   // 有効状況を保存するか
@@ -31,10 +31,11 @@ namespace SlotEffectMaker2023.Data
 			Usage = fs.ReadString();
 			return true;
 		}
+		public void Rename(EChangeNameType type, string src, string dst) { }
 	}
 
 	// タイマ一覧を管理するクラス(Sys)
-	public class TimerList : SlotMaker2022.ILocalDataInterface
+	public class TimerList : IEffectNameInterface
 	{
 		// タイマのリストを生成。システムタイマ(識別子なし)/ユーザタイマ($)/サウンドタイマ(#)
 		public List<UserTimerData> SysTimer { get; private set; }
@@ -92,6 +93,11 @@ namespace SlotEffectMaker2023.Data
             }
 			return true;
 		}
+		public void Rename(EChangeNameType type, string src, string dst)
+        {
+			foreach (var tm in SysTimer) tm.Rename(type, src, dst);
+			foreach (var tm in UserData) tm.Rename(type, src, dst);
+        }
 
 		public void CreateTimer(string name, bool storeActivation)
 		{

@@ -4,7 +4,7 @@ using System.IO;
 namespace SlotEffectMaker2023.Data
 {
 	// サウンドID情報。IDにより管理する(Sys)
-	public class SoundID : SlotMaker2022.ILocalDataInterface
+	public class SoundID : IEffectNameInterface
 	{
 		public string DataName { get; set; }    // サウンド定義名
 		public string ShotResName { get; set; } // 単音 or イントロ音源のリソース名
@@ -35,10 +35,11 @@ namespace SlotEffectMaker2023.Data
 			LoopBegin = fs.ReadInt32();
 			return true;
 		}
+		public void Rename(EChangeNameType type, string src, string dst) { }
 	}
 
 	// 音を鳴らす単体データ(Sys)
-	public class SoundPlayData : SlotMaker2022.ILocalDataInterface
+	public class SoundPlayData : IEffectNameInterface
 	{
 		// 定数
 		public const float TIME_DIV = 1000f;
@@ -80,6 +81,11 @@ namespace SlotEffectMaker2023.Data
 			DefaultSoundID = fs.ReadString();
 			return true;
 		}
+		public void Rename(EChangeNameType type, string src, string dst)
+        {
+			if (type == EChangeNameType.Timer && UseTimerName.Equals(src)) UseTimerName = dst;
+			if (type == EChangeNameType.SoundID && DefaultSoundID.Equals(src)) DefaultSoundID = dst;
+        }
 
 		// タイマ名を取得する
 		public string GetShotTimerName() { return SHOT_HEADER + PlayerName; }

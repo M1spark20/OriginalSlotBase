@@ -7,7 +7,7 @@ namespace SlotEffectMaker2023.Data
 	// 計算式オペランド
 	public enum ECalcOperand { eAdd, eSub, eMul, eDiv, eMod, eNone }
 
-	public class SlotVariable : SlotMaker2022.ILocalDataInterface
+	public class SlotVariable : IEffectNameInterface
 	{	// 変数要素データ(Sys/Sav)(valは直接アクセスすることが可能)
 		public string name { get; set; } // 変数名
 		public int val { get; set; }     // 変数値(Sysでは初期値)
@@ -46,6 +46,7 @@ namespace SlotEffectMaker2023.Data
 			usage = fs.ReadString();
 			return true;
 		}
+		public void Rename(EChangeNameType type, string src, string dst) { }
 
 		// valの高度計算あれこれ
 		// bool値設定
@@ -60,7 +61,7 @@ namespace SlotEffectMaker2023.Data
 	}
 
 	// 変数一覧管理クラス(Sys)
-	public class VarList : SlotMaker2022.ILocalDataInterface 
+	public class VarList : IEffectNameInterface
 	{
 		// 生成変数一覧
 		public List<SlotVariable> VData { get; set; }
@@ -69,13 +70,23 @@ namespace SlotEffectMaker2023.Data
             VData = new List<SlotVariable>
             {
                 // システムデータ入力
+				new SlotVariable("_slotSetting", 0),
+				new SlotVariable("_inCount", 0),
+				new SlotVariable("_outCount", 0),
                 new SlotVariable("_betCount", 0),
                 new SlotVariable("_creditCount", 0),
                 new SlotVariable("_payoutCount", 0),
+                new SlotVariable("_isBetLatched", 0),
                 new SlotVariable("_isReplay", 0),
+                new SlotVariable("_gameMode", 0),
+                new SlotVariable("_modeGameCount", 0),
+                new SlotVariable("_modeJacCount", 0),
+                new SlotVariable("_modeMedalCount", 0),
+                new SlotVariable("_RTMode", 0),
+                new SlotVariable("_RTOverride", 0),
+                new SlotVariable("_RTGameCount", 0),
 				new SlotVariable("_flagID", 0),
 				new SlotVariable("_bonusID", 0),
-				new SlotVariable("_gameMode", 0)
             };
         }
 		public bool StoreData(ref BinaryWriter fs, int version)
@@ -104,6 +115,10 @@ namespace SlotEffectMaker2023.Data
 			}
 			return true;
 		}
+		public void Rename(EChangeNameType type, string src, string dst)
+        {
+			foreach (var item in VData) item.Rename(type, src, dst);
+        }
 
 		public SlotVariable GetData(string pName)
         {
