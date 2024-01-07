@@ -87,7 +87,14 @@ namespace SlotEffectMaker2023.Data
                 new SlotVariable("_RTGameCount", 0),
 				new SlotVariable("_flagID", 0),
 				new SlotVariable("_bonusID", 0),
+				new SlotVariable("_castBonusID", 0),
             };
+			// リール関係システムデータ
+			for (int i=0; i<SlotMaker2022.LocalDataSet.REEL_MAX; ++i)
+            {
+				VData.Add(new SlotVariable("_reelPushPos[" + i + "]", -1));
+				VData.Add(new SlotVariable("_reelStopPos[" + i + "]", -1));
+            }
         }
 		public bool StoreData(ref BinaryWriter fs, int version)
 		{

@@ -377,6 +377,11 @@ public class SCReelOperation : ISlotControllerBase {
 			slip1st = stopReel.slipCount;
 		}
 		
+		// テンパイ判定(=入賞可能性のあるボーナス判定)を行う
+		// 配当をmanagerから得る(フラグ関係は指定なし:-1)
+		var castResult = reelManager.GetCast(stopHistory, bs.betCount-1, bs.gameMode, -1, -1);
+		bs.CheckTenpai(castResult, mainROM.CastCommonData);
+		
 		// タイマ処理を行う
 		timer.GetTimer("anyReelPush").Activate();
 		timer.GetTimer("anyReelPush").Reset();

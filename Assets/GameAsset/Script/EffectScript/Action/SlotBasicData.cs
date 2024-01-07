@@ -36,7 +36,7 @@ namespace SlotEffectMaker2023.Action
 
 		// 配当データ(使用するものだけ抽出)
 		public UserBaseData castLines { get; private set; }   // 配当入賞ライン
-		public string castName { get; private set; }    // 配当入賞した配当名
+		public int castBonusID { get; private set; }    // 入賞したボーナスのID
 
 		public SlotBasicData()
 		{
@@ -63,7 +63,7 @@ namespace SlotEffectMaker2023.Action
 
 			const int lineNum = LocalDataSet.PAYLINE_MAX;
 			castLines = new UserBaseData(1, true, lineNum);
-			castName = string.Empty;
+			castBonusID = 0;
 		}
 
 		public bool StoreData(ref BinaryWriter fs, int version)
@@ -85,7 +85,7 @@ namespace SlotEffectMaker2023.Action
 			fs.Write(bonusFlag);
 			fs.Write(castFlag);
 			fs.Write(decimal.ToByte(castLines.Export()));
-			fs.Write(castName);
+			fs.Write(castBonusID);
 			return true;
 		}
 		public bool ReadData(ref BinaryReader fs, int version)
@@ -107,7 +107,7 @@ namespace SlotEffectMaker2023.Action
 			bonusFlag = fs.ReadByte();
 			castFlag = fs.ReadByte();
 			castLines.Import(fs.ReadByte());
-			castName = fs.ReadString();
+			castBonusID = fs.ReadInt32();
 			return true;
 		}
 
@@ -154,7 +154,7 @@ namespace SlotEffectMaker2023.Action
 		{
 			// データリセット
 			castLines.Import(0);
-			castName = string.Empty;
+			castBonusID = 0;
 			isReplay = false;
 			int payCount = 0;
 
@@ -162,7 +162,8 @@ namespace SlotEffectMaker2023.Action
 			{
 				// 入賞ラインと配当名を読み込む
 				castLines.SetData((uint)castResult.payLine[castC], 1);
-				castName += castResult.matchCast[castC].FlagName;
+				int bid = castResult.matchCast[castC].ValidateBonusFlag;
+				if (bid > 0) castBonusID += bid; 
 
 				// 配当読込(リプレイ・小役判定) payoutID == 0は配当なしとして処理しない
 				uint payoutID = castResult.matchCast[castC].PayoutNumID.GetData((uint)(betCount - 1));
@@ -184,7 +185,18 @@ namespace SlotEffectMaker2023.Action
 			// replayなら-1、それ以外なら配当枚数を返す
 			return isReplay ? -1 : payCount;
 		}
-		// 払出枚数カウントアップ
+		// テンパイの有無を確認する
+		public void CheckTenpai(MainReelManager.GetCastResult castResult, LocalDataSet.CastCommonData cc)
+        {
+			// データリセット
+			castBonusID = 0;
+			for (int castC = 0; castC < castResult.payLine.Count; ++castC)
+			{
+				// テンパイ状況を読み込む
+				int bid = castResult.matchCast[castC].ValidateBonusFlag;
+				if (bid > castBonusID) castBonusID = bid;
+			}
+        }
 		public void AddPayout()
 		{
 			++outCount;
