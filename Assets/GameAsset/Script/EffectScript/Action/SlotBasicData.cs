@@ -58,7 +58,7 @@ namespace SlotEffectMaker2023.Action
 			RTOverride = true;
 			RTGameCount = -1;
 
-			bonusFlag = 1;
+			bonusFlag = 0;
 			castFlag = 0;
 
 			const int lineNum = LocalDataSet.PAYLINE_MAX;
