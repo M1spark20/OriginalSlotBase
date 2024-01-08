@@ -160,6 +160,7 @@ public class SCWaitBet : ISlotControllerBase {
 public class SCWaitBeforeReelStart : ISlotControllerBase {
 	// 定数
 	const int WAIT_MAX = 4100;	// 最大wait時間[ms]
+	int waitTime;
 
 	// 使用Singleton
 	SlotMaker2022.MainROMDataManagerSingleton mainROM;
@@ -175,6 +176,7 @@ public class SCWaitBeforeReelStart : ISlotControllerBase {
 		
 		// タイマ処理
 		timer.GetTimer("waitStart").Activate();
+		waitTime = WAIT_MAX;
 		
 		// BET消化処理
 		slotData.basicData.LatchBet();
@@ -188,7 +190,7 @@ public class SCWaitBeforeReelStart : ISlotControllerBase {
 	public ISlotControllerBase ProcessAfterInput(){
 		// Wait終了判定を行う(waitEndが無効か、最大wait時間以上経過しているとき)
 		bool waitEnd = !timer.GetTimer("waitEnd").isActivate;
-		if(!waitEnd) waitEnd = timer.GetTimer("waitEnd").elapsedTime > (float)WAIT_MAX / 1000f;
+		if(!waitEnd) waitEnd = timer.GetTimer("waitEnd").elapsedTime > (float)waitTime / 1000f;
 		
 		if (waitEnd) {
 			// タイマをクリアしてSCReelOperationへ移行
@@ -212,6 +214,10 @@ public class SCWaitBeforeReelStart : ISlotControllerBase {
 		byte castFlag  = 0;
 		byte bonusFlag = 0;
 		
+		// フリーズ抽選用に前回のデータを保持
+		byte lastBonus = basicData.bonusFlag;
+		byte lastRT = basicData.RTMode;
+		
 		// 現在の条件に合った乱数のみrandValueから引いていく
 		for (int randC=0; randC < randList.Count; ++randC){
 			var randItem = randList[randC];
@@ -234,6 +240,23 @@ public class SCWaitBeforeReelStart : ISlotControllerBase {
 		
 		// basicDataにフラグを設定する
 		basicData.SetCastFlag(bonusFlag, castFlag, mainROM.CastCommonData, mainROM.RTCommonData, timer);
+		// フリーズ抽選
+		slotData.freezeManager.SetFreezeFlag(mainROM.FreezeControlData, mainROM.FreezeTimeData, castFlag, bonusFlag != lastBonus);
+		slotData.freezeManager.SetFreezeRT(mainROM.FreezeControlData, mainROM.FreezeTimeData, lastRT, basicData.RTMode);
+		// フリーズ取得(before)
+		int beforeWait = slotData.freezeManager.GetFreeze(SlotMaker2022.LocalDataSet.FreezeControlData.FreezeTiming.BeforeWait);
+		waitTime += beforeWait;
+		// フリーズ取得(after)
+		int afterWait = slotData.freezeManager.GetFreeze(SlotMaker2022.LocalDataSet.FreezeControlData.FreezeTiming.AfterWait);
+		if (afterWait > 0){
+			if (!timer.GetTimer("waitEnd").isActivate) {
+				timer.GetTimer("waitEnd").Activate();
+				waitTime = afterWait;
+			} else {
+				int overTime = (int)(timer.GetTimer("waitEnd").elapsedTime * 1000f) - waitTime;
+				waitTime = waitTime + afterWait + overTime > 0 ? overTime : 0;
+			}
+		}
 	}
 }
 
@@ -250,6 +273,7 @@ public class SCReelOperation : ISlotControllerBase {
 	int   stop1st;			// 第1停止停止箇所(0-62,63:1st)
 	int   slip1st;			// 第1停止すべり数
 	int   stopReelCount;	// 停止処理済みリール数
+	int   reelFreezeTime;	// フリーズ時間(入力スキップを行う)
 	
 	SlotMaker2022.main_function.MainReelManager reelManager;	// リール制御クラス
 	
@@ -275,6 +299,7 @@ public class SCReelOperation : ISlotControllerBase {
 		stop1st = reelNum * comaNum;
 		slip1st = -1;
 		stopReelCount = 0;
+		reelFreezeTime = 0;
 		
 		// リール制御クラス初期化
 		reelManager = new SlotMaker2022.main_function.MainReelManager();
@@ -326,14 +351,22 @@ public class SCReelOperation : ISlotControllerBase {
 			}
 		}
 		
-		// 全リールが停止済みの場合、ねじりがなければフェーズ移行
-		if (isAllStopped && isAllReleased){
+		// 全リールが停止済みの場合、ねじり・フリーズがなければフェーズ移行
+		if (isAllStopped && isAllReleased && !timer.GetTimer("reelPushFreeze").isActivate){
 			// タイマ処理
 			timer.GetTimer("allReelStop").Activate();
 			timer.GetTimer("reelStart").SetDisabled();
 			ResetPushStopTimer();
 			// 移行先: SCJudgeAndPayout
 			return new SCJudgeAndPayout();
+		}
+		
+		// フリーズタイマ処理
+		if (timer.GetTimer("reelPushFreeze").isActivate){
+			if (timer.GetTimer("reelPushFreeze").elapsedTime > (float)reelFreezeTime / 1000f){
+				reelFreezeTime = 0;
+				timer.GetTimer("reelPushFreeze").SetDisabled();
+			}
 		}
 		
 		// 次回のProcessに備えisAllReleasedを初期化
@@ -360,6 +393,8 @@ public class SCReelOperation : ISlotControllerBase {
 		
 		// リールが停止制御できる状態にない場合処理をしない
 		if (!stopReel.CanStop()) return;
+		// フリーズ中は停止処理をかけない
+		if (timer.GetTimer("reelPushFreeze").isActivate) return;
 		
 		// リール制御データからすべりコマ数を算出する
 		var bs = slotData.basicData;
@@ -390,6 +425,13 @@ public class SCReelOperation : ISlotControllerBase {
 		
 		// ストップ数加算
 		++stopReelCount;
+		
+		// フリーズ取得
+		if (stopReelCount == 1) reelFreezeTime += slotData.freezeManager.GetFreeze(SlotMaker2022.LocalDataSet.FreezeControlData.FreezeTiming.Stop1st);
+		if (stopReelCount == 2) reelFreezeTime += slotData.freezeManager.GetFreeze(SlotMaker2022.LocalDataSet.FreezeControlData.FreezeTiming.Stop2nd);
+		if (reelFreezeTime > 0){
+			timer.GetTimer("reelPushFreeze").Activate();
+		}
 	}
 }
 
@@ -399,6 +441,8 @@ public class SCJudgeAndPayout : ISlotControllerBase {
 	int mPayoutNum;		// 描画払出枚数(-1:rep)
 	int mNextPayTime;	// 次回払出描画時間[ms]
 	int mNextPayBase;	// 払出間隔[ms]
+	int mFreezeBefore;	// 払出前フリーズ時間
+	int mFreezeAfter;	// 払出後フリーズ時間(リプレイ時は払出前と同時作動)
 	
 	SlotMaker2022.main_function.MainReelManager reelManager;	// リール制御クラス
 	
@@ -412,6 +456,8 @@ public class SCJudgeAndPayout : ISlotControllerBase {
 		// 変数初期化
 		mPayoutNum   = 0;
 		mNextPayTime = 0;
+		mFreezeBefore = 0;
+		mFreezeAfter = 0;
 		
 		// Singleton取得
 		mainROM  = SlotMaker2022.MainROMDataManagerSingleton.GetInstance();
@@ -432,21 +478,31 @@ public class SCJudgeAndPayout : ISlotControllerBase {
 		}
 		
 		// タイマ処理
-		if(mPayoutNum != 0) timer.GetTimer("payoutTime").Activate();
-		timer.GetTimer("Pay-Bet").Activate();
-		timer.GetTimer("Pay-Lever").Activate();
+		timer.GetTimer("beforePayFreeze").Activate();
+		// リプレイ時はafterも同時稼働させる
+		if (slotData.basicData.isReplay) timer.GetTimer("afterPayFreeze").Activate();
 	}
 	
 	public void OnGetKeyDown(EGameButtonID pKeyID){ /* None */ }
 	public void OnGetKey(EGameButtonID pKeyID){ /* None */ }
 	public ISlotControllerBase ProcessAfterInput(){
-		// 現在経過時刻取得
-		float? elapsedNullable = timer.GetTimer("payoutTime").elapsedTime;
 		const float divMS = 1000f;
 		
-		// elapsedが値を持つ場合(=payoutTimeが有効)に処理を行う
-		if (elapsedNullable.HasValue){
-			float elapsed = (float)elapsedNullable;
+		// beforeフリーズ消化判定
+		if (timer.GetTimer("beforePayFreeze").isActivate){
+			if (timer.GetTimer("beforePayFreeze").elapsedTime > (float)mFreezeBefore / divMS){
+				// 払出開始処理
+				if(mPayoutNum != 0) timer.GetTimer("payoutTime").Activate();
+				timer.GetTimer("Pay-Bet").Activate();
+				timer.GetTimer("Pay-Lever").Activate();
+				timer.GetTimer("beforePayFreeze").SetDisabled();
+				timer.GetTimer("afterPayFreeze").SetDisabled();
+			}
+		}
+		
+		// elapsedが値を持つ場合(=payoutTimeが有効かつbeforeフリーズ後)に処理を行う
+		if (timer.GetTimer("payoutTime").isActivate){
+			float elapsed = (float)timer.GetTimer("payoutTime").elapsedTime;
 			// リプレイ: 指定時間経過後にmPayoutNumリセット
 			if (mPayoutNum < 0 && elapsed > mNextPayTime / divMS) mPayoutNum = 0;
 			// 払出: 時間経過でカウントを増やす
@@ -458,12 +514,19 @@ public class SCJudgeAndPayout : ISlotControllerBase {
 		}
 	
 		// 払出なし or 払い出し完了: 描画終了時に処理をBETに戻す
-		if(mPayoutNum == 0) {
+		if(mPayoutNum == 0 && !timer.GetTimer("beforePayFreeze").isActivate) {
 			// 払出タイマを無効にする
 			timer.GetTimer("payoutTime").SetDisabled();
-			// モード移行処理(終了側)を行う
-			slotData.basicData.ModeReset(mainROM.CastCommonData, mainROM.RTCommonData, mainROM.RTMoveData, timer);
-			return new SCWaitBet();
+			// afterフリーズがある場合は作動させる
+			if (mFreezeAfter > 0) timer.GetTimer("afterPayFreeze").Activate();
+			// なければモード移行する
+			else return new SCWaitBet();
+		}
+		
+		// afterフリーズ消化判定
+		if (timer.GetTimer("afterPayFreeze").isActivate && !timer.GetTimer("beforePayFreeze").isActivate){
+			// 時間の消化が完了したらモード移行する
+			if (timer.GetTimer("afterPayFreeze").elapsedTime > (float)mFreezeAfter / divMS) return new SCWaitBet();
 		}
 		
 		return this;
@@ -480,22 +543,26 @@ public class SCJudgeAndPayout : ISlotControllerBase {
 		var basicData = slotData.basicData;
 		var castResult = reelManager.GetCast(reelPos, basicData.betCount-1, basicData.gameMode, -1, -1);
 		
+		// フリーズ抽選用に現在のモードを得る
+		byte lastMode = basicData.gameMode;
+		byte lastRT = basicData.RTMode;
+		
 		// 配当をbasicDataに転送する。戻り値として払出枚数を受ける
 		mPayoutNum = basicData.SetPayout(castResult, mainROM.CastCommonData);
 		// モードとRTの変更処理を行う。変更された場合はタイマを作動させる。
 		// SetPayoutより後で呼び出すことで当該Gのゲーム数減算をさせない。
 		basicData.ModeChange(castResult, mainROM.CastCommonData, mainROM.RTCommonData, mainROM.RTMoveData, timer);
+		// モード移行処理(終了側)を行う
+		slotData.basicData.ModeReset(mainROM.CastCommonData, mainROM.RTCommonData, mainROM.RTMoveData, timer);
 		
-		// 音源変更テスト
-		/*int soundSource = 0;
-		if (basicData.castFlag == 1) soundSource = 4;
-		if (basicData.castFlag >= 2 && basicData.castFlag <= 3) soundSource = 7;
-		if (basicData.castFlag == 4) soundSource = 8;
-		if (basicData.castFlag >= 5 && basicData.castFlag <= 7) soundSource = 5;
-		if (basicData.castFlag == 12) soundSource = 9;
-		if (basicData.castFlag == 12 && mPayoutNum == 12) soundSource = 10;
-		if (basicData.castFlag >= 13 && basicData.castFlag <= 14) soundSource = 7;
-		if (basicData.castFlag == 13 && mPayoutNum == 14) soundSource = 10;
-		slotData.soundData.ChangeSoundID(4, soundSource);*/
+		// フリーズ抽選
+		slotData.freezeManager.SetFreezeMode(mainROM.FreezeControlData, mainROM.FreezeTimeData, lastMode, basicData.gameMode);
+		slotData.freezeManager.SetFreezeRT(mainROM.FreezeControlData, mainROM.FreezeTimeData, lastRT, basicData.RTMode);
+		// フリーズ取得
+		mFreezeBefore = slotData.freezeManager.GetFreeze(SlotMaker2022.LocalDataSet.FreezeControlData.FreezeTiming.BeforePay);
+		int afterWait = slotData.freezeManager.GetFreeze(SlotMaker2022.LocalDataSet.FreezeControlData.FreezeTiming.AfterPay);
+		if (slotData.basicData.isReplay) mFreezeBefore += afterWait;
+		else mFreezeAfter = afterWait;
+		// Debug.Log("b: " + mFreezeBefore.ToString() + " / a: " + mFreezeAfter.ToString());
 	}
 }

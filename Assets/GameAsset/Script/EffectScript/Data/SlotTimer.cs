@@ -65,6 +65,9 @@ namespace SlotEffectMaker2023.Data
 			CreateSysTimer("changeRT", true);  // RT移行からの経過時間
 			CreateSysTimer("resetMode", true); // モードリセットからの経過時間
 			CreateSysTimer("resetRT", true);   // RTリセットからの経過時間
+			CreateSysTimer("reelPushFreeze", true);   // リール回転中フリーズ時間
+			CreateSysTimer("beforePayFreeze", true);  // 払い出し前フリーズ時間
+			CreateSysTimer("afterPayFreeze", true);   // 払い出し後フリーズ時間(リプレイより前)
 
 			for (int i = 0; i < SlotMaker2022.LocalDataSet.REEL_MAX; ++i)
 			{
