@@ -115,12 +115,12 @@ namespace SlotEffectMaker2023.Action
 				CreateTimer(item.GetShotTimerName(), false);
 				CreateTimer(item.GetLoopTimerName(), true);
 			}
+			// generalのみ無条件でActivateする
+			GetTimer("general")?.Activate();
 		}
 		// 前回終了時に有効だったタイマをActivateする(セーブデータ)
 		public bool ReadData()
 		{
-			// generalのみ無条件でActivateする
-			GetTimer("general")?.Activate();
 			return true;
 		}
 

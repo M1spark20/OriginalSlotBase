@@ -13,6 +13,7 @@ public class ShowNumBasic10 : IMultiImageWriter
 	
 	protected override int? GetTextureIndex(int val, uint getDigit) {
 		int digit = val;
+		if (val < 0) return null;
 		for(int i=0; i<getDigit; ++i) digit /= 10;
 		if (digit == 0 && getDigit > 0) return null;
 		return digit % 10;

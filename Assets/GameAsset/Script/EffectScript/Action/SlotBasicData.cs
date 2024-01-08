@@ -58,7 +58,7 @@ namespace SlotEffectMaker2023.Action
 			RTOverride = true;
 			RTGameCount = -1;
 
-			bonusFlag = 2;
+			bonusFlag = 1;
 			castFlag = 0;
 
 			const int lineNum = LocalDataSet.PAYLINE_MAX;
@@ -202,6 +202,7 @@ namespace SlotEffectMaker2023.Action
 			++outCount;
 			++payoutShow;
 			if (modeMedalCount > 0) --modeMedalCount;
+			if (modeMedalCount <= 0) modeMedalCount = -1;
 			creditShow = (byte)Math.Min(creditShow + 1, CREDIT_MAX);
 		}
 		// モード移行処理(入賞による) modeChangeとRTChangeで状態変化結果を返す
@@ -222,12 +223,12 @@ namespace SlotEffectMaker2023.Action
 			}
 		}
 		// モードリセット処理
-		public void ModeReset(LocalDataSet.CastCommonData cc, LocalDataSet.RTCommonData rtc, List<LocalDataSet.RTMoveData> rmList, SlotTimerManager tm)
+		public void ModeReset(LocalDataSet.CastCommonData cc, LocalDataSet.RTCommonData rtc, List<LocalDataSet.RTMoveData> rmList, SlotTimerManager tm, int nowPayout)
 		{
 			if (gameMode != 0)
 			{
 				// モードのリセット: 払出残数=0または残ゲーム数=0orJAC数=0
-				if (modeMedalCount == 0) SetMode(0, 0, 0, cc, rtc, rmList, tm);
+				if (modeMedalCount >= 0 && modeMedalCount - nowPayout <= 0) SetMode(0, 0, 0, cc, rtc, rmList, tm);
 				if (modeMedalCount < 0 && (modeGameCount <= 0 || modeJacCount <= 0)) SetMode(0, 0, 0, cc, rtc, rmList, tm);
 				// Debug.Log("ModeChk: Mode=" + gameMode + " Limit(Game/Jac/Medal)=" + modeGameCount + "/" + modeJacCount + "/" + modeMedalCount);
 			}
@@ -246,15 +247,16 @@ namespace SlotEffectMaker2023.Action
 			// 条件装置指定
 			if (gameIndex == 0)
 			{
-				if (payIndex == 0) modeMedalCount = -1;
-				modeMedalCount = (int)cc.BonusPayData.GetData((uint)(payIndex - 1));
-				if (modeMedalCount <= 0) modeMedalCount = -1;
+				if (payIndex > 0)
+				{
+					int val = (int)cc.BonusPayData.GetData((uint)(payIndex - 1));
+					if (val > 0) modeMedalCount = val;
+				}
 				modeGameCount = 0;
 				modeJacCount = 0;
 			}
 			else
 			{
-				modeMedalCount = -1;
 				modeGameCount = (byte)cc.GameNumData.GetData((uint)(gameIndex - 1));
 				if (payIndex == 0) modeJacCount = modeGameCount;
 				else modeJacCount = (byte)cc.BonusPayData.GetData((uint)(payIndex - 1));

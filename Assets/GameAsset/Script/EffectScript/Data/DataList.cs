@@ -251,7 +251,7 @@ namespace SlotEffectMaker2023.Data
             var timerList = Singleton.SlotDataSingleton.GetInstance().timerData;
             var checkT = timerList.GetTimer(cond.timerName);
             if (checkT == null) return;
-            if (!checkT.GetActionFlag(cond.elapsed, cond.trigHold)) return;
+            if (!checkT.GetActionFlag(cond.elapsed / 1000f, cond.trigHold)) return;
             // 処理の実行
             foreach (var item in action)
             {

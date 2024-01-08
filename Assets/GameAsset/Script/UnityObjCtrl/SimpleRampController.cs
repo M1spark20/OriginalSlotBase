@@ -14,9 +14,11 @@ public class SimpleRampController : MonoBehaviour
 	[SerializeField] int    RangeA;			// 条件判定値A
 	[SerializeField] int    RangeB;			// 条件判定値B
 	[SerializeField] bool   EqualFlag;		// 判定条件に等号を含むか
+	[SerializeField] bool   VarInvert;		// 条件を満たすときに表示するか(true: 表示しない)
 	
 	[SerializeField] string TimerName;		// 時間判定を行うタイマ名。指定なしで判定しない
 	[SerializeField] float  TimeBegin;		// 時間下限値
+	[SerializeField] bool   TimeInvert;		// 条件を満たすときに表示するか(true: 表示しない)
 	
 	// 制御フィールド
 	
@@ -37,8 +39,11 @@ public class SimpleRampController : MonoBehaviour
         	int max = Math.Max(RangeA, RangeB);
         	// bool?(null許容型)が戻り値。VariableNameが存在しない場合は無効判定
         	activated &= slotData.valManager.GetVariable(VariableName)?.CheckRange(min, max, EqualFlag) == true;
+	        if (!(activated ^ VarInvert)) { this.gameObject.GetComponent<SpriteRenderer>().enabled = false; return; }
         }
+        
         // タイマの検証(タイマが見つからなかった場合無効判定)
+        activated = true;
         if (TimerName != string.Empty){
         	var elem = slotData.timerData.GetTimer(TimerName);
         	if (elem == null) activated = false;
@@ -46,9 +51,10 @@ public class SimpleRampController : MonoBehaviour
         		if (!elem.isActivate) activated = false;		// タイマが無効な場合無効判定
         		else activated &= elem.elapsedTime > TimeBegin;	// 指定時間を超過しているか
         	}
+        	if (!(activated ^ TimeInvert)) { this.gameObject.GetComponent<SpriteRenderer>().enabled = false; return; }
         }
         
         // 計算の結果、ボタンを点灯"させない"場合にオブジェクトを表示する
-        this.gameObject.GetComponent<SpriteRenderer>().enabled = !activated;
+        this.gameObject.GetComponent<SpriteRenderer>().enabled = true;
     }
 }

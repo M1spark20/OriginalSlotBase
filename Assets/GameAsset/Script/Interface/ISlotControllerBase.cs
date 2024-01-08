@@ -553,7 +553,7 @@ public class SCJudgeAndPayout : ISlotControllerBase {
 		// SetPayoutより後で呼び出すことで当該Gのゲーム数減算をさせない。
 		basicData.ModeChange(castResult, mainROM.CastCommonData, mainROM.RTCommonData, mainROM.RTMoveData, timer);
 		// モード移行処理(終了側)を行う
-		slotData.basicData.ModeReset(mainROM.CastCommonData, mainROM.RTCommonData, mainROM.RTMoveData, timer);
+		slotData.basicData.ModeReset(mainROM.CastCommonData, mainROM.RTCommonData, mainROM.RTMoveData, timer, mPayoutNum < 0 ? 0 : mPayoutNum);
 		
 		// フリーズ抽選
 		slotData.freezeManager.SetFreezeMode(mainROM.FreezeControlData, mainROM.FreezeTimeData, lastMode, basicData.gameMode);
