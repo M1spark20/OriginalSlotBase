@@ -111,7 +111,7 @@ namespace SlotEffectMaker2023.Action
         // 抽選処理・データ生成を行う
         private void Apply(LocalDataSet.FreezeControlData item, List<LocalDataSet.FreezeTimeData> ft)
         {
-            // Rand抽選(Unityではコメントを外す)
+            // Rand抽選
             int randVal = UnityEngine.Random.Range(0, item.RandVal);
             if (randVal != 0) return;
 
