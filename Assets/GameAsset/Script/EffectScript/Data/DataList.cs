@@ -132,12 +132,40 @@ namespace SlotEffectMaker2023.Data
             if (type == EChangeNameType.Timeline && actName.Equals(src)) actName = dst;
         }
     }
+    public class EfRandTable : IEffectNameInterface
+    {   // 乱数減算値
+        public int decValue { get; set; }           // 減算値
+        public int applyValue { get; set; }   // 反映時変数設定値
+        public EfRandTable()
+        {
+            decValue = 0;
+            applyValue = 0;
+        }
+        public bool StoreData(ref BinaryWriter fs, int version)
+        {
+            fs.Write(decValue);
+            fs.Write(applyValue);
+            return true;
+        }
+        public bool ReadData(ref BinaryReader fs, int version)
+        {
+            decValue = fs.ReadInt32();
+            applyValue = fs.ReadInt32();
+            return true;
+        }
+        public void Rename(EChangeNameType type, string src, string dst) { }
+    }
 
     //// タイムライン用IF ////
     public abstract class IEfAct : IEffectNameInterface
     {
         public string dataName { get; set; }
         public string usage { get; set; }
+        public IEfAct()
+        {
+            dataName = string.Empty;
+            usage = string.Empty;
+        }
         public abstract void Action();
         public virtual bool StoreData(ref BinaryWriter fs, int version)
         {
@@ -503,6 +531,102 @@ namespace SlotEffectMaker2023.Data
             if (type == EChangeNameType.SoundPlayer && playDataName.Equals(src)) playDataName = dst;
             if (type == EChangeNameType.Var && variableRef.Equals(src)) variableRef = dst;
             foreach (var sw in switcher) sw.Rename(type, src, dst);
+        }
+    }
+    public class EfActRandVal : IEfAct
+    {   // このデータの名称変更は持たない
+        public int randMax { get; set; }                    // 乱数抽選最大値
+        public string inputFor { get; set; }          // 代入先変数名(どうしよう？)
+        public List<EfRandTable> randData { get; set; }     // 抽選データ
+        public EfActRandVal()
+        {
+            randMax = 256;
+            inputFor = string.Empty;
+            randData = new List<EfRandTable>();
+            usage = "[乱数抽選]";
+        }
+        public override bool StoreData(ref BinaryWriter fs, int version)
+        {
+            if (!base.StoreData(ref fs, version)) return false;
+            fs.Write(randMax);
+            fs.Write(inputFor);
+            fs.Write(randData.Count);
+            for (int i = 0; i < randData.Count; ++i) randData[i].StoreData(ref fs, version);
+            return true;
+        }
+        public override bool ReadData(ref BinaryReader fs, int version)
+        {
+            if (!base.ReadData(ref fs, version)) return false;
+            randMax = fs.ReadInt32();
+            inputFor = fs.ReadString();
+            int sz = fs.ReadInt32();
+            for (int i = 0; i < sz; ++i)
+            {
+                EfRandTable ad = new EfRandTable();
+                ad.ReadData(ref fs, version);
+                randData.Add(ad);
+            }
+            return true;
+        }
+        public override void Rename(EChangeNameType type, string src, string dst)
+        {
+            if (type != EChangeNameType.Var) return;
+            if (inputFor.Equals(src)) inputFor = dst;
+        }
+        public override void Action()
+        {
+            // 抽選実施
+            int randVal = UnityEngine.Random.Range(0, randMax);
+            for (int dec = 0; dec < randData.Count; ++dec)
+            {
+                randVal -= randData[dec].decValue;
+                if (randVal < 0)
+                {   // データ確定
+                    var vm = Singleton.SlotDataSingleton.GetInstance().valManager;
+                    vm.GetVariable(inputFor).val = randData[dec].applyValue;
+                    return;
+                }
+            }
+        }
+    }
+    public class EfActMultiVarSet : IEfAct
+    {
+        public List<EfActionSwitch> setData { get; set; }
+        
+        public EfActMultiVarSet()
+        {
+            setData = new List<EfActionSwitch>();
+            usage = "[複数変数]";
+        }
+        public override bool StoreData(ref BinaryWriter fs, int version)
+        {
+            if (!base.StoreData(ref fs, version)) return false;
+            fs.Write(setData.Count);
+            for (int i = 0; i < setData.Count; ++i) setData[i].StoreData(ref fs, version);
+            return true;
+        }
+        public override bool ReadData(ref BinaryReader fs, int version)
+        {
+            if (!base.ReadData(ref fs, version)) return false;
+            int sz = fs.ReadInt32();
+            for (int i=0; i<sz; ++i)
+            {
+                EfActionSwitch ef = new EfActionSwitch();
+                ef.ReadData(ref fs, version);
+                setData.Add(ef);
+            }
+            return true;
+        }
+        public override void Rename(EChangeNameType type, string src, string dst)
+        {
+            if (type != EChangeNameType.Var) return;
+            for (int i = 0; i < setData.Count; ++i) setData[i].Rename(type, src, dst);
+        }
+        public override void Action()
+        {
+            var ins = Singleton.SlotDataSingleton.GetInstance();
+            foreach (var item in setData)
+                ins.valManager.GetVariable(item.actName).val = item.condVal;
         }
     }
 }
