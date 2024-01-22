@@ -132,29 +132,6 @@ namespace SlotEffectMaker2023.Data
             if (type == EChangeNameType.Timeline && actName.Equals(src)) actName = dst;
         }
     }
-    public class EfRandTable : IEffectNameInterface
-    {   // 乱数減算値
-        public int decValue { get; set; }           // 減算値
-        public int applyValue { get; set; }   // 反映時変数設定値
-        public EfRandTable()
-        {
-            decValue = 0;
-            applyValue = 0;
-        }
-        public bool StoreData(ref BinaryWriter fs, int version)
-        {
-            fs.Write(decValue);
-            fs.Write(applyValue);
-            return true;
-        }
-        public bool ReadData(ref BinaryReader fs, int version)
-        {
-            decValue = fs.ReadInt32();
-            applyValue = fs.ReadInt32();
-            return true;
-        }
-        public void Rename(EChangeNameType type, string src, string dst) { }
-    }
 
     //// タイムライン用IF ////
     public abstract class IEfAct : IEffectNameInterface
@@ -534,22 +511,19 @@ namespace SlotEffectMaker2023.Data
         }
     }
     public class EfActRandVal : IEfAct
-    {   // このデータの名称変更は持たない
+    {
         public int randMax { get; set; }                    // 乱数抽選最大値
-        public string inputFor { get; set; }          // 代入先変数名(どうしよう？)
-        public List<EfRandTable> randData { get; set; }     // 抽選データ
+        public List<EfActionSwitch> randData { get; set; }  // 抽選データ
         public EfActRandVal()
         {
             randMax = 256;
-            inputFor = string.Empty;
-            randData = new List<EfRandTable>();
+            randData = new List<EfActionSwitch>();
             usage = "[乱数抽選]";
         }
         public override bool StoreData(ref BinaryWriter fs, int version)
         {
             if (!base.StoreData(ref fs, version)) return false;
             fs.Write(randMax);
-            fs.Write(inputFor);
             fs.Write(randData.Count);
             for (int i = 0; i < randData.Count; ++i) randData[i].StoreData(ref fs, version);
             return true;
@@ -558,12 +532,12 @@ namespace SlotEffectMaker2023.Data
         {
             if (!base.ReadData(ref fs, version)) return false;
             randMax = fs.ReadInt32();
-            inputFor = fs.ReadString();
             int sz = fs.ReadInt32();
             for (int i = 0; i < sz; ++i)
             {
-                EfRandTable ad = new EfRandTable();
+                EfActionSwitch ad = new EfActionSwitch();
                 ad.ReadData(ref fs, version);
+                ad.SetRenameType(EChangeNameType.Timeline);
                 randData.Add(ad);
             }
             return true;
@@ -571,7 +545,7 @@ namespace SlotEffectMaker2023.Data
         public override void Rename(EChangeNameType type, string src, string dst)
         {
             if (type != EChangeNameType.Var) return;
-            if (inputFor.Equals(src)) inputFor = dst;
+            for (int i = 0; i < randData.Count; ++i) randData[i].Rename(type, src, dst);
         }
         public override void Action()
         {
@@ -579,11 +553,11 @@ namespace SlotEffectMaker2023.Data
             int randVal = UnityEngine.Random.Range(0, randMax);
             for (int dec = 0; dec < randData.Count; ++dec)
             {
-                randVal -= randData[dec].decValue;
+                randVal -= randData[dec].condVal;
                 if (randVal < 0)
                 {   // データ確定
-                    var vm = Singleton.SlotDataSingleton.GetInstance().valManager;
-                    vm.GetVariable(inputFor).val = randData[dec].applyValue;
+                    var tl = Singleton.EffectDataManagerSingleton.GetInstance().Timeline;
+                    tl.GetActionFromName(randData[dec].actName).Action();
                     return;
                 }
             }
@@ -612,6 +586,7 @@ namespace SlotEffectMaker2023.Data
             for (int i=0; i<sz; ++i)
             {
                 EfActionSwitch ef = new EfActionSwitch();
+                ef.SetRenameType(EChangeNameType.Var);
                 ef.ReadData(ref fs, version);
                 setData.Add(ef);
             }
