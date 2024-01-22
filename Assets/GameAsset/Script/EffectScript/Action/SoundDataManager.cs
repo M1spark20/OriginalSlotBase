@@ -18,7 +18,7 @@ namespace SlotEffectMaker2023.Action
 		public void Init(List<Data.SoundPlayData> pPlayData)
         {
 			foreach (var item in pPlayData)
-				SoundData.Add( (item.PlayerName, item.DefaultSoundID) );
+				SoundData.Add( (item.ShifterName, item.DefaultElemID) );
 		}
 		// 現在の鳴り分け状況を保存する
 		public bool StoreData(ref BinaryWriter fs, int version)

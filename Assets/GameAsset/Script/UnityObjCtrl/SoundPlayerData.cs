@@ -42,7 +42,7 @@ public class SoundPlayerData {
 		ShotTimer = timer.GetTimer(PlayData.GetShotTimerName());
 		LoopTimer = timer.GetTimer(PlayData.GetLoopTimerName());
 		LastCondTime = null;
-		LastSoundID = PlayData.DefaultSoundID;
+		LastSoundID = PlayData.DefaultElemID;
 	}
 	
 	// 鳴らす音を変える

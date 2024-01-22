@@ -40,7 +40,7 @@ public class UnitySoundPlayer : MonoBehaviour
     	for(int i=0; i<player.Count; ++i){
     		var data = player[i];
     		// 音源の更新を行う
-    		if (data.LastSoundID != SndManager.ExportSoundIDName(SoundPlayData[i].PlayerName)) SetClip(i);
+    		if (data.LastSoundID != SndManager.ExportSoundIDName(SoundPlayData[i].ShifterName)) SetClip(i);
     		// 音の制御を行う
     		data.Process();
     	}
@@ -49,7 +49,7 @@ public class UnitySoundPlayer : MonoBehaviour
     // 音源データを設定する
     void SetClip(int pPlayerID){
     	var playData = player[pPlayerID];
-    	string soundIDName = SndManager.ExportSoundIDName(SoundPlayData[pPlayerID].PlayerName);
+    	string soundIDName = SndManager.ExportSoundIDName(SoundPlayData[pPlayerID].ShifterName);
     	var soundData = effectData.GetSoundID(soundIDName);
     	
     	// 音源を読み込む

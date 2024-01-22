@@ -463,7 +463,7 @@ namespace SlotEffectMaker2023.Data
         {
             var player = Singleton.EffectDataManagerSingleton.GetInstance().GetSoundPlayer(playDataName);
             if (player == null) return;
-            string soundID = player.DefaultSoundID;
+            string soundID = player.DefaultElemID;
 
             // soundIDを変更する
             var actData = Singleton.SlotDataSingleton.GetInstance();

@@ -39,56 +39,17 @@ namespace SlotEffectMaker2023.Data
 	}
 
 	// 音を鳴らす単体データ(Sys)
-	public class SoundPlayData : IEffectNameInterface
+	public class SoundPlayData : DataShifterBase
 	{
 		// 定数
-		public const float TIME_DIV = 1000f;
 		const string SHOT_HEADER = "#SS_";
 		const string LOOP_HEADER = "#SL_";
 
-		// 変数
-		public string PlayerName { get; set; }  // プレイヤー名。デフォルトタイマ名がこの名前で生成される
+        // 実装要素
+        protected override EChangeNameType GetMyType() { return EChangeNameType.SoundID; }
 
-		public string UseTimerName { get; set; }    // 制御に使用するタイマー名
-		public int BeginTime { get; set; }  // 鳴動開始時間[ms]
-		public int StopTime { get; set; }   // 鳴動終了時間[ms] (※UseTimer基準)
-		public string DefaultSoundID { get; set; } // デフォルトで鳴らすサウンドのID: 外部から変更可能
-
-		public SoundPlayData()
-		{
-			PlayerName = string.Empty;
-			UseTimerName = string.Empty;
-			BeginTime = 0;
-			StopTime = -1;
-			DefaultSoundID = string.Empty;
-		}
-
-		public bool StoreData(ref BinaryWriter fs, int version)
-		{
-			fs.Write(PlayerName);
-			fs.Write(UseTimerName);
-			fs.Write(BeginTime);
-			fs.Write(StopTime);
-			fs.Write(DefaultSoundID);
-			return true;
-		}
-		public bool ReadData(ref BinaryReader fs, int version)
-		{
-			PlayerName = fs.ReadString();
-			UseTimerName = fs.ReadString();
-			BeginTime = fs.ReadInt32();
-			StopTime = fs.ReadInt32();
-			DefaultSoundID = fs.ReadString();
-			return true;
-		}
-		public void Rename(EChangeNameType type, string src, string dst)
-        {
-			if (type == EChangeNameType.Timer && UseTimerName.Equals(src)) UseTimerName = dst;
-			if (type == EChangeNameType.SoundID && DefaultSoundID.Equals(src)) DefaultSoundID = dst;
-        }
-
-		// タイマ名を取得する
-		public string GetShotTimerName() { return SHOT_HEADER + PlayerName; }
-		public string GetLoopTimerName() { return LOOP_HEADER + PlayerName; }
+        // タイマ名を取得する
+        public string GetShotTimerName() { return SHOT_HEADER + ShifterName; }
+		public string GetLoopTimerName() { return LOOP_HEADER + ShifterName; }
 	}
 }

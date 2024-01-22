@@ -6,8 +6,12 @@ namespace SlotEffectMaker2023.Data
 {
 	public enum ColorMapElem
 	{
-		Red, Green, Blue, Alpha
+		Blue, Green, Red, Alpha, IdxMax
 	}
+	public enum ColorMapAccelation
+    {	// アニメーションの変動方法(通常, 加速, 減速, なし)
+		Steady, Acc, Dec, None
+    }
 
 	public class ColorMap : IEffectNameInterface
 	{	// カラーマップアニメーションデータ(Sys,1データに複数画像入力可)
@@ -17,18 +21,20 @@ namespace SlotEffectMaker2023.Data
 		public bool fadeFlag { get; set; }        // フェードアニメーション有無
 		public uint loopCount { get; set; }       // 繰り返し回数
 		public int  beginTime { get; set; }       // 再生開始時間[ms]
+		public ColorMapAccelation speed { get; set; }	// アニメーション速度種類
 
-		List<uint> mapData; // マップデータ本体
+		public List<int> mapData { get; private set; } // マップデータ本体(x + y*sizeW + card*sizeW*sizeH)
 
-		public ColorMap(uint w, uint h)
+		public ColorMap()
 		{
-			sizeW = w;
-			sizeH = h;
+			sizeW = uint.MaxValue;
+			sizeH = uint.MaxValue;
 			cardNum = 0;
 			fadeFlag = false;
-			loopCount = 0;
+			loopCount = 1;
 			beginTime = 0;
-			mapData = new List<uint>();
+			speed = ColorMapAccelation.Steady;
+			mapData = new List<int>();
 		}
 
 		// 保存関数
@@ -40,6 +46,7 @@ namespace SlotEffectMaker2023.Data
 			fs.Write(fadeFlag);
 			fs.Write(loopCount);
 			fs.Write(beginTime);
+			fs.Write((byte)speed);
 
 			int mapSize = mapData.Count;
 			fs.Write(mapSize);
@@ -54,25 +61,31 @@ namespace SlotEffectMaker2023.Data
 			fadeFlag = fs.ReadBoolean();
 			loopCount = fs.ReadUInt32();
 			beginTime = fs.ReadInt32();
+			speed = (ColorMapAccelation)fs.ReadByte();
 
 			int mapSize = fs.ReadInt32();
-			for (int i = 0; i < mapSize; ++i) mapData.Add(fs.ReadUInt32());
+			for (int i = 0; i < mapSize; ++i) mapData.Add(fs.ReadInt32());
 			return true;
 		}
 		public void Rename(EChangeNameType type, string src, string dst) { }
 
 		// 関数
-		public void AddMapData(List<uint> pAddMap)
+		public void SetSize(uint w, uint h)
+        {
+			if (mapData.Count > 0) return;
+			sizeW = w; sizeH = h;
+        }
+		public void AddMapData(List<int> pAddMap)
 		{
 			if ((uint)pAddMap.Count % (sizeW * sizeH) != 0) return;
 			mapData.AddRange(pAddMap);
 			cardNum = (uint)mapData.Count / (sizeW * sizeH);
 		}
-		public uint GetMapData(uint card, uint y, uint x)
+		public int GetMapData(uint card, uint y, uint x)
 		{
-			if (card >= cardNum) return 0u;
-			if (y >= sizeH) return 0u;
-			if (x >= sizeH) return 0u;
+			if (card >= cardNum) return 0;
+			if (y >= sizeH) return 0;
+			if (x >= sizeW) return 0;
 
 			// indexを計算して書き出し
 			uint index = x;
@@ -82,7 +95,7 @@ namespace SlotEffectMaker2023.Data
 		}
 		public byte GetMapDataElem(uint card, uint y, uint x, ColorMapElem color)
 		{
-			uint map = GetMapData(card, y, x);
+			int map = GetMapData(card, y, x);
 			return (byte)(map >> (8 * (int)color) & 0xFF);
 		}
 		public void ClearMapData()
@@ -103,11 +116,11 @@ namespace SlotEffectMaker2023.Data
 
 		public List<ColorMap> elemData { get; set; }	// カラーマップアニメーションまとめ
 
-		public ColorMapList(uint w, uint h)
+		public ColorMapList()
 		{
 			dataName = string.Empty;
-			sizeW = w;
-			sizeH = h;
+			sizeW = 0;
+			sizeH = 0;
 			useTimerName = string.Empty;
 			loopTime = -1;
 		}
@@ -136,8 +149,9 @@ namespace SlotEffectMaker2023.Data
 			int mapSize = fs.ReadInt32();
 			for (int i = 0; i < mapSize; ++i)
 			{
-				ColorMap cm = new ColorMap(sizeW, sizeH);
+				ColorMap cm = new ColorMap();
 				cm.ReadData(ref fs, version);
+				if (cm.sizeW != sizeW || cm.sizeH != sizeH) return false;
 				elemData.Add(cm);
 			}
 			return true;
