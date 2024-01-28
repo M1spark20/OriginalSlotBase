@@ -158,6 +158,43 @@ namespace SlotEffectMaker2023.Data
         }
         public abstract void Rename(EChangeNameType type, string src, string dst);
     }
+    public abstract class IEfChangeBase : IEfAct
+    {
+        public string switcherName { get; set; }
+        public string variableRef { get; set; }
+        public List<EfActionSwitch> switcher { get; set; }
+        public IEfChangeBase()
+        {
+            switcherName = string.Empty;
+            variableRef = string.Empty;
+            switcher = new List<EfActionSwitch>();
+        }
+        public override bool StoreData(ref BinaryWriter fs, int version)
+        {
+            if (!base.StoreData(ref fs, version)) return false;
+            fs.Write(switcherName);
+            fs.Write(variableRef);
+            fs.Write(switcher.Count);
+            for (int i = 0; i < switcher.Count; ++i) switcher[i].StoreData(ref fs, version);
+            return true;
+        }
+        public override bool ReadData(ref BinaryReader fs, int version)
+        {
+            if (!base.ReadData(ref fs, version)) return false;
+            switcherName = fs.ReadString();
+            variableRef = fs.ReadString();
+            int size = fs.ReadInt32();
+            for (int i = 0; i < size; ++i)
+            {
+                EfActionSwitch sw = new EfActionSwitch();
+                sw.SetRenameType(GetElemType());
+                if (!sw.ReadData(ref fs, version)) return false;
+                switcher.Add(sw);
+            }
+            return true;
+        }
+        protected abstract EChangeNameType GetElemType();
+    }
     public class EfActValCond : IEfAct
     {   // 変数による条件分岐を行う
         public List<List<EfValCond>> conds { get; set; }
@@ -447,21 +484,16 @@ namespace SlotEffectMaker2023.Data
             return opLeft;
         }
     }
-    public class EfActChangeSound : IEfAct
+    public class EfActChangeSound : IEfChangeBase
     {
-        public string playDataName { get; set; }
-        public string variableRef { get; set; }
-        public List<EfActionSwitch> switcher { get; set; }
-        public EfActChangeSound()
+        public EfActChangeSound() : base()
         {
-            playDataName = string.Empty;
-            variableRef = string.Empty;
-            switcher = new List<EfActionSwitch>();
             usage = "[鳴り分け]";
         }
+        protected override EChangeNameType GetElemType() { return EChangeNameType.SoundID; }
         public override void Action()
         {
-            var player = Singleton.EffectDataManagerSingleton.GetInstance().GetSoundPlayer(playDataName);
+            var player = Singleton.EffectDataManagerSingleton.GetInstance().GetSoundPlayer(switcherName);
             if (player == null) return;
             string soundID = player.DefaultElemID;
 
@@ -477,35 +509,45 @@ namespace SlotEffectMaker2023.Data
             }
 
             var soundData = actData.soundData;
-            soundData.ChangeSoundID(playDataName, soundID);
-        }
-        public override bool StoreData(ref BinaryWriter fs, int version)
-        {
-            if(!base.StoreData(ref fs, version)) return false;
-            fs.Write(playDataName);
-            fs.Write(variableRef);
-            fs.Write(switcher.Count);
-            for (int i = 0; i < switcher.Count; ++i) switcher[i].StoreData(ref fs, version);
-            return true;
-        }
-        public override bool ReadData(ref BinaryReader fs, int version)
-        {
-            if(!base.ReadData(ref fs, version)) return false;
-            playDataName = fs.ReadString();
-            variableRef = fs.ReadString();
-            int size = fs.ReadInt32();
-            for (int i = 0; i < size; ++i)
-            {
-                EfActionSwitch sw = new EfActionSwitch();
-                sw.SetRenameType(EChangeNameType.SoundID);
-                if(!sw.ReadData(ref fs, version)) return false;
-                switcher.Add(sw);
-            }
-            return true;
+            soundData.ChangeElem(switcherName, soundID);
         }
         public override void Rename(EChangeNameType type, string src, string dst)
         {
-            if (type == EChangeNameType.SoundPlayer && playDataName.Equals(src)) playDataName = dst;
+            if (type == EChangeNameType.SoundPlayer && switcherName.Equals(src)) switcherName = dst;
+            if (type == EChangeNameType.Var && variableRef.Equals(src)) variableRef = dst;
+            foreach (var sw in switcher) sw.Rename(type, src, dst);
+        }
+    }
+    public class EfActChangeMap : IEfChangeBase
+    {
+        public EfActChangeMap() : base()
+        {
+            usage = "[MAP切替]";
+        }
+        protected override EChangeNameType GetElemType() { return EChangeNameType.ColorMap; }
+        public override void Action()
+        {
+            var player = Singleton.EffectDataManagerSingleton.GetInstance().ColorMap.GetShifter(switcherName);
+            if (player == null) return;
+            string mapID = player.DefaultElemID;
+
+            // mapDataIDを変更する
+            var actData = Singleton.SlotDataSingleton.GetInstance();
+            var valData = actData.valManager.GetVariable(variableRef);
+            if (valData != null)
+            {
+                foreach (var item in switcher)
+                {
+                    if (valData.val == item.condVal) { mapID = item.actName; break; }
+                }
+            }
+
+            var mapData = actData.colorMapData;
+            mapData.ChangeElem(switcherName, mapID);
+        }
+        public override void Rename(EChangeNameType type, string src, string dst)
+        {
+            if (type == EChangeNameType.MapPlayer && switcherName.Equals(src)) switcherName = dst;
             if (type == EChangeNameType.Var && variableRef.Equals(src)) variableRef = dst;
             foreach (var sw in switcher) sw.Rename(type, src, dst);
         }

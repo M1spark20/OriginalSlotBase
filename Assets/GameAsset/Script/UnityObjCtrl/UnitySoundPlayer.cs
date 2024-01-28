@@ -8,8 +8,8 @@ public class UnitySoundPlayer : MonoBehaviour
 	[SerializeField] AudioClip[] SoundData;
 	
 	List<SoundPlayerData>	player;
-	SlotEffectMaker2023.Action.SoundDataManager		SndManager;		// 音制御データ
-	List<SlotEffectMaker2023.Data.SoundPlayData>	SoundPlayData;	// 音再生データ
+	SlotEffectMaker2023.Action.DataShifterManager<SlotEffectMaker2023.Data.SoundPlayData>	SndManager;		// 音制御データ
+	List<SlotEffectMaker2023.Data.SoundPlayData>											SoundPlayData;	// 音再生データ
 	
 	SlotEffectMaker2023.Singleton.EffectDataManagerSingleton effectData;
 	
@@ -40,7 +40,7 @@ public class UnitySoundPlayer : MonoBehaviour
     	for(int i=0; i<player.Count; ++i){
     		var data = player[i];
     		// 音源の更新を行う
-    		if (data.LastSoundID != SndManager.ExportSoundIDName(SoundPlayData[i].ShifterName)) SetClip(i);
+    		if (data.LastSoundID != SndManager.ExportElemName(SoundPlayData[i].ShifterName)) SetClip(i);
     		// 音の制御を行う
     		data.Process();
     	}
@@ -49,7 +49,7 @@ public class UnitySoundPlayer : MonoBehaviour
     // 音源データを設定する
     void SetClip(int pPlayerID){
     	var playData = player[pPlayerID];
-    	string soundIDName = SndManager.ExportSoundIDName(SoundPlayData[pPlayerID].ShifterName);
+    	string soundIDName = SndManager.ExportElemName(SoundPlayData[pPlayerID].ShifterName);
     	var soundData = effectData.GetSoundID(soundIDName);
     	
     	// 音源を読み込む

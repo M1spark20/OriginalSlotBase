@@ -16,6 +16,7 @@ namespace SlotEffectMaker2023.Data
 		public List<EfActCtrlTimer> ctrlTimer;
 		public List<EfActRandVal> randData;
 		public List<EfActMultiVarSet> multiSetData;
+        public List<EfActChangeMap> changeMap;
 
         public SlotTimeline()
         {
@@ -26,6 +27,7 @@ namespace SlotEffectMaker2023.Data
 			ctrlTimer = new List<EfActCtrlTimer>();
 			randData = new List<EfActRandVal>();
 			multiSetData = new List<EfActMultiVarSet>();
+			changeMap = new List<EfActChangeMap>();
         }
 		public bool StoreData(ref BinaryWriter fs, int version)
 		{
@@ -49,6 +51,9 @@ namespace SlotEffectMaker2023.Data
 				if (!item.StoreData(ref fs, version)) return false;
 			fs.Write(multiSetData.Count);
 			foreach (var item in multiSetData) 
+				if (!item.StoreData(ref fs, version)) return false;
+			fs.Write(changeMap.Count);
+			foreach (var item in changeMap) 
 				if (!item.StoreData(ref fs, version)) return false;
 			return true;
 		}
@@ -103,6 +108,13 @@ namespace SlotEffectMaker2023.Data
 				if (!mv.ReadData(ref fs, version)) return false;
 				multiSetData.Add(mv);
 			}
+			dataCount = fs.ReadInt32();
+			for (int i = 0; i < dataCount; ++i)
+			{
+				EfActChangeMap cm = new EfActChangeMap();
+				if (!cm.ReadData(ref fs, version)) return false;
+				changeMap.Add(cm);
+			}
 			return true;
 		}
 		public void Rename(EChangeNameType type, string src, string dst)
@@ -114,6 +126,7 @@ namespace SlotEffectMaker2023.Data
 			foreach (var item in ctrlTimer) item.Rename(type, src, dst);
 			foreach (var item in randData) item.Rename(type, src, dst);
 			foreach (var item in multiSetData) item.Rename(type, src, dst);
+			foreach (var item in changeMap) item.Rename(type, src, dst);
 		}
 		// 全Actの名前を得る
 		public string[] GetAllActName()
@@ -125,6 +138,7 @@ namespace SlotEffectMaker2023.Data
 			foreach (var item in ctrlTimer) vs.Add(item.dataName);
 			foreach (var item in randData) vs.Add(item.dataName);
 			foreach (var item in multiSetData) vs.Add(item.dataName);
+			foreach (var item in changeMap) vs.Add(item.dataName);
 			return vs.ToArray();
         }
 		// Actのデータを得る
@@ -137,6 +151,7 @@ namespace SlotEffectMaker2023.Data
 			foreach (var item in ctrlTimer) if (item.dataName.Equals(name)) return item;
 			foreach (var item in randData) if (item.dataName.Equals(name)) return item;
 			foreach (var item in multiSetData) if (item.dataName.Equals(name)) return item;
+			foreach (var item in changeMap) if (item.dataName.Equals(name)) return item;
 			return null;
         }
 		// 指定した名前のActが存在するか確認する

@@ -10,7 +10,9 @@ namespace SlotEffectMaker2023.Singleton {
 		// エフェクト用変数
 		public Action.SlotValManager		valManager { get; set; }
 		// 音源データ
-		public Action.SoundDataManager		soundData { get; set; }
+		public Action.DataShifterManager<Data.SoundPlayData>	soundData { get; set; }
+		// カラーマップデータ
+		public Action.DataShifterManager<Data.ColorMapShifter>	colorMapData { get; set; }
 		// フリーズ関連データ
 		public Action.FreezeManager			freezeManager { get; set; }
 	
@@ -26,15 +28,17 @@ namespace SlotEffectMaker2023.Singleton {
 			reelData = new List<Action.ReelBasicData>();
 			basicData = new Action.SlotBasicData();
 			valManager = new Action.SlotValManager();
-			soundData = new Action.SoundDataManager();
+			soundData = new Action.DataShifterManager<Data.SoundPlayData>();
+			colorMapData = new Action.DataShifterManager<Data.ColorMapShifter>();
 			freezeManager = new Action.FreezeManager();
 		}
 
-		public void Init(List<Data.SoundPlayData> pPlayData, Data.TimerList pTimer, Data.VarList pVar)
+		public void Init(List<Data.SoundPlayData> pSoundPlayData, Data.TimerList pTimer, Data.VarList pVar, List<Data.ColorMapShifter> pMapPlayData)
         {   // 各データへの初期値設定を行う
 			timerData.Init(pTimer);
 			valManager.Init(pVar);
-			soundData.Init(pPlayData);
+			soundData.Init(pSoundPlayData);
+			colorMapData.Init(pMapPlayData);
         }
 	
 		/// <summary>
