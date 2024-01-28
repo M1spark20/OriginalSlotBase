@@ -123,7 +123,6 @@ namespace SlotEffectMaker2023.Data
 	{   // カラーマップタイムラインデータ(Sys)
 		// 変数
 		public string dataName { get; set; }	 // カラーマップの名前
-		public string useTimerName { get; set; } // 制御に使用するタイマ名
 		public int loopTime { get; set; }        // ループ時間[ms]
 		public uint sizeW { get; set; }			 // カラーマップのWサイズ
 		public uint sizeH { get; set; }          // カラーマップのHサイズ
@@ -141,7 +140,6 @@ namespace SlotEffectMaker2023.Data
 			dataName = string.Empty;
 			sizeW = 1;
 			sizeH = 1;
-			useTimerName = string.Empty;
 			loopTime = -1;
 			elemData = new List<ColorMap>();
 			// プライベートメンバ
@@ -153,7 +151,6 @@ namespace SlotEffectMaker2023.Data
 		public bool StoreData(ref BinaryWriter fs, int version)
 		{
 			fs.Write(dataName);
-			fs.Write(useTimerName);
 			fs.Write(loopTime);
 			fs.Write(sizeW);
 			fs.Write(sizeH);
@@ -166,7 +163,6 @@ namespace SlotEffectMaker2023.Data
 		public bool ReadData(ref BinaryReader fs, int version)
 		{
 			dataName = fs.ReadString();
-			useTimerName = fs.ReadString();
 			loopTime = fs.ReadInt32();
 			sizeW = fs.ReadUInt32();
 			sizeH = fs.ReadUInt32();
@@ -183,7 +179,6 @@ namespace SlotEffectMaker2023.Data
 		}
 		public void Rename(EChangeNameType type, string src, string dst)
         {
-			if (type == EChangeNameType.Timer && useTimerName.Equals(src)) useTimerName = dst;
 			foreach (var cm in elemData) cm.Rename(type, src, dst);
         }
 
