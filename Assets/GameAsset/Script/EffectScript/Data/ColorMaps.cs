@@ -94,7 +94,7 @@ namespace SlotEffectMaker2023.Data
 			// indexを計算して書き出し
 			uint index = x;
 			index += y * sizeW;
-			index += (card % loopCount) * sizeH * sizeW;
+			index += (card % cardNum) * sizeH * sizeW;
 			return mapData[(int)index];
 		}
 		public float GetCardF(float timeEqualized)
@@ -209,7 +209,10 @@ namespace SlotEffectMaker2023.Data
 			// 使用データ算出(mRefDataIdx - 0から走査)
 			if (calcTime < 0f || calcTime < elemData[0].beginTime / divMS) return;
 			for (mRefDataIdx = 0; mRefDataIdx < elemData.Count; ++mRefDataIdx)
-				if (calcTime >= elemData[mRefDataIdx].beginTime / divMS) break;
+			{
+				if (mRefDataIdx + 1 >= elemData.Count) break;
+				if (calcTime < elemData[mRefDataIdx + 1].beginTime / divMS) break;
+			}
 
 			// 使用カード算出(次のカードがない場合はmProgress, mCardIDFloatとも0)
 			if (mRefDataIdx + 1 < elemData.Count)
@@ -239,7 +242,7 @@ namespace SlotEffectMaker2023.Data
 					int nextC = elemData[mRefDataIdx + 1].GetMapData(0, getY, getX);  // 初期データ: 次データの頭
 					// 現在データに次データがある場合は当該要素を読み込む
 					if (card + 1 < elemData[mRefDataIdx].cardNum * elemData[mRefDataIdx].loopCount)
-						nextC = elemData[mRefDataIdx + 1].GetMapData(card + 1, getY, getX);
+						nextC = elemData[mRefDataIdx].GetMapData(card + 1, getY, getX);
 					ans = GetMediumColor(ans, nextC, mCardIDFloat % 1f);
 				}
 			}
@@ -255,15 +258,32 @@ namespace SlotEffectMaker2023.Data
 			for (int c = 0; c < (int)ColorMapElem.IdxMax; ++c)
             {
 				float cf = GetColorElem(nextColor, (ColorMapElem)c) * progress + GetColorElem(nowColor, (ColorMapElem)c) * progInv;
-				ans |= (byte)cf >> (8 * c);
+				ans |= (int)cf << (8 * c);
             }
-			return 0;
+			return ans;
         }
 		// int型カラーから特定の色を抽出する(クラス名で呼出し可)
 		public static byte GetColorElem(int color, ColorMapElem type)
         {
 			return (byte)(color >> (8 * (int)type) & 0xFF);
 		}
+		// 2つのカラーのアルファブレンド合成を得る(クラス名で呼出し可) src:上書する色、dst:上書される色
+		public static int ComboColor(int src, int dst)
+        {
+			float srcA = GetColorElem(src, ColorMapElem.Alpha) / (float)byte.MaxValue;
+			float dstA = GetColorElem(dst, ColorMapElem.Alpha) / (float)byte.MaxValue;
+
+			// 色の計算
+			float outA = srcA + dstA * (1f - srcA);
+			int ans = 0;
+			for (int c=0; c<(int)ColorMapElem.IdxMax; ++c)
+            {
+				byte val = (byte)( ( GetColorElem(src, (ColorMapElem)c) * srcA + GetColorElem(dst, (ColorMapElem)c) * dstA * (1f - srcA) ) / outA );
+				if ((ColorMapElem)c == ColorMapElem.Alpha) val = (byte)(outA * byte.MaxValue);
+				ans |= val << (8 * c);
+			}
+			return ans;
+        }
 	}
 
 	public class ColorMapShifter : DataShifterBase

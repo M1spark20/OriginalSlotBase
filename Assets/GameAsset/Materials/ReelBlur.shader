@@ -25,12 +25,14 @@ Shader "Hidden/ReelBlur"
             struct appdata
             {
                 float4 vertex : POSITION;
+                float4 color : COLOR;
                 float2 uv : TEXCOORD0;
             };
 
             struct v2f
             {
                 float2 uv : TEXCOORD0;
+                fixed4 color : COLOR;
                 float4 vertex : SV_POSITION;
             };
             
@@ -56,11 +58,13 @@ Shader "Hidden/ReelBlur"
                 //v.vertex = mul(GetAffine(float3(0, 0, 0)), v.vertex);
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = v.uv;
+                o.color = v.color;
                 return o;
             }
             fixed4 frag (v2f i) : SV_Target
             {
-                fixed4 col = tex2D(_MainTex, i.uv);
+                fixed4 col = tex2D(_MainTex, i.uv) * i.color;
+                col.rgb *= col.a;
                 //col.a = col.a * 1.0;
                 return col;
             }
@@ -77,11 +81,12 @@ Shader "Hidden/ReelBlur"
                 v.vertex = mul(GetAffine(float3(0, _BlurRange / 2, 0)), v.vertex);
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = v.uv;
+                o.color = v.color;
                 return o;
             }
             fixed4 frag (v2f i) : SV_Target
             {
-                fixed4 col = tex2D(_MainTex, i.uv);
+                fixed4 col = tex2D(_MainTex, i.uv) * i.color;
                 col.a = col.a * 0.5;
                 return col;
             }
@@ -98,11 +103,12 @@ Shader "Hidden/ReelBlur"
                 v.vertex = mul(GetAffine(float3(0, _BlurRange, 0)), v.vertex);
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = v.uv;
+                o.color = v.color;
                 return o;
             }
             fixed4 frag (v2f i) : SV_Target
             {
-                fixed4 col = tex2D(_MainTex, i.uv);
+                fixed4 col = tex2D(_MainTex, i.uv) * i.color;
                 col.a = col.a * 0.25;
                 return col;
             }

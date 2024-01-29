@@ -23,6 +23,9 @@ public class CReelDrawerForMainReel : MonoBehaviour
 	Material[] mReelMat;			// 各リールのマテリアル[reelNum]
 	Material[] mCutMat;				// 各リール切れ目のマテリアル[reelNum]
 	
+	// リール用ColorMap
+	[SerializeField] private string[] MapShifterName;
+	
 	// Start is called before the first frame update
 	void Start()
 	{
@@ -50,15 +53,14 @@ public class CReelDrawerForMainReel : MonoBehaviour
 			mComaInstance[reelC] = new GameObject[comaNum];
 			string test = "";
 			
+			// リールブラー用Material新規生成(Prehabからコピー)
+			mReelMat[reelC] = new Material(prehab.GetComponent<SpriteRenderer>().sharedMaterial);
+
 			// 切れ目関係のobjectを生成する
 			mCutLine[reelC] = Instantiate(prehabCut, parent);
 			mCutMat [reelC] = new Material(prehabCut.GetComponent<SpriteRenderer>().sharedMaterial);
 			mCutMat [reelC].SetInt("_Weight", 48);
 			mCutLine[reelC].GetComponent<SpriteRenderer>().sharedMaterial = mCutMat[reelC];
-
-			
-			// リールブラー用Material新規生成(Prehabからコピー)
-			mReelMat[reelC]      = new Material(prehab.GetComponent<SpriteRenderer>().sharedMaterial);
 			
 			// 各コマにSpriteとMaterialを割り当てる
 			for(int posC=0; posC<comaNum; ++posC){
@@ -68,6 +70,7 @@ public class CReelDrawerForMainReel : MonoBehaviour
 				Vector3 initPos = new Vector3(POS_WBASE * reelC, 0.0f, 0.0f);
 				mComaInstance[reelC][comaNum - posC - 1] = Instantiate(prehab, parent);
 				mComaInstance[reelC][comaNum - posC - 1].transform.localPosition = initPos;
+				
 				// SpriteRendererを呼び出してSpriteを変更し、sharedMaterialを割り当てる
 				SpriteRenderer sp = mComaInstance[reelC][comaNum - posC - 1].GetComponent<SpriteRenderer>();
 				sp.sprite = mImageBuilder.Extract(comaIndex);
@@ -83,6 +86,8 @@ public class CReelDrawerForMainReel : MonoBehaviour
 		// 使用する変数の事前計算
 		(float spW, float spH) = mImageBuilder.GetSpriteSize();
 		const int comaNum = SlotMaker2022.LocalDataSet.COMA_MAX;
+		const int showNum = SlotMaker2022.LocalDataSet.SHOW_MAX;
+		int[][] matColor = GetColor();
 		
 		// 各リールに対して処理を行う
 		for(int reelC=0; reelC<mComaInstance.Length; ++reelC){
@@ -105,8 +110,18 @@ public class CReelDrawerForMainReel : MonoBehaviour
 				int posCtrl = baseComaID + posC;
 				while (posCtrl >= comaNum) posCtrl -= comaNum;
 				while (posCtrl < 0) posCtrl += comaNum;
-				// GameObjectをActiveにする
+				// GameObjectをActiveにしてカラーを設定する
 				mComaInstance[reelC][posCtrl].GetComponent<SpriteRenderer>().enabled = true;
+				int colorH = posC;
+				if (posC < 0) colorH = 0;
+				if (posC >= showNum) colorH = showNum - 1;
+				int setColor = matColor[reelC][colorH];
+				mComaInstance[reelC][posCtrl].GetComponent<SpriteRenderer>().color = new Color32(
+					SlotEffectMaker2023.Data.ColorMapList.GetColorElem(setColor, SlotEffectMaker2023.Data.ColorMapElem.Red),
+					SlotEffectMaker2023.Data.ColorMapList.GetColorElem(setColor, SlotEffectMaker2023.Data.ColorMapElem.Green),
+					SlotEffectMaker2023.Data.ColorMapList.GetColorElem(setColor, SlotEffectMaker2023.Data.ColorMapElem.Blue),
+					SlotEffectMaker2023.Data.ColorMapList.GetColorElem(setColor, SlotEffectMaker2023.Data.ColorMapElem.Alpha)
+				);
 				// Y座標を入力する
 				float posY = spH * posC + posYOffset;	// 未達分を足す
 				Vector3 pos = mComaInstance[reelC][posCtrl].transform.localPosition;
@@ -135,5 +150,52 @@ public class CReelDrawerForMainReel : MonoBehaviour
 		for(int i=0; i<mReelMat.Length; ++i) Destroy(mReelMat[i]);
 		for(int i=0; i<mCutLine.Length; ++i) Destroy(mCutLine[i]);
 		for(int i=0; i<mCutMat.Length; ++i) Destroy(mCutMat[i]);
+	}
+	
+	// materialを変化させる
+	private int[][] GetColor(){
+		const int reelNum = SlotMaker2022.LocalDataSet.REEL_MAX;
+		const int showNum = SlotMaker2022.LocalDataSet.SHOW_MAX;
+		
+		// 戻り値データ型作成
+		int[][] ans = new int[reelNum][];
+		for(int i=0; i<ans.Length; ++i) ans[i] = new int[showNum];
+		
+		// 使用するカラーマップ定義の一覧を取得する
+		var useMap = new List<SlotEffectMaker2023.Data.ColorMapList>();
+		var data = SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.GetInstance();
+		var act = SlotEffectMaker2023.Singleton.SlotDataSingleton.GetInstance();
+		for (int i=0; i<MapShifterName.Length; ++i){
+			if (MapShifterName[i] == null) continue;
+			
+			// 現在のMapデータを呼び出す
+			string nowMapName = act.colorMapData.ExportElemName(MapShifterName[i]);
+			if (nowMapName == null) continue;
+			var nowMap = data.ColorMap.GetMapList(nowMapName);
+			
+			// タイマを参照して、有効ならデータをセットする
+			var shifter = data.ColorMap.GetShifter(MapShifterName[i]);
+			if (shifter == null) continue;
+			var timer = act.timerData.GetTimer(shifter.UseTimerName);
+			if (timer == null) continue;
+			if (!timer.isActivate) continue;
+			nowMap.SetCard((float)timer.elapsedTime);
+			useMap.Add(nowMap);
+		}
+		
+		// 各コマの色を設定する
+		for (uint x=0; x<reelNum; ++x)
+		for (uint y=0; y<showNum; ++y){
+			int c = 0;
+			for (int mapC = 0; mapC < useMap.Count; ++mapC){
+				int srcColor = useMap[mapC].GetColor(x, y);
+				//Debug.Log(srcColor);
+				c = SlotEffectMaker2023.Data.ColorMapList.ComboColor(srcColor, c);
+			}
+			// yのインデックスが逆なことに注意する
+			ans[(int)x][(int)(showNum - y - 1)] = c;
+		}
+		
+		return ans;
 	}
 }

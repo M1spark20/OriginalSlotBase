@@ -1701,6 +1701,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98b3a23e7ecb2344595de6e102fd4d1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MapShifterName:
+  - AnimReelStable
+  - AnimReelFlashPay
+  - AnimReelFlashRep
 --- !u!4 &1673376597
 Transform:
   m_ObjectHideFlags: 0
