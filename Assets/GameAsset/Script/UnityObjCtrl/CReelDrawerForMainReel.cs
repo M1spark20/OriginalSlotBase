@@ -152,7 +152,7 @@ public class CReelDrawerForMainReel : MonoBehaviour
 		for(int i=0; i<mCutMat.Length; ++i) Destroy(mCutMat[i]);
 	}
 	
-	// materialを変化させる
+	// 頂点カラーを変化させる色を取得
 	private int[][] GetColor(){
 		const int reelNum = SlotMaker2022.LocalDataSet.REEL_MAX;
 		const int showNum = SlotMaker2022.LocalDataSet.SHOW_MAX;

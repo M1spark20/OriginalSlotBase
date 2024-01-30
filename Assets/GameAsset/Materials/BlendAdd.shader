@@ -3,7 +3,6 @@ Shader "Hidden/BlendAdd"
     Properties
     {
         [HideInInspector] _MainTex ("Texture", 2D) = "white" {}
-        _Color ("Action Color", Color) = (1,1,1,1)
         _Weight ("Effect Weight", Range(0,255)) = 255
     }
     SubShader
@@ -25,12 +24,14 @@ Shader "Hidden/BlendAdd"
             struct appdata
             {
                 float4 vertex : POSITION;
+                float4 color : COLOR;
                 float2 uv : TEXCOORD0;
             };
 
             struct v2f
             {
                 float2 uv : TEXCOORD0;
+                fixed4 color : COLOR;
                 float4 vertex : SV_POSITION;
             };
 
@@ -39,6 +40,7 @@ Shader "Hidden/BlendAdd"
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = v.uv;
+                o.color = v.color;
                 return o;
             }
 
@@ -49,12 +51,9 @@ Shader "Hidden/BlendAdd"
 
             fixed4 frag (v2f i) : SV_Target
             {
-                fixed4 col = tex2D(_MainTex, i.uv);
-                // 白バックにAction Colorを反映する
-                col.rgb = col.rgb * _Color;
-                // 色をEffect Weight分暗くする
-                float w = float(_Weight) / 255;
-                col.rgb = col.rgb * w;
+            	// 発色は頂点カラーで制御する
+                fixed4 col = tex2D(_MainTex, i.uv) * i.color;
+                col.rgb *= col.a;
                 return col;
             }
             ENDCG

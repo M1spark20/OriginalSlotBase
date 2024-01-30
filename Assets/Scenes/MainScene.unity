@@ -221,10 +221,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MatResourceName: Prehab_Com
-  DispVariable: GameBBInt
-  ShowDigit: 6
   TexResourceName: Num22
   InstanceName: Total
+  DispVariable: GameBBInt
+  ShowDigit: 6
   TimerName: 
   TimeBegin: 0
   TimeInvert: 0
@@ -302,7 +302,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 11
   m_Sprite: {fileID: 21300000, guid: cbbb6f30848a00240972f86d27736aee, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -422,7 +422,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 10
   m_Sprite: {fileID: 21300000, guid: dd1bd0268d9c43f4191a0bd5a27ef187, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8784314, g: 0.8784314, b: 0.8784314, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -804,7 +804,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 10
   m_Sprite: {fileID: 21300000, guid: dd1bd0268d9c43f4191a0bd5a27ef187, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8784314, g: 0.8784314, b: 0.8784314, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -909,7 +909,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 10
   m_Sprite: {fileID: 21300000, guid: dd1bd0268d9c43f4191a0bd5a27ef187, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8784314, g: 0.8784314, b: 0.8784314, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -949,10 +949,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MatResourceName: Prehab_Com
-  DispVariable: LastMedalShow
-  ShowDigit: 3
   TexResourceName: LastMedalLED
   InstanceName: LastMedal
+  DispVariable: LastMedalShow
+  ShowDigit: 3
   TimerName: $BonusBGMGame
   TimeBegin: 0
   TimeInvert: 0
@@ -1071,7 +1071,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 10
   m_Sprite: {fileID: 21300000, guid: dd1bd0268d9c43f4191a0bd5a27ef187, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8784314, g: 0.8784314, b: 0.8784314, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1116,10 +1116,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MatResourceName: Prehab_Com
-  DispVariable: GameTotal
-  ShowDigit: 6
   TexResourceName: Num22
   InstanceName: Total
+  DispVariable: GameTotal
+  ShowDigit: 6
   TimerName: 
   TimeBegin: 0
   TimeInvert: 0
@@ -1327,10 +1327,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MatResourceName: Prehab_Com
-  DispVariable: LastBGMLevel
-  ShowDigit: 6
   TexResourceName: Num22
   InstanceName: Total
+  DispVariable: LastBGMLevel
+  ShowDigit: 6
   TimerName: 
   TimeBegin: 0
   TimeInvert: 0
@@ -1379,10 +1379,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MatResourceName: Prehab_Com
-  DispVariable: MedalBalance
-  ShowDigit: 6
   TexResourceName: Num22
   InstanceName: Total
+  DispVariable: MedalBalance
+  ShowDigit: 6
   TimerName: 
   TimeBegin: 0
   TimeInvert: 0
@@ -1533,7 +1533,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 10
   m_Sprite: {fileID: 21300000, guid: dd1bd0268d9c43f4191a0bd5a27ef187, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8784314, g: 0.8784314, b: 0.8784314, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1650,10 +1650,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MatResourceName: Prehab_Com
-  DispVariable: MedalGetBase
-  ShowDigit: 6
   TexResourceName: Num22
   InstanceName: Total
+  DispVariable: MedalGetBase
+  ShowDigit: 6
   TimerName: 
   TimeBegin: 0
   TimeInvert: 0
@@ -1751,10 +1751,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MatResourceName: Prehab_Com
-  DispVariable: RingBGMType
-  ShowDigit: 6
   TexResourceName: Num22
   InstanceName: Total
+  DispVariable: RingBGMType
+  ShowDigit: 6
   TimerName: 
   TimeBegin: 0
   TimeInvert: 0
@@ -1868,7 +1868,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 10
   m_Sprite: {fileID: 21300000, guid: dd1bd0268d9c43f4191a0bd5a27ef187, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8784314, g: 0.8784314, b: 0.8784314, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1908,10 +1908,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MatResourceName: Prehab_Com
-  DispVariable: MedalGet
-  ShowDigit: 3
   TexResourceName: LastMedalLED
   InstanceName: GET
+  DispVariable: MedalGet
+  ShowDigit: 3
   TimerName: $BonusBGMEnd
   TimeBegin: 0
   TimeInvert: 0
@@ -1960,10 +1960,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MatResourceName: Prehab_Com
-  DispVariable: _creditCount
-  ShowDigit: 2
   TexResourceName: CreditLED
   InstanceName: Credit
+  DispVariable: _creditCount
+  ShowDigit: 2
   TimerName: 
   TimeBegin: 0
   TimeInvert: 0
@@ -2096,10 +2096,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MatResourceName: Prehab_Com
-  DispVariable: GameBonusInt
-  ShowDigit: 6
   TexResourceName: Num22
   InstanceName: Total
+  DispVariable: GameBonusInt
+  ShowDigit: 6
   TimerName: 
   TimeBegin: 0
   TimeInvert: 0
@@ -2192,10 +2192,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MatResourceName: Prehab_Com
-  DispVariable: MedalGet
-  ShowDigit: 6
   TexResourceName: Num22
   InstanceName: Total
+  DispVariable: MedalGet
+  ShowDigit: 6
   TimerName: 
   TimeBegin: 0
   TimeInvert: 0
@@ -2244,10 +2244,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MatResourceName: Prehab_Com
-  DispVariable: _payoutCount
-  ShowDigit: 2
   TexResourceName: CreditLED
   InstanceName: Credit
+  DispVariable: _payoutCount
+  ShowDigit: 2
   TimerName: 
   TimeBegin: 0
   TimeInvert: 0
@@ -2296,10 +2296,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MatResourceName: Prehab_Com
-  DispVariable: RTCount
-  ShowDigit: 3
   TexResourceName: RTGameLED
   InstanceName: LastMedal
+  DispVariable: RTCount
+  ShowDigit: 3
   TimerName: $BonusBGMRT
   TimeBegin: 0
   TimeInvert: 0
