@@ -24,7 +24,7 @@ public abstract class IMultiImageWriter : MonoBehaviour
 	
     // Start is called before the first frame update
 	// GameObjectの生成とテクスチャの切り出しを行う
-    protected void Start()
+    protected virtual void Start()
     {
     	InitDivision();
     	
