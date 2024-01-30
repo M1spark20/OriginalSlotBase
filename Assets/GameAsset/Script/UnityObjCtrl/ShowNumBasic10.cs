@@ -2,13 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShowNumBasic10 : IMultiImageWriter
+public class ShowNumBasic10 : ShowNumBase
 {
 	// 実装すべき関数の未実装
 	protected override void InitDivision() {
 		DivX = 10;
 		DivY =  1;
 		CutWayX = true;
+		ShowX = -ShowDigit;
+		ShowY = 1;
 	}
 	
 	protected override int? GetTextureIndex(int val, uint getDigit) {
