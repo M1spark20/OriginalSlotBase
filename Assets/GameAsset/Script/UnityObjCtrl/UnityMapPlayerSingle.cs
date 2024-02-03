@@ -17,7 +17,7 @@ public class UnityMapPlayerSingle : IMultiImageWriter
 		DivY = 1;
 		CutWayX = true;
 		ShowX = ArrayX;
-		ShowY = ArrayY;
+		ShowY = -ArrayY;
 		OverlapX = LapX;
 		OverlapY = LapX;
 	}
