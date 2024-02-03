@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class UnitySoundPlayer : MonoBehaviour
 {
+	// 使用する音源再生機(Prehab)
+	[SerializeField] private GameObject PrehabSoundPlayer;
 	// 使用する音源一覧をSerializableで登録する
 	[SerializeField] AudioClip[] SoundData;
 	
@@ -12,6 +14,7 @@ public class UnitySoundPlayer : MonoBehaviour
 	List<SlotEffectMaker2023.Data.SoundPlayData>											SoundPlayData;	// 音再生データ
 	
 	SlotEffectMaker2023.Singleton.EffectDataManagerSingleton effectData;
+	
 	
     // Start is called before the first frame update
     void Start()
@@ -22,11 +25,10 @@ public class UnitySoundPlayer : MonoBehaviour
         SoundPlayData = effectData.SoundPlayList;
         
         // playerデータを作成する
-        GameObject prehab = Resources.Load<GameObject>("PrehabSound");
         Transform parent = this.transform;
         foreach(var data in SoundPlayData){
-        	GameObject shot = Instantiate(prehab, parent);
-        	GameObject loop = Instantiate(prehab, parent);
+        	GameObject shot = Instantiate(PrehabSoundPlayer, parent);
+        	GameObject loop = Instantiate(PrehabSoundPlayer, parent);
         	player.Add(new SoundPlayerData(data, shot.GetComponent<AudioSource>(), loop.GetComponent<AudioSource>()));
         }
         // 初期音源を設定する

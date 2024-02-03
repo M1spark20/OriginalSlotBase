@@ -23,6 +23,10 @@ public class CReelDrawerForMainReel : MonoBehaviour
 	Material[] mReelMat;			// 各リールのマテリアル[reelNum]
 	Material[] mCutMat;				// 各リール切れ目のマテリアル[reelNum]
 	
+	// 描画画像
+	[SerializeField] private GameObject PrehabChip;
+	[SerializeField] private GameObject PrehabCutLine;
+	[SerializeField] private Texture2D ReelChip;
 	// リール用ColorMap
 	[SerializeField] private string[] MapShifterName;
 	
@@ -34,16 +38,13 @@ public class CReelDrawerForMainReel : MonoBehaviour
 		mImageBuilder = new MultiImageBuilder();
 		mComaInstance = new GameObject[reelNum][];
 		mCutLine      = new GameObject[reelNum];
-		Texture2D tex = Resources.Load<Texture2D>("coma330x150");
-		mImageBuilder.BuildSprite(tex, "reelMain", DIV_X, DIV_Y, false);
+		mImageBuilder.BuildSprite(ReelChip, "reelMain", DIV_X, DIV_Y, false);
 		
 		// ReelBlur用変数初期化
 		mReelMat      = new Material[reelNum];
 		mCutMat       = new Material[reelNum];
 		
 		// GameObjectの生成元となるPrehabと親objectを定義する
-		GameObject prehab    = Resources.Load<GameObject>("Prehab_MainComa");
-		GameObject prehabCut = Resources.Load<GameObject>("Prehab_CutLine");
 		Transform parent = this.transform;
 		
 		// リール配列を取得、各リールのSpriteを変更しながらPrehabをInstantiateする
@@ -54,13 +55,10 @@ public class CReelDrawerForMainReel : MonoBehaviour
 			string test = "";
 			
 			// リールブラー用Material新規生成(Prehabからコピー)
-			mReelMat[reelC] = new Material(prehab.GetComponent<SpriteRenderer>().sharedMaterial);
+			mReelMat[reelC] = new Material(PrehabChip.GetComponent<SpriteRenderer>().sharedMaterial);
 
 			// 切れ目関係のobjectを生成する
-			mCutLine[reelC] = Instantiate(prehabCut, parent);
-			mCutMat [reelC] = new Material(prehabCut.GetComponent<SpriteRenderer>().sharedMaterial);
-			mCutMat [reelC].SetInt("_Weight", 48);
-			mCutLine[reelC].GetComponent<SpriteRenderer>().sharedMaterial = mCutMat[reelC];
+			mCutLine[reelC] = Instantiate(PrehabCutLine, parent);
 			
 			// 各コマにSpriteとMaterialを割り当てる
 			for(int posC=0; posC<comaNum; ++posC){
@@ -68,7 +66,7 @@ public class CReelDrawerForMainReel : MonoBehaviour
 				int comaIndex = mainROM.ReelArray[reelC][posC].Coma;
 				test += comaIndex.ToString();
 				Vector3 initPos = new Vector3(POS_WBASE * reelC, 0.0f, 0.0f);
-				mComaInstance[reelC][comaNum - posC - 1] = Instantiate(prehab, parent);
+				mComaInstance[reelC][comaNum - posC - 1] = Instantiate(PrehabChip, parent);
 				mComaInstance[reelC][comaNum - posC - 1].transform.localPosition = initPos;
 				
 				// SpriteRendererを呼び出してSpriteを変更し、sharedMaterialを割り当てる
