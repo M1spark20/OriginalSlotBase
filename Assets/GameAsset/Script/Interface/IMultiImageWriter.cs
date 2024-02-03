@@ -13,6 +13,8 @@ public abstract class IMultiImageWriter : MonoBehaviour
 	protected bool				CutWayX;
 	protected int				ShowX;
 	protected int				ShowY;
+	protected float				OverlapX;
+	protected float				OverlapY;
 	
 	// inspectorから取得
 	[SerializeField] protected string MatResourceName;	
@@ -42,7 +44,7 @@ public abstract class IMultiImageWriter : MonoBehaviour
 		(float spW, float spH) = mImageBuilder.GetSpriteSize();
 		for (uint i=0; i<ShowDigit; ++i){
 			mComaInstance[i] = Instantiate(prehab, parent);
-			Vector3 initPos = new Vector3(Mathf.Sign(ShowX) * spW * (float)(i % Mathf.Abs(ShowX)), Mathf.Sign(ShowY) * spH * (float)(i / Mathf.Abs(ShowX)), 0.0f);
+			Vector3 initPos = new Vector3(Mathf.Sign(ShowX) * (spW - OverlapX) * (float)(i % Mathf.Abs(ShowX)), Mathf.Sign(ShowY) * (spH - OverlapY) * (float)(i / Mathf.Abs(ShowX)), 0.0f);
 			mComaInstance[i].transform.localPosition = initPos;
 		}
     }

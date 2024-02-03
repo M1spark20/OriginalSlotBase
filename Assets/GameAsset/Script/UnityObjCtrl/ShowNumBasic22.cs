@@ -11,6 +11,8 @@ public class ShowNumBasic22 : ShowNumBase
 		CutWayX = true;
 		ShowX = -ShowDigit;
 		ShowY = 1;
+		OverlapX = 0f;
+		OverlapY = 0f;
 	}
 	
 	protected override int? GetTextureIndex(int val, uint getDigit) {
