@@ -17,8 +17,8 @@ public abstract class IMultiImageWriter : MonoBehaviour
 	protected float				OverlapY;
 	
 	// inspectorから取得
-	[SerializeField] protected string MatResourceName;	
-	[SerializeField] protected string TexResourceName;
+	[SerializeField] protected GameObject PrehabParent;	
+	[SerializeField] protected Texture2D TexResource;
 	[SerializeField] protected string InstanceName;
 	
 	// 定義すべき関数: テクスチャの使用番号を取得する
@@ -34,16 +34,14 @@ public abstract class IMultiImageWriter : MonoBehaviour
     	
 		mImageBuilder = new MultiImageBuilder();
 		mComaInstance = new GameObject[ShowDigit];
-		Texture2D tex = Resources.Load<Texture2D>(TexResourceName);
-		mImageBuilder.BuildSprite(tex, InstanceName, DivX, DivY, CutWayX);
+		mImageBuilder.BuildSprite(TexResource, InstanceName, DivX, DivY, CutWayX);
 		
 		// GameObjectの生成元となるPrehabと親objectを定義する
-		GameObject prehab = Resources.Load<GameObject>(MatResourceName);
 		Transform parent = this.transform;
 		// GameObjectを生成し、場所を配置する(右揃えのみ)
 		(float spW, float spH) = mImageBuilder.GetSpriteSize();
 		for (uint i=0; i<ShowDigit; ++i){
-			mComaInstance[i] = Instantiate(prehab, parent);
+			mComaInstance[i] = Instantiate(PrehabParent, parent);
 			Vector3 initPos = new Vector3(Mathf.Sign(ShowX) * (spW - OverlapX) * (float)(i % Mathf.Abs(ShowX)), Mathf.Sign(ShowY) * (spH - OverlapY) * (float)(i / Mathf.Abs(ShowX)), 0.0f);
 			mComaInstance[i].transform.localPosition = initPos;
 		}
