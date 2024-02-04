@@ -477,9 +477,9 @@ public class SCJudgeAndPayout : ISlotControllerBase {
 			mNextPayTime = (int)castCommon.IntervalRep;	// リプ待ち時間(1回のみのためpayTimeに直接指定)
 		}
 		
-		// タイマ処理：フリーズ有無で最初に稼働させるタイマを変える
+		// タイマ処理：フリーズ有無で最初に稼働させるタイマを変える。ただしbeforePayFreezeは強制稼働。
+		timer.GetTimer("beforePayFreeze").Activate();
 		if (mFreezeBefore > 0){
-			timer.GetTimer("beforePayFreeze").Activate();
 			// リプレイ時はafterも同時稼働させる
 			if (slotData.basicData.isReplay) timer.GetTimer("afterPayFreeze").Activate();
 		} else {
