@@ -211,7 +211,7 @@ namespace SlotEffectMaker2023.Data
 			for (mRefDataIdx = 0; mRefDataIdx < elemData.Count; ++mRefDataIdx)
 			{
 				if (mRefDataIdx + 1 >= elemData.Count) break;
-				if (calcTime <= elemData[mRefDataIdx + 1].beginTime / divMS) break;
+				if (calcTime < elemData[mRefDataIdx + 1].beginTime / divMS) break;
 			}
 
 			// 使用カード算出(次のカードがない場合はmProgress, mCardIDFloatとも0)

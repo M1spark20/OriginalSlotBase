@@ -2391,6 +2391,10 @@ MonoBehaviour:
   LapY: 0
   MapShifterName:
   - AnimLEDArrReach
+  - AnimLEDSPBarBase
+  - AnimLEDSPBarL
+  - AnimLEDSPBarC
+  - AnimLEDSPBarR
 --- !u!1 &2132379242
 GameObject:
   m_ObjectHideFlags: 0
