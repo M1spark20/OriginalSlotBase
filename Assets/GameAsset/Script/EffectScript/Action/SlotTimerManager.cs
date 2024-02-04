@@ -42,7 +42,6 @@ namespace SlotEffectMaker2023.Action
 			elapsedTime = 0f;
 			if (offset > 0f) elapsedTime = offset;
 			lastElapsed = float.MinValue;
-			UnityEngine.Debug.Log(timerName + "@Reset");
 		}
 		public void Reset() { Reset(0f); }
 
@@ -68,7 +67,6 @@ namespace SlotEffectMaker2023.Action
 			if (!isActivate || isPaused) return;
 			lastElapsed = elapsedTime;
 			elapsedTime += deltaTime;
-			UnityEngine.Debug.Log(timerName + "@Process");
 		}
 
 		// タイマの経過判定結果を取得する
