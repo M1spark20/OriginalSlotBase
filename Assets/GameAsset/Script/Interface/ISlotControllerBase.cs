@@ -477,10 +477,16 @@ public class SCJudgeAndPayout : ISlotControllerBase {
 			mNextPayTime = (int)castCommon.IntervalRep;	// リプ待ち時間(1回のみのためpayTimeに直接指定)
 		}
 		
-		// タイマ処理
-		timer.GetTimer("beforePayFreeze").Activate();
-		// リプレイ時はafterも同時稼働させる
-		if (slotData.basicData.isReplay) timer.GetTimer("afterPayFreeze").Activate();
+		// タイマ処理：フリーズ有無で最初に稼働させるタイマを変える
+		if (mFreezeBefore > 0){
+			timer.GetTimer("beforePayFreeze").Activate();
+			// リプレイ時はafterも同時稼働させる
+			if (slotData.basicData.isReplay) timer.GetTimer("afterPayFreeze").Activate();
+		} else {
+			if(mPayoutNum != 0) timer.GetTimer("payoutTime").Activate();
+			timer.GetTimer("Pay-Bet").Activate();
+			timer.GetTimer("Pay-Lever").Activate();
+		}
 	}
 	
 	public void OnGetKeyDown(EGameButtonID pKeyID){ /* None */ }
