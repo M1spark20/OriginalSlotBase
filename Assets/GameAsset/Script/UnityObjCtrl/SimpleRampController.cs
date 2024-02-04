@@ -20,6 +20,9 @@ public class SimpleRampController : MonoBehaviour
 	[SerializeField] float  TimeBegin;		// 時間下限値
 	[SerializeField] bool   TimeInvert;		// 条件を満たすときに表示するか(true: 表示しない)
 	
+	[SerializeField] int    BlinkCount;		// 点滅回数
+	[SerializeField] float  BlinkCycle;		// 点滅周期
+	
 	// 制御フィールド
 	
     // Start is called before the first frame update
@@ -31,30 +34,50 @@ public class SimpleRampController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-    	bool activated = true;	// ボタンを点灯させるか
+    	// ボタンを点灯させるか
+    	bool activated = true;
+    	bool condVar = true;
+    	bool condTimer = true;
 
     	// 変数の検証
         if (VariableName != string.Empty){
         	int min = Math.Min(RangeA, RangeB);
         	int max = Math.Max(RangeA, RangeB);
         	// bool?(null許容型)が戻り値。VariableNameが存在しない場合は無効判定
-        	activated &= slotData.valManager.GetVariable(VariableName)?.CheckRange(min, max, EqualFlag) == true;
-	        if (!(activated ^ VarInvert)) { this.gameObject.GetComponent<SpriteRenderer>().enabled = false; return; }
+        	activated = false;
+        	activated = slotData.valManager.GetVariable(VariableName)?.CheckRange(min, max, EqualFlag) == true;
+        	condVar = activated ^ VarInvert;
         }
         
         // タイマの検証(タイマが見つからなかった場合無効判定)
         activated = true;
         if (TimerName != string.Empty){
         	var elem = slotData.timerData.GetTimer(TimerName);
-        	if (elem == null) activated = false;
+        	if (elem == null) condTimer = false;
         	else {
-        		if (!elem.isActivate) activated = false;		// タイマが無効な場合無効判定
-        		else activated &= elem.elapsedTime > TimeBegin;	// 指定時間を超過しているか
+        		if (!elem.isActivate) condTimer = false;		// タイマが無効な場合無効判定
+        		else activated = elem.elapsedTime > TimeBegin;	// 指定時間を超過しているか
         	}
-        	if (!(activated ^ TimeInvert)) { this.gameObject.GetComponent<SpriteRenderer>().enabled = false; return; }
+        	// 絶対点灯させない条件
+        	if (!condTimer) { this.gameObject.GetComponent<SpriteRenderer>().enabled = true; return; }
+        	condTimer = activated ^ TimeInvert;
         }
         
         // 計算の結果、ボタンを点灯"させない"場合にオブジェクトを表示する
         this.gameObject.GetComponent<SpriteRenderer>().enabled = true;
+        if (condVar && condTimer) {
+        	this.gameObject.GetComponent<SpriteRenderer>().enabled = false;
+	        // 点滅処理を行う
+	        if (!(BlinkCycle > 0) || BlinkCount == 0) return;
+	        if (TimerName != string.Empty){
+	        	var elem = slotData.timerData.GetTimer(TimerName);
+	        	if (elem == null) return;
+	        	if (!elem.isActivate) return;
+	        	// 消灯条件
+	        	float checkTime = (float)elem.elapsedTime - TimeBegin;
+	        	if ( checkTime % BlinkCycle > BlinkCycle / 2f && (BlinkCount < 0 || (int)(checkTime / BlinkCycle) < BlinkCount) )
+	        		this.gameObject.GetComponent<SpriteRenderer>().enabled = true;
+	        }
+        }
     }
 }
