@@ -88,6 +88,7 @@ namespace SlotEffectMaker2023.Data
 				new SlotVariable("_flagID", 0),
 				new SlotVariable("_bonusID", 0),
 				new SlotVariable("_castBonusID", 0),
+				new SlotVariable("_payLine", 0),
             };
 			// リール関係システムデータ
 			for (int i=0; i<SlotMaker2022.LocalDataSet.REEL_MAX; ++i)

@@ -86,6 +86,7 @@ namespace SlotEffectMaker2023.Singleton {
 			valManager.GetVariable("_flagID")			.val = basicData.castFlag;
 			valManager.GetVariable("_bonusID")			.val = basicData.bonusFlag;
 			valManager.GetVariable("_castBonusID")		.val = basicData.castBonusID;
+			valManager.GetVariable("_payLine")			.val = decimal.ToInt32(basicData.castLines.Export());
 
 			for (int i = 0; i < SlotMaker2022.LocalDataSet.REEL_MAX; ++i)
             {
