@@ -1583,7 +1583,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1065295106
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1781,7 +1781,7 @@ MonoBehaviour:
   PrehabParent: {fileID: 660668306797337239, guid: 1640804cc37af3c4795163531dbeb46b, type: 3}
   TexResource: {fileID: 2800000, guid: 4387eb9d14f82c5458617a64e7a0670d, type: 3}
   InstanceName: Total
-  DispVariable: _payLine
+  DispVariable: _reelStopPos[0]
   ShowDigit: 6
   TimerName: 
   TimeBegin: 0
@@ -1817,7 +1817,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1286245050
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2704,7 +2704,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1815949630
 MonoBehaviour:
   m_ObjectHideFlags: 0
