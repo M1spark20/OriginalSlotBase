@@ -19,7 +19,7 @@ public class UnityMapPlayerSingle : IMultiImageWriter
 		ShowX = ArrayX;
 		ShowY = -ArrayY;
 		OverlapX = LapX;
-		OverlapY = LapX;
+		OverlapY = LapY;
 	}
 	
 	protected override void Start(){
