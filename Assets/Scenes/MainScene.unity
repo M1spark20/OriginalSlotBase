@@ -4666,7 +4666,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PrehabChip: {fileID: 660668306797337239, guid: 104db90c45898a744b03240f00b0deeb, type: 3}
   PrehabCutLine: {fileID: 660668306797337239, guid: 38ebfc1765416f84eaf42d45ce2c5b4c, type: 3}
-  ReelChip: {fileID: 2800000, guid: 9b717aa99c3476443a1f14a57c21a477, type: 3}
   MapShifterName:
   - AnimReelStable
   - AnimReelPayLine
@@ -5112,6 +5111,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 449f4f3d61fb6a74fa19e70df2485486, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ReelChip: {fileID: 2800000, guid: 9b717aa99c3476443a1f14a57c21a477, type: 3}
+  MainROM: {fileID: 4900000, guid: 3a78ceaa87dfdd24282a61dc0cfb43c1, type: 3}
+  EffectData: {fileID: 4900000, guid: 69efabb59f6284245bfbcef16ddb9f5b, type: 3}
 --- !u!1 &2006107755
 GameObject:
   m_ObjectHideFlags: 0

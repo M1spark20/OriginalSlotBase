@@ -14,6 +14,8 @@ public class SlotDataManager : MonoBehaviour
 	
 	// リールチップ画像を指定
 	[SerializeField] private Texture2D ReelChip;
+	[SerializeField] private TextAsset MainROM;
+	[SerializeField] private TextAsset EffectData;
 	
 	// Start is called before the first frame update
 	void Start()
@@ -29,9 +31,9 @@ public class SlotDataManager : MonoBehaviour
 		var tList = new SlotEffectMaker2023.Data.TimerList();
 		
 		// ファイルからデータを読み込む
-		if (!mainROM   .ReadData())          Debug.Log("mainROM Read: Error");  else Debug.Log("mainROM Read: Done");
-		if (!effectData.ReadData())          Debug.Log("effectData Read: Error");  else Debug.Log("effectData Read: Done");
-		if (!slotData  .ReadData(ref tList)) Debug.Log("slotData Read: Error"); else Debug.Log("slotData Read: Done");
+		if (!mainROM   .ReadData(MainROM))    Debug.Log("mainROM Read: Error");    else Debug.Log("mainROM Read: Done");
+		if (!effectData.ReadData(EffectData)) Debug.Log("effectData Read: Error"); else Debug.Log("effectData Read: Done");
+		if (!slotData  .ReadData(ref tList))  Debug.Log("slotData Read: Error");   else Debug.Log("slotData Read: Done");
 		
 		// Singleton初期化
 		slotData.Init(effectData.SoundPlayList, effectData.TimerList, effectData.VarList, effectData.ColorMap.shifter);

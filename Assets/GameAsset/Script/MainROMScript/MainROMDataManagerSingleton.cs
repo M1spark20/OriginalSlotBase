@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using UnityEngine;
 
 namespace SlotMaker2022
 {
@@ -97,49 +96,59 @@ namespace SlotMaker2022
         }
         public bool ReadData()
         {
-           // Resourceから読み込み処理を行う
+           // ファイルから読み込み処理を行う
             var rd = new ProgressRead();
-            TextAsset bin = Resources.Load<TextAsset>("mainROM");
-            if (rd.OpenFile(bin.bytes))
+            if (!rd.OpenFile("mainROM.bin")) return false;
+            if (ReadAction(rd)) return false;
+            rd.Close();
+
+            // バックアップ生成
+            BackupData();
+            return true;
+        }
+        public bool ReadData(UnityEngine.TextAsset data)
+        {   // Unity用
+            var rd = new SlotMaker2022.ProgressRead();
+            if (!rd.OpenFile(data.bytes)) return false;
+            if (!ReadAction(rd)) return false;
+            rd.Close();
+            return true;
+        }
+        private bool ReadAction(ProgressRead rd)
+        {
+            if (!rd.ReadData(SoftInfo)) return false;
+            for (int reelC = 0; reelC < LocalDataSet.REEL_MAX; ++reelC)
             {
-                if (!rd.ReadData(SoftInfo)) return false;
-                for (int reelC = 0; reelC < LocalDataSet.REEL_MAX; ++reelC)
+                for (int i = 0; i < LocalDataSet.COMA_MAX; ++i)
                 {
-                    for (int i = 0; i < LocalDataSet.COMA_MAX; ++i)
-                    {
-                        if(!rd.ReadData(ReelArray[reelC][i])) return false;
-                    }
+                    if (!rd.ReadData(ReelArray[reelC][i])) return false;
                 }
-                if (!rd.ReadData(CastCommonData)) return false;
-                if (!rd.ReadData(CastElemData)) return false;
-                if (!rd.ReadData(FlagCommonData)) return false;
-                if (!rd.ReadData(FlagElemData)) return false;
-                if (!rd.ReadData(FlagRandData)) return false;
-                if (!rd.ReadData(RTCommonData)) return false;
-                if (!rd.ReadData(RTMoveData)) return false;
-                if (!rd.ReadData(FreezeControlData)) return false;
-                if (!rd.ReadData(FreezeTimeData)) return false;
-                if (!rd.ReadData(ComaCombinationData)) return false;
-
-                // ReelSlipDataはデータを一度リセットしてから読み込む
-                ReelSlipData.Clear();
-                if (!rd.ReadData(ReelSlipData)) return false;
-
-                // ReachDataはデータを一度リセットしてから読み込む
-                ReachData.Clear();
-                if (!rd.ReadData(ReachData)) return false;
-
-                // CombiPriorityDataはデータを一度リセットしてから読み込む
-                CombiPriorityData.Clear();
-                if (!rd.ReadData(CombiPriorityData)) return false;
-
-                if (!rd.ReadData(ReelCtrlData)) return false;
-
-                rd.Close();
-                return true;
             }
+            if (!rd.ReadData(CastCommonData)) return false;
+            if (!rd.ReadData(CastElemData)) return false;
+            if (!rd.ReadData(FlagCommonData)) return false;
+            if (!rd.ReadData(FlagElemData)) return false;
+            if (!rd.ReadData(FlagRandData)) return false;
+            if (!rd.ReadData(RTCommonData)) return false;
+            if (!rd.ReadData(RTMoveData)) return false;
+            if (!rd.ReadData(FreezeControlData)) return false;
+            if (!rd.ReadData(FreezeTimeData)) return false;
+            if (!rd.ReadData(ComaCombinationData)) return false;
 
-            return false;
+            // ReelSlipDataはデータを一度リセットしてから読み込む
+            ReelSlipData.Clear();
+            if (!rd.ReadData(ReelSlipData)) return false;
+
+            // ReachDataはデータを一度リセットしてから読み込む
+            ReachData.Clear();
+            if (!rd.ReadData(ReachData)) return false;
+
+            // CombiPriorityDataはデータを一度リセットしてから読み込む
+            CombiPriorityData.Clear();
+            if (!rd.ReadData(CombiPriorityData)) return false;
+
+            if (!rd.ReadData(ReelCtrlData)) return false;
+            return true;
         }
         public bool SaveData()
         {
