@@ -17,6 +17,7 @@ namespace SlotEffectMaker2023.Action
 		public float reelSpeed { get; private set; }    // 現在のリール速度[rpm](+:下向き)
 		public byte stopPos { get; private set; }   // 停止目標
 		public byte pushPos { get; private set; }   // リール押下位置
+		public byte stopOrder { get; private set; }   // リールを停止させた順番
 		public byte slipCount { get; private set; } // 停止時すべりコマ数
 		public bool isRotate { get; private set; }  // リールが回転中か
 		public bool accEnd { get; private set; }    // リールが加速を終えたか
@@ -27,6 +28,7 @@ namespace SlotEffectMaker2023.Action
 			reelSpeed = 0.0f;
 			stopPos = 0;
 			pushPos = 0;
+			stopOrder = 0;
 			slipCount = 0;
 			isRotate = false;
 			accEnd = false;
@@ -37,6 +39,7 @@ namespace SlotEffectMaker2023.Action
 			reelSpeed = 0.0f;
 			stopPos = defaultPos;
 			pushPos = defaultPos;
+			stopOrder = 0;
 			slipCount = 0;
 			isRotate = false;
 			accEnd = false;
@@ -47,6 +50,7 @@ namespace SlotEffectMaker2023.Action
 			fs.Write(reelSpeed);
 			fs.Write(stopPos);
 			fs.Write(pushPos);
+			fs.Write(stopOrder);
 			fs.Write(slipCount);
 			fs.Write(isRotate);
 			fs.Write(accEnd);
@@ -58,6 +62,7 @@ namespace SlotEffectMaker2023.Action
 			reelSpeed = fs.ReadSingle();
 			stopPos = fs.ReadByte();
 			pushPos = fs.ReadByte();
+			stopOrder = fs.ReadByte();
 			slipCount = fs.ReadByte();
 			isRotate = fs.ReadBoolean();
 			accEnd = fs.ReadBoolean();
@@ -73,6 +78,7 @@ namespace SlotEffectMaker2023.Action
 			accEnd = false;
 			stopPos = REEL_NPOS;
 			pushPos = REEL_NPOS;
+			stopOrder = REEL_NPOS;
 			slipCount = REEL_NPOS;
 		}
 		// リールが参照するコマを取得する(位置補正なし: リール回転用)
@@ -96,7 +102,7 @@ namespace SlotEffectMaker2023.Action
 		public bool CanStop() { return (isRotate && accEnd && pushPos == REEL_NPOS); }
 
 		// リールの停目を設定し、停止制御を行う
-		public void SetStopPos(int pSlipCount)
+		public void SetStopPos(int pSlipCount, int pStopOrder)
 		{
 			// リールが回転していない or 速度が一定でない or 停止制御済みの場合、処理を行わない
 			if (!CanStop()) return;
@@ -105,6 +111,7 @@ namespace SlotEffectMaker2023.Action
 			slipCount = (byte)pSlipCount;
 			pushPos = GetReelComaIDFixed();
 			stopPos = (byte)((pushPos + slipCount) % comaNum);
+			stopOrder = (byte)(pStopOrder + 1);
 		}
 		// リールの回転処理を行う
 		public void Process(float dt)

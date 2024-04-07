@@ -402,7 +402,7 @@ public class SCReelOperation : ISlotControllerBase {
 		stopHistory[reelIndex] = stopReel.GetReelComaIDFixed();
 		int slipNum = reelManager.GetReelControl3R(reelIndex, stopHistory, stop1st, slip1st, bs.betCount-1, bs.gameMode, bs.bonusFlag, bs.castFlag);
 		
-		stopReel.SetStopPos(slipNum);
+		stopReel.SetStopPos(slipNum, stopReelCount);
 		//Debug.Log("Push: " + stopReel.pushPos.ToString() + ", Stop: " + stopReel.stopPos.ToString() + " (" + stopReel.slipCount.ToString() + ")");
 		// 変数を制御する
 		stopHistory[reelIndex] = stopReel.stopPos;

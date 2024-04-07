@@ -1678,10 +1678,6 @@ PrefabInstance:
       propertyPath: BlinkCondVar
       value: _gameMode
       objectReference: {fileID: 0}
-    - target: {fileID: 2684588408585739780, guid: 1ecf8d3b24eb4dd4298774b86fde2778, type: 3}
-      propertyPath: DispVariable
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 2684588408585739802, guid: 1ecf8d3b24eb4dd4298774b86fde2778, type: 3}
       propertyPath: m_Name
       value: BB_Count
@@ -2737,10 +2733,6 @@ PrefabInstance:
     - target: {fileID: 2684588408585739780, guid: 1ecf8d3b24eb4dd4298774b86fde2778, type: 3}
       propertyPath: BlinkCondVar
       value: _gameMode
-      objectReference: {fileID: 0}
-    - target: {fileID: 2684588408585739780, guid: 1ecf8d3b24eb4dd4298774b86fde2778, type: 3}
-      propertyPath: DispVariable
-      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2684588408585739802, guid: 1ecf8d3b24eb4dd4298774b86fde2778, type: 3}
       propertyPath: m_Name

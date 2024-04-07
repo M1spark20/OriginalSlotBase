@@ -95,6 +95,7 @@ namespace SlotEffectMaker2023.Data
             {
 				VData.Add(new SlotVariable("_reelPushPos[" + i + "]", -1));
 				VData.Add(new SlotVariable("_reelStopPos[" + i + "]", -1));
+				VData.Add(new SlotVariable("_reelStopOrder[" + i + "]", -1));
             }
         }
 		public bool StoreData(ref BinaryWriter fs, int version)

@@ -92,6 +92,7 @@ namespace SlotEffectMaker2023.Singleton {
             {
 				valManager.GetVariable("_reelPushPos[" + i + "]").val = reelData[i].pushPos;
 				valManager.GetVariable("_reelStopPos[" + i + "]").val = reelData[i].stopPos;
+				valManager.GetVariable("_reelStopOrder[" + i + "]").val = reelData[i].stopOrder;
             }
 
 			// タイムラインを運用する
