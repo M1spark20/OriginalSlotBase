@@ -42,3 +42,7 @@ sysinfo.txt
 
 # sound raw file
 *.wav
+
+# font file
+Assets/TextMesh Pro*
+Assets/GameAsset/font*
