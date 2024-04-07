@@ -10,6 +10,10 @@ public class SlotDataManager : MonoBehaviour
 	SlotEffectMaker2023.Singleton.SlotDataSingleton				slotData;	// スロット基本情報
 	SlotEffectMaker2023.Action.SlotTimerManager 				timer;		// タイマー(slotDataから抜粋)
 	ISlotControllerBase											controller;	// ゲーム制御用クラス
+	ReelChipHolder												chipData;	// リール図柄格納データ
+	
+	// リールチップ画像を指定
+	[SerializeField] private Texture2D ReelChip;
 	
 	// Start is called before the first frame update
 	void Start()
@@ -18,6 +22,8 @@ public class SlotDataManager : MonoBehaviour
 		effectData = SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.GetInstance();
 		slotData   = SlotEffectMaker2023.Singleton.SlotDataSingleton.GetInstance();
 		timer      = slotData.timerData;
+		chipData   = ReelChipHolder.GetInstance();
+		chipData.Init(ReelChip);
 		
 		// タイマ作成用データ生成
 		var tList = new SlotEffectMaker2023.Data.TimerList();

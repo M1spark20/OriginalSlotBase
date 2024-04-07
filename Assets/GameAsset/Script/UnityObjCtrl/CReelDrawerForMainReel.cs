@@ -7,8 +7,6 @@ using UnityEngine;
 public class CReelDrawerForMainReel : MonoBehaviour
 {
 	// 定数
-	const int DIV_X = 1;
-	const int DIV_Y = 10;
 	const float POS_WBASE = 3.46f;
 	const int START_INDEX = -2;
 	const int DRAW_NUM    =  7;
@@ -26,7 +24,6 @@ public class CReelDrawerForMainReel : MonoBehaviour
 	// 描画画像
 	[SerializeField] private GameObject PrehabChip;
 	[SerializeField] private GameObject PrehabCutLine;
-	[SerializeField] private Texture2D ReelChip;
 	// リール用ColorMap
 	[SerializeField] private string[] MapShifterName;
 	
@@ -35,10 +32,9 @@ public class CReelDrawerForMainReel : MonoBehaviour
 	{
 		// リール数を取得してImageBuilderとTextureのインスタンスを生成する
 		const int reelNum = SlotMaker2022.LocalDataSet.REEL_MAX;
-		mImageBuilder = new MultiImageBuilder();
 		mComaInstance = new GameObject[reelNum][];
 		mCutLine      = new GameObject[reelNum];
-		mImageBuilder.BuildSprite(ReelChip, "reelMain", DIV_X, DIV_Y, false);
+		mImageBuilder = ReelChipHolder.GetInstance().ReelChipData;
 		
 		// ReelBlur用変数初期化
 		mReelMat      = new Material[reelNum];
