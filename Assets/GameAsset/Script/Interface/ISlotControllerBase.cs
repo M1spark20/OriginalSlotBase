@@ -179,7 +179,7 @@ public class SCWaitBeforeReelStart : ISlotControllerBase {
 		waitTime = WAIT_MAX;
 		
 		// BET消化処理
-		slotData.basicData.LatchBet();
+		slotData.basicData.LatchBet(slotData.historyManager);
 		
 		// 乱数抽選処理
 		SetCastFlag();
@@ -554,12 +554,12 @@ public class SCJudgeAndPayout : ISlotControllerBase {
 		byte lastRT = basicData.RTMode;
 		
 		// 配当をbasicDataに転送する。戻り値として払出枚数を受ける
-		mPayoutNum = basicData.SetPayout(castResult, mainROM.CastCommonData);
+		mPayoutNum = basicData.SetPayout(castResult, mainROM.CastCommonData, slotData.historyManager, slotData.reelData, slotData.valManager);
 		// モードとRTの変更処理を行う。変更された場合はタイマを作動させる。
 		// SetPayoutより後で呼び出すことで当該Gのゲーム数減算をさせない。
-		basicData.ModeChange(castResult, mainROM.CastCommonData, mainROM.RTCommonData, mainROM.RTMoveData, timer);
+		basicData.ModeChange(castResult, mainROM.CastCommonData, mainROM.RTCommonData, mainROM.RTMoveData, timer, slotData.historyManager, slotData.valManager);
 		// モード移行処理(終了側)を行う
-		slotData.basicData.ModeReset(mainROM.CastCommonData, mainROM.RTCommonData, mainROM.RTMoveData, timer, mPayoutNum < 0 ? 0 : mPayoutNum);
+		slotData.basicData.ModeReset(mainROM.CastCommonData, mainROM.RTCommonData, mainROM.RTMoveData, timer, mPayoutNum < 0 ? 0 : mPayoutNum, slotData.historyManager);
 		
 		// フリーズ抽選
 		slotData.freezeManager.SetFreezeMode(mainROM.FreezeControlData, mainROM.FreezeTimeData, lastMode, basicData.gameMode);

@@ -128,12 +128,12 @@ namespace SlotEffectMaker2023.Action
 			betCount = 0;
 		}
 		// BETを用いてリールを回転させる
-		public void LatchBet()
+		public void LatchBet(HistoryManager hm)
 		{
 			isBetLatched = true;                // BETを消化済みにする
 			inCount += betCount;                // INメダル枚数を加算する
 			if (isReplay) outCount += betCount; // リプレイの場合、OUTメダル枚数も加算する
-												// ゲーム数更新(あとで)
+			hm.AddLossGame();					// ボーナス成立後G数を更新する
 		}
 		// フラグ設定
 		public void SetCastFlag(byte pBonusFlag, byte pCastFlag, LocalDataSet.CastCommonData cc, LocalDataSet.RTCommonData rtc, SlotTimerManager tm)
@@ -150,13 +150,16 @@ namespace SlotEffectMaker2023.Action
 		}
 		// 配当設定(必要なものだけ設定する)
 		// ret: 当該配当での総払出枚数(0-max), replay(-1)
-		public int SetPayout(MainReelManager.GetCastResult castResult, LocalDataSet.CastCommonData cc)
+		public int SetPayout(MainReelManager.GetCastResult castResult, LocalDataSet.CastCommonData cc, HistoryManager hm, List<ReelBasicData> rd, SlotValManager vm)
 		{
 			// データリセット
 			castLines.Import(0);
 			castBonusID = 0;
 			isReplay = false;
 			int payCount = 0;
+
+			// 出目履歴/成立時出目登録
+			hm.LatchHist(this, rd, vm);
 
 			for (int castC = 0; castC < castResult.payLine.Count; ++castC)
 			{
@@ -206,7 +209,7 @@ namespace SlotEffectMaker2023.Action
 			creditShow = (byte)Math.Min(creditShow + 1, CREDIT_MAX);
 		}
 		// モード移行処理(入賞による) modeChangeとRTChangeで状態変化結果を返す
-		public void ModeChange(MainReelManager.GetCastResult castResult, LocalDataSet.CastCommonData cc, LocalDataSet.RTCommonData rtc, List<LocalDataSet.RTMoveData> rmList, SlotTimerManager tm)
+		public void ModeChange(MainReelManager.GetCastResult castResult, LocalDataSet.CastCommonData cc, LocalDataSet.RTCommonData rtc, List<LocalDataSet.RTMoveData> rmList, SlotTimerManager tm, HistoryManager hm, SlotValManager vm)
 		{
 			for (int castC = 0; castC < castResult.matchCast.Count; ++castC)
 			{
@@ -214,6 +217,7 @@ namespace SlotEffectMaker2023.Action
 				// モード更新とこれに伴うRT更新
 				if (checkData.ChangeGameModeFlag)
 				{
+					hm.StartBonus(this, vm);	// ボーナス履歴更新
 					bonusFlag = 0;
 					SetMode(checkData.ChangeGameModeDest, checkData.BonusPayoutMaxID, checkData.BonusGameMaxID, cc, rtc, rmList, tm);
 				}
@@ -223,13 +227,21 @@ namespace SlotEffectMaker2023.Action
 			}
 		}
 		// モードリセット処理
-		public void ModeReset(LocalDataSet.CastCommonData cc, LocalDataSet.RTCommonData rtc, List<LocalDataSet.RTMoveData> rmList, SlotTimerManager tm, int nowPayout)
+		public void ModeReset(LocalDataSet.CastCommonData cc, LocalDataSet.RTCommonData rtc, List<LocalDataSet.RTMoveData> rmList, SlotTimerManager tm, int nowPayout, HistoryManager hm)
 		{
 			if (gameMode != 0)
 			{
 				// モードのリセット: 払出残数=0または残ゲーム数=0orJAC数=0
-				if (modeMedalCount >= 0 && modeMedalCount - nowPayout <= 0) SetMode(0, 0, 0, cc, rtc, rmList, tm);
-				if (modeMedalCount < 0 && (modeGameCount <= 0 || modeJacCount <= 0)) SetMode(0, 0, 0, cc, rtc, rmList, tm);
+				if (modeMedalCount >= 0 && modeMedalCount - nowPayout <= 0)
+				{
+					hm.FinishBonus(this, nowPayout);		// ボーナス履歴更新
+					SetMode(0, 0, 0, cc, rtc, rmList, tm);
+				}
+				if (modeMedalCount < 0 && (modeGameCount <= 0 || modeJacCount <= 0))
+				{
+					hm.FinishBonus(this, nowPayout);		// ボーナス履歴更新
+					SetMode(0, 0, 0, cc, rtc, rmList, tm);
+				}
 				// Debug.Log("ModeChk: Mode=" + gameMode + " Limit(Game/Jac/Medal)=" + modeGameCount + "/" + modeJacCount + "/" + modeMedalCount);
 			}
 			if (RTMode != 0)

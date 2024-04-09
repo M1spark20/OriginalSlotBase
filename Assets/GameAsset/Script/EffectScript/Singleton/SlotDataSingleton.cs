@@ -15,6 +15,8 @@ namespace SlotEffectMaker2023.Singleton {
 		public Action.DataShifterManager<Data.ColorMapShifter>	colorMapData { get; set; }
 		// フリーズ関連データ
 		public Action.FreezeManager			freezeManager { get; set; }
+		// 履歴関連データ
+		public Action.HistoryManager		historyManager { get; set; }
 	
 		// Singletonインスタンス
 		private static SlotDataSingleton ins = new SlotDataSingleton();
@@ -31,6 +33,7 @@ namespace SlotEffectMaker2023.Singleton {
 			soundData = new Action.DataShifterManager<Data.SoundPlayData>();
 			colorMapData = new Action.DataShifterManager<Data.ColorMapShifter>();
 			freezeManager = new Action.FreezeManager();
+			historyManager = new Action.HistoryManager();
 		}
 
 		public void Init(List<Data.SoundPlayData> pSoundPlayData, Data.TimerList pTimer, Data.VarList pVar, List<Data.ColorMapShifter> pMapPlayData)
@@ -94,6 +97,9 @@ namespace SlotEffectMaker2023.Singleton {
 				valManager.GetVariable("_reelStopPos[" + i + "]").val = reelData[i].stopPos;
 				valManager.GetVariable("_reelStopOrder[" + i + "]").val = reelData[i].stopOrder;
             }
+
+			// ボーナス回数を更新する
+			historyManager.Process(valManager);
 
 			// タイムラインを運用する
 			var timeline = EffectDataManagerSingleton.GetInstance().Timeline.timerData;
