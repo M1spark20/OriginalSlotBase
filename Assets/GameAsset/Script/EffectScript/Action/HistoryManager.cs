@@ -13,6 +13,7 @@ namespace SlotEffectMaker2023.Action
         public byte BetNum { get; set; }            // ベット枚数
         public byte FlagID { get; set; }            // 成立フラグ(非表示)
         public byte BonusID { get; set; }           // 成立ボーナス(非表示)
+        public int InEffect { get; set; }           // 演出ID
 
         public PatternHistoryElem()
         {
@@ -22,6 +23,7 @@ namespace SlotEffectMaker2023.Action
             BetNum = 0;
             FlagID = 0;
             BonusID = 0;
+            InEffect = 0;
         }
         public bool StoreData(ref BinaryWriter fs, int version)
         {
@@ -35,6 +37,7 @@ namespace SlotEffectMaker2023.Action
             fs.Write(BetNum);
             fs.Write(FlagID);
             fs.Write(BonusID);
+            fs.Write(InEffect);
             return true;
         }
         public bool ReadData(ref BinaryReader fs, int version)
@@ -49,6 +52,7 @@ namespace SlotEffectMaker2023.Action
             BetNum = fs.ReadByte();
             FlagID = fs.ReadByte();
             BonusID = fs.ReadByte();
+            InEffect = fs.ReadInt32();
             return true;
         }
     }
@@ -56,7 +60,6 @@ namespace SlotEffectMaker2023.Action
     {
         public int InGame { get; set; }         // 入賞G
         public string InDate { get; set; }      // 入賞時刻
-        public int InEffect { get; set; }    // 成立時演出
         public byte BonusFlag { get; set; }     // 成立ボーナス
         public int MedalBefore { get; set; }    // ボーナス開始時差枚
         public int MedalAfter { get; set; }     // ボーナス終了時差枚
@@ -69,7 +72,6 @@ namespace SlotEffectMaker2023.Action
         {
             InGame = -1;
             InDate = string.Empty;
-            InEffect = 0;
             BonusFlag = 0;
             MedalBefore = 0;
             MedalAfter = 0;
@@ -82,7 +84,6 @@ namespace SlotEffectMaker2023.Action
         {
             fs.Write(InGame);
             fs.Write(InDate);
-            fs.Write(InEffect);
             fs.Write(BonusFlag);
             fs.Write(MedalBefore);
             fs.Write(MedalAfter);
@@ -95,7 +96,6 @@ namespace SlotEffectMaker2023.Action
         {
             InGame = fs.ReadInt32();
             InDate = fs.ReadString();
-            InEffect = fs.ReadInt32();
             BonusFlag = fs.ReadByte();
             MedalBefore = fs.ReadInt32();
             MedalAfter = fs.ReadInt32();
@@ -170,11 +170,13 @@ namespace SlotEffectMaker2023.Action
         {
             // 出目履歴を記録する(通常時のみ)
             if (bs.gameMode != 0) return;
+            var confBase = Singleton.EffectDataManagerSingleton.GetInstance().HistoryConf;
             var nowPtn = new PatternHistoryElem()
             {
                 BetNum = bs.betCount,
                 FlagID = bs.castFlag,
-                BonusID = bs.bonusFlag
+                BonusID = bs.bonusFlag,
+                InEffect = vm.GetVariable(confBase.LaunchEffect)?.val ?? 0,
             };
             for (int i = 0; i < REEL_MAX; ++i)
             {
@@ -183,11 +185,10 @@ namespace SlotEffectMaker2023.Action
                 nowPtn.StopOrder.Add(rd[i].stopOrder);
             }
             ShiftAdd(PatternHist, nowPtn, PATTERN_MAX);
-            Debug.Log("PatHist ReelPos[0]: " + nowPtn.ReelPos[0].ToString() + ", StopOrder[0]: " + nowPtn.StopOrder[0].ToString() + ", size:" + PatternHist.Count.ToString());
+            Debug.Log("PatHist ReelPos[0]: " + nowPtn.ReelPos[0].ToString() + ", StopOrder[0]: " + nowPtn.StopOrder[0].ToString() + ", InEffect: " + nowPtn.InEffect.ToString() + ", size:" + PatternHist.Count.ToString());
 
             // ボーナス成立時出目を記録する
             if (bs.bonusFlag == 0) return;
-            var confBase = Singleton.EffectDataManagerSingleton.GetInstance().HistoryConf;
             var conf = confBase.GetConfig(bs.bonusFlag);
             if (conf == null) return;
             if (conf.BonusType <= 0 && conf.BonusType > Data.HistoryConfig.BONUS_TYPE_MAX) return;
@@ -198,11 +199,10 @@ namespace SlotEffectMaker2023.Action
             BonusHistoryElem inData = new BonusHistoryElem
             {
                 BonusFlag = bs.bonusFlag,
-                InEffect = vm.GetVariable(confBase.LaunchEffect)?.val ?? 0,
                 InPattern = nowPtn
             };
             ShiftAdd(BonusHist, inData, -1);
-            Debug.Log("BonusHist InEffect: " + inData.InEffect.ToString() + ", BonusFlag: " + inData.BonusFlag.ToString() + ", size:" + BonusHist.Count.ToString());
+            Debug.Log("BonusHist BonusFlag: " + inData.BonusFlag.ToString() + ", size:" + BonusHist.Count.ToString());
         }
         public void AddLossGame()
         {
