@@ -4,15 +4,8 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-public class MainMenuHistory : UIShowHistory
+public class MainMenuHistory : MonoBehaviour
 {
-	private int ShowBegin;
-	public int SelectedIndex { get; private set; }
-
-	// ボーナス履歴追加データ
-	protected GameObject[] Number;
-	protected GameObject[] Get;
-	
 	// 成立時出目データ
 	[Header("成立時出目データ")]
 	[SerializeField] protected float ComaDX;
@@ -24,27 +17,13 @@ public class MainMenuHistory : UIShowHistory
 	private GameObject[] BonusInCutLine;
 	private SlotMaker2022.LocalDataSet.ReelArray[][] ra;
 	
+	private SlotEffectMaker2023.Action.HistoryManager hm;
+	private ReelChipHolder comaData;
+
+	
     // Start is called before the first frame update
-    protected override void Start()
+    private void Start()
     {
-    	base.Start();
-        Number = new GameObject[ShowNum];
-        Get = new GameObject[ShowNum];
-        
-        Number[0] = Parent.transform.Find("Number").gameObject;
-        Get[0] = Parent.transform.Find("Get").gameObject;
-        
-        for (int i=1; i<ShowNum; ++i){
-        	Number[i] = Instantiate(Number[0], Parent.transform);
-        	Number[i].transform.localPosition += new Vector3(0, DiffY * i, 0);
-        	Get[i] = Instantiate(Get[0], Parent.transform);
-        	Get[i].transform.localPosition += new Vector3(0, DiffY * i, 0);
-        }
-        
-        // 参照中データ初期化
-        ShowBegin = 0;
-        SelectedIndex = 0;
-        
         // 成立時出目データ初期化
         const int reelNum = SlotMaker2022.LocalDataSet.REEL_MAX;
         const int showComaNum = SlotMaker2022.LocalDataSet.SHOW_MAX;
@@ -81,13 +60,16 @@ public class MainMenuHistory : UIShowHistory
 				BonusInComaID[i][j].transform.localPosition += new Vector3(ComaDX * i, BonusInComaImg[0][0].GetComponent<RectTransform>().sizeDelta.y * j, 0);
 			}
 		}
+		
+		hm = SlotEffectMaker2023.Singleton.SlotDataSingleton.GetInstance().historyManager;
+        comaData = ReelChipHolder.GetInstance();
     }
 
     // Update is called once per frame
-    protected override void Update()
+    private void Update()
     {
-        base.Update();
-        
+    	int SelectedIndex = 0;
+    	
         // 成立時出目表示
         if (SelectedIndex >= 0 && SelectedIndex < hm.BonusHist.Count && hm.BonusHist[SelectedIndex].IsActivate){
         	string[] orderPtn = { "", "1st", "2nd", "3rd" };
@@ -133,26 +115,6 @@ public class MainMenuHistory : UIShowHistory
         }
     }
     
-    protected override void UpdateData(int setPos, int refHist){
-		if (refHist >= hm.BonusHist.Count){
-    		// 履歴データが尽きた場合
-			Value[setPos].SetActive(false);
-			Symbol[setPos].SetActive(false);
-			Number[setPos].SetActive(false);
-			Get[setPos].SetActive(false);
-		} else {
-			// 履歴データ表示
-			var refData = hm.BonusHist[refHist];
-			Value[setPos].SetActive(true);
-			Value[setPos].GetComponent<TextMeshProUGUI>().text = refData.InGame.ToString();
-			Symbol[setPos].SetActive(true);
-			Symbol[setPos].GetComponent<Image>().sprite = comaData.ReelChipData.Extract(hc.GetConfig(refData.BonusFlag).ComaID);
-			Number[setPos].SetActive(true);
-			Number[setPos].GetComponent<TextMeshProUGUI>().text = (hm.BonusHist.Count - SelectedIndex).ToString();
-			Get[setPos].SetActive(refData.IsFinished);
-			Get[setPos].GetComponent<TextMeshProUGUI>().text = (refData.MedalAfter - refData.MedalBefore).ToString();
-		}
-    }    
     public void ShowBeginUpdate(float pBarPosY){
     	
     }
