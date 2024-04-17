@@ -5,10 +5,10 @@ using UnityEngine;
 public class ScrollPrehabBase : MonoBehaviour
 {
 	private UISmartScroller scr;
-	int lastID;
+	private int lastID;
 
     // Start is called before the first frame update
-    void Start()
+    virtual protected void Start()
     {
 		scr = transform.parent.transform.parent.transform.parent.GetComponent<UISmartScroller>();
 		lastID = int.MinValue;
@@ -18,10 +18,14 @@ public class ScrollPrehabBase : MonoBehaviour
     void Update()
     {
 		int nowID = scr.GetContentID(int.Parse(name));
-		if (nowID != lastID){
+		if (NeedRefresh(nowID)){
 			RefreshData(nowID);
 			lastID = nowID;
 		}
+    }
+    
+    virtual protected bool NeedRefresh(int pID){
+    	return pID != lastID;
     }
     
     virtual protected void RefreshData(int pID){ }

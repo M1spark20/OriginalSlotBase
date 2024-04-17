@@ -17,8 +17,10 @@ public class UISmartScroller : MonoBehaviour
 	private ScrollRect Rect;
 	private float ContentSize;
 	private int ShowContentNum;
+	private bool ForceUpdateFlag;
 	
 	public int ContentCount { get; private set; }
+	public int ShowOffset { get; private set; }
 	
 	private const int overDraw = 2;
 	
@@ -32,7 +34,7 @@ public class UISmartScroller : MonoBehaviour
         Rect = GetComponent<ScrollRect>();
         ContentCount = 0;
         CheckViewSize();
-        SetContentSize(1000);
+        ForceUpdateFlag = false;
         
         ShowData = null;
         if (ContentPrehab == null) return;
@@ -42,10 +44,10 @@ public class UISmartScroller : MonoBehaviour
         for (int i=0; i<ShowData.Length; ++i){
         	ShowData[i] = Instantiate(ContentPrehab, ContentList.transform);
         	ShowData[i].name = i.ToString();
-        	ShowContentID[i] = i-overDraw;
+        	ShowContentID[i] = int.MinValue;
         	// 初期位置は[0]を一番上に置く(ただし一番上は枠外)
         	ShowData[i].transform.localPosition = new Vector3(0, -ContentSize * ShowContentID[i], 0);
-    		ShowData[i].SetActive(ShowContentID[i] >= 0 && ShowContentID[i] < ContentCount);
+    		ShowData[i].SetActive(i >= 0 && i < ContentCount);
         }
     }
 
@@ -59,7 +61,7 @@ public class UISmartScroller : MonoBehaviour
         if (nmPos > 1f) nmPos = 1f;
         // スクロール量が存在しない場合はトリムする
         if (moveSize < 0f) nmPos = 0f;
-        Debug.Log(nmPos.ToString("F6"));
+        // Debug.Log(nmPos.ToString("F6"));
         
         float showBegin = nmPos * moveSize;
         int beginItem = (int)(showBegin / ContentSize);
@@ -68,14 +70,18 @@ public class UISmartScroller : MonoBehaviour
         // コンテンツの位置を調整する
         for (int i=0; i<ShowData.Length; ++i){
         	int ctrl = (ctrlBegin + i) % ShowContentNum;	// 制御データ
-        	int currentID = beginItem + i - overDraw;
-        	if (ShowContentID[ctrl] != currentID){
+        	int currentID = beginItem + i - overDraw + ShowOffset;
+        	if (ShowContentID[ctrl] != currentID || ForceUpdateFlag){
         		// データの更新を行う
         		ShowContentID[ctrl] = currentID;
         		ShowData[ctrl].SetActive(currentID >= 0 && currentID < ContentCount);
         	}
+        	// 初期位置は[0]を一番上に置く(ただし一番上は枠外)
         	ShowData[ctrl].transform.localPosition = new Vector3(0, -(ContentSize * ShowContentID[ctrl]), 0);
         }
+        
+        // 強制更新フラグリセット
+        ForceUpdateFlag = false;
     }
     
     void CheckViewSize(){
@@ -85,11 +91,13 @@ public class UISmartScroller : MonoBehaviour
     
     public int GetContentID(int pID){ return ShowContentID[pID]; }
     
-    public void SetContentSize(int size) {
+    public void SetContentSize(int size, int offset) {
     	// 最大スクロール量を調整する
     	ContentCount = size;
+    	ShowOffset = offset;
     	var contSize = ContentTransform.sizeDelta;
     	contSize.y = ContentSize * ContentCount;
     	ContentTransform.sizeDelta = contSize;
+    	ForceUpdateFlag = true;
     }
 }
