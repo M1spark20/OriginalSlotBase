@@ -12,10 +12,15 @@ public class SlotDataManager : MonoBehaviour
 	ISlotControllerBase											controller;	// ゲーム制御用クラス
 	ReelChipHolder												chipData;	// リール図柄格納データ
 	
+	bool MenuShown;	// メインメニュー表示中かのフラグ
+	
 	// リールチップ画像を指定
 	[SerializeField] private Texture2D ReelChip;
 	[SerializeField] private TextAsset MainROM;
 	[SerializeField] private TextAsset EffectData;
+	
+	[SerializeField] private GameObject MainMenuObj;
+	private MainMenuManager MainMenuScr;
 	
 	void Awake()
 	{
@@ -39,6 +44,11 @@ public class SlotDataManager : MonoBehaviour
 		
 		// コントローラー初期インスタンス生成
 		controller = new SCWaitBet();
+		
+		// メニュー非表示からスタート
+		MainMenuScr = MainMenuObj.GetComponent<MainMenuManager>();
+		MenuShown = false;
+		MainMenuObj.SetActive(MenuShown);
 	}
 
 	// Update is called once per frame
@@ -47,19 +57,34 @@ public class SlotDataManager : MonoBehaviour
 		// タイマーのみ先に更新
 		timer.Process(Time.deltaTime);
 		
-		// KeyDown設定
-		if(Input.GetKeyDown("1")) controller.OnGetKeyDown(EGameButtonID.e1Bet);
-		if(Input.GetKey    ("1")) controller.OnGetKey    (EGameButtonID.e1Bet);
-		if(Input.GetKeyDown("3")) controller.OnGetKeyDown(EGameButtonID.eMaxBet);
-		if(Input.GetKey    ("3")) controller.OnGetKey    (EGameButtonID.eMaxBet);
-		if(Input.GetKeyDown(KeyCode.UpArrow   )) controller.OnGetKeyDown(EGameButtonID.eMaxBetAndStart);
-		if(Input.GetKey    (KeyCode.UpArrow   )) controller.OnGetKey    (EGameButtonID.eMaxBetAndStart);
-		if(Input.GetKeyDown(KeyCode.LeftArrow )) controller.OnGetKeyDown(EGameButtonID.e1Reel);
-		if(Input.GetKey    (KeyCode.LeftArrow )) controller.OnGetKey    (EGameButtonID.e1Reel);
-		if(Input.GetKeyDown(KeyCode.DownArrow )) controller.OnGetKeyDown(EGameButtonID.e2Reel);
-		if(Input.GetKey    (KeyCode.DownArrow )) controller.OnGetKey    (EGameButtonID.e2Reel);
-		if(Input.GetKeyDown(KeyCode.RightArrow)) controller.OnGetKeyDown(EGameButtonID.e3Reel);
-		if(Input.GetKey    (KeyCode.RightArrow)) controller.OnGetKey    (EGameButtonID.e3Reel);
+		// Menu表示ボタン(描画は暫定)
+		if (Input.GetKeyDown("m")) {
+			MenuShown ^= true;
+			MainMenuObj.SetActive(MenuShown);
+		}
+		
+		// KeyDown設定(Menu表示状態により制御を変える)
+		if (MenuShown){
+			// メニュー画面の制御
+			if(Input.GetKeyDown(KeyCode.UpArrow   )) MainMenuScr.OnGetKeyDown(EMenuButtonID.eScrUp);
+			if(Input.GetKeyDown(KeyCode.LeftArrow )) MainMenuScr.OnGetKeyDown(EMenuButtonID.eScrLeft);
+			if(Input.GetKeyDown(KeyCode.DownArrow )) MainMenuScr.OnGetKeyDown(EMenuButtonID.eScrDn);
+			if(Input.GetKeyDown(KeyCode.RightArrow)) MainMenuScr.OnGetKeyDown(EMenuButtonID.eScrRight);
+		} else {
+			// ゲーム本体の制御
+			if(Input.GetKeyDown("1")) controller.OnGetKeyDown(EGameButtonID.e1Bet);
+			if(Input.GetKey    ("1")) controller.OnGetKey    (EGameButtonID.e1Bet);
+			if(Input.GetKeyDown("3")) controller.OnGetKeyDown(EGameButtonID.eMaxBet);
+			if(Input.GetKey    ("3")) controller.OnGetKey    (EGameButtonID.eMaxBet);
+			if(Input.GetKeyDown(KeyCode.UpArrow   )) controller.OnGetKeyDown(EGameButtonID.eMaxBetAndStart);
+			if(Input.GetKey    (KeyCode.UpArrow   )) controller.OnGetKey    (EGameButtonID.eMaxBetAndStart);
+			if(Input.GetKeyDown(KeyCode.LeftArrow )) controller.OnGetKeyDown(EGameButtonID.e1Reel);
+			if(Input.GetKey    (KeyCode.LeftArrow )) controller.OnGetKey    (EGameButtonID.e1Reel);
+			if(Input.GetKeyDown(KeyCode.DownArrow )) controller.OnGetKeyDown(EGameButtonID.e2Reel);
+			if(Input.GetKey    (KeyCode.DownArrow )) controller.OnGetKey    (EGameButtonID.e2Reel);
+			if(Input.GetKeyDown(KeyCode.RightArrow)) controller.OnGetKeyDown(EGameButtonID.e3Reel);
+			if(Input.GetKey    (KeyCode.RightArrow)) controller.OnGetKey    (EGameButtonID.e3Reel);
+		}
 		
 		// キー入力後プロセス
 		controller = controller.ProcessAfterInput();

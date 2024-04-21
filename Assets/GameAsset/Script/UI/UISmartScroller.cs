@@ -116,6 +116,28 @@ public class UISmartScroller : MonoBehaviour
     public bool GetIsSelected(int pID){ return ShowContentID[pID] == SelectedIndex; }
     public void SetSelected(int pID){ SelectedIndex = ShowContentID[pID]; }
     public bool GetNeedUpdate(int pID){ return NeedUpdate[pID]; }
+    public void SetSelectedByKey(int diff){
+    	SelectedIndex += diff;
+    	// 範囲を表示範囲にトリム、offsetが表示されないことに注意する
+    	if (SelectedIndex < ShowOffset) SelectedIndex = ShowOffset;
+    	if (SelectedIndex >= ContentCount) SelectedIndex = ContentCount - 1;
+    	Debug.Log(SelectedIndex.ToString());
+    	
+    	// 選択データを中央に持ってくる
+    	float MarkPos = (MyTransform.sizeDelta.y - ContentSize) / 2f;
+    	float ScrPos = SelectedIndex * ContentSize - MarkPos;
+    	float moveSize = ContentTransform.sizeDelta.y - MyTransform.sizeDelta.y;
+    	if (moveSize <= 0f) Rect.verticalNormalizedPosition = 1f;
+    	else {
+    		float nmPos = ScrPos / moveSize;
+	        // スクロール位置をトリムする
+	        if (nmPos < 0f) nmPos = 0f;
+	        if (nmPos > 1f) nmPos = 1f;
+	        // Verticalは反転させる
+	        Rect.verticalNormalizedPosition = 1f - nmPos;
+    	}
+    }
+
     
     public void SetContentSize(int size, int offset) {
     	// 最大スクロール量を調整する

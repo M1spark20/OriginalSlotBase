@@ -9,6 +9,14 @@ public class ScrollFeederBonusHist : ScrollFeederBase
 	protected override void Start(){
         hm = SlotEffectMaker2023.Singleton.SlotDataSingleton.GetInstance().historyManager;
         
+        /*for(int i=0; i<100; ++i){
+        	var data = new SlotEffectMaker2023.Action.BonusHistoryElem {
+        		BonusFlag = 1,
+        		IsActivate = i!= 0
+        	};
+        	hm.BonusHist.Add(data);
+        }*/
+        
         // あとから実行する	
 		base.Start();
 	}
