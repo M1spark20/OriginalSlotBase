@@ -17,8 +17,7 @@ public class SlotDataManager : MonoBehaviour
 	[SerializeField] private TextAsset MainROM;
 	[SerializeField] private TextAsset EffectData;
 	
-	// Start is called before the first frame update
-	void Start()
+	void Awake()
 	{
 		mainROM    = SlotMaker2022.MainROMDataManagerSingleton.GetInstance();
 		effectData = SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.GetInstance();

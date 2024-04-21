@@ -6,7 +6,7 @@ using TMPro;
 
 public class UIShowIDTest : ScrollPrehabBase
 {
-	protected override void RefreshData(int pID){
+	protected override void RefreshData(int pID, bool pIsSelected){
 		transform.Find("Title").GetComponent<TextMeshProUGUI>().text = "[" + pID.ToString() + "] Prehab: " + name;
 	}
 }

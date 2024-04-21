@@ -9,7 +9,8 @@ public class UISmartScroller : MonoBehaviour
 	[SerializeField] private GameObject ContentPrehab;
 	
 	private GameObject[] ShowData;		// オブジェクトの表示を行うデータ
-	private int[] ShowContentID;	// オブジェクトが表示するデータのID
+	private int[] ShowContentID;		// オブジェクトが表示するデータのID
+	private bool[] NeedUpdate;			// オブジェクトの表示更新が必要かどうか
 	
 	private Transform ContentList;
 	private RectTransform ContentTransform;
@@ -18,11 +19,18 @@ public class UISmartScroller : MonoBehaviour
 	private float ContentSize;
 	private int ShowContentNum;
 	private bool ForceUpdateFlag;
+	private bool ReadyUpdate;
 	
 	public int ContentCount { get; private set; }
 	public int ShowOffset { get; private set; }
+	public int SelectedIndex { get; private set; }
 	
 	private const int overDraw = 2;
+	
+	void Awake(){
+		// Start完了前まで描画を行わない設定をする
+		ReadyUpdate = false;
+	}
 	
     // Start is called before the first frame update
     void Start()
@@ -35,20 +43,26 @@ public class UISmartScroller : MonoBehaviour
         ContentCount = 0;
         CheckViewSize();
         ForceUpdateFlag = false;
+        SelectedIndex = -1;
         
         ShowData = null;
         if (ContentPrehab == null) return;
         
         ShowData = new GameObject[ShowContentNum];
         ShowContentID = new int[ShowContentNum];
+        NeedUpdate = new bool[ShowContentNum];
         for (int i=0; i<ShowData.Length; ++i){
         	ShowData[i] = Instantiate(ContentPrehab, ContentList.transform);
         	ShowData[i].name = i.ToString();
         	ShowContentID[i] = int.MinValue;
         	// 初期位置は[0]を一番上に置く(ただし一番上は枠外)
         	ShowData[i].transform.localPosition = new Vector3(0, -ContentSize * ShowContentID[i], 0);
+        	NeedUpdate[i] = true;
     		ShowData[i].SetActive(i >= 0 && i < ContentCount);
         }
+        
+        // 描画開始フラグを立てる
+        ReadyUpdate = true;
     }
 
     // Update is called once per frame
@@ -70,18 +84,27 @@ public class UISmartScroller : MonoBehaviour
         // コンテンツの位置を調整する
         for (int i=0; i<ShowData.Length; ++i){
         	int ctrl = (ctrlBegin + i) % ShowContentNum;	// 制御データ
-        	int currentID = beginItem + i - overDraw + ShowOffset;
+        	int currentID = beginItem + i - overDraw;
+        	
+        	// データが非表示の場合は要更新フラグをリセットしない
+        	NeedUpdate[ctrl] &= (currentID >= 0 && currentID < ContentCount);
+        	
         	if (ShowContentID[ctrl] != currentID || ForceUpdateFlag){
         		// データの更新を行う
-        		ShowContentID[ctrl] = currentID;
+        		ShowContentID[ctrl] = currentID + ShowOffset;
         		ShowData[ctrl].SetActive(currentID >= 0 && currentID < ContentCount);
+        		NeedUpdate[ctrl] = true;
         	}
         	// 初期位置は[0]を一番上に置く(ただし一番上は枠外)
-        	ShowData[ctrl].transform.localPosition = new Vector3(0, -(ContentSize * ShowContentID[ctrl]), 0);
+        	ShowData[ctrl].transform.localPosition = new Vector3(0, -(ContentSize * currentID), 0);
         }
         
         // 強制更新フラグリセット
         ForceUpdateFlag = false;
+    }
+    
+    void OnEnable() {
+    	if (ReadyUpdate) Update();
     }
     
     void CheckViewSize(){
@@ -90,14 +113,24 @@ public class UISmartScroller : MonoBehaviour
     }
     
     public int GetContentID(int pID){ return ShowContentID[pID]; }
+    public bool GetIsSelected(int pID){ return ShowContentID[pID] == SelectedIndex; }
+    public void SetSelected(int pID){ SelectedIndex = ShowContentID[pID]; }
+    public bool GetNeedUpdate(int pID){ return NeedUpdate[pID]; }
     
     public void SetContentSize(int size, int offset) {
     	// 最大スクロール量を調整する
+    	bool sizeChanged = size != ContentCount;
+    	int lastOffset = ShowOffset;
     	ContentCount = size;
     	ShowOffset = offset;
     	var contSize = ContentTransform.sizeDelta;
     	contSize.y = ContentSize * ContentCount;
     	ContentTransform.sizeDelta = contSize;
+    	
+    	// 全データを強制的に更新する
     	ForceUpdateFlag = true;
+    	// 表示データ総数が変わる場合、選択データをリセットする。変わらない場合はoffset増分だけ増やす
+    	if (sizeChanged) SelectedIndex = -1;
+    	else SelectedIndex += (offset - lastOffset);
     }
 }
