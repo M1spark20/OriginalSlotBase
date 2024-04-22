@@ -86,7 +86,7 @@ public class ReelPatternBuilder : MonoBehaviour
     			if (showComa == 0){
     				BonusInCutLine[i].SetActive(true);
     				Vector3 pos = BonusInCutLine[i].transform.localPosition;
-    				pos.y = BonusInBG[i].transform.localPosition.y + BonusInComaImg[0][0].GetComponent<RectTransform>().sizeDelta.y * j;
+    				pos.y += BonusInComaImg[0][0].GetComponent<RectTransform>().sizeDelta.y * j;
     				BonusInCutLine[i].transform.localPosition = pos;
     			}
     		}
