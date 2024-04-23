@@ -447,7 +447,7 @@ GameObject:
   - component: {fileID: 108358247}
   - component: {fileID: 108358246}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -655,8 +655,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1832945987}
   m_HandleRect: {fileID: 1832945986}
   m_Direction: 0
-  m_Value: 1
-  m_Size: 0.99999994
+  m_Value: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1775,9 +1775,9 @@ Camera:
   m_FocalLength: 50
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.08762604
+    x: 0.08281252
     y: 0
-    width: 0.8247479
+    width: 0.83437496
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
@@ -4414,6 +4414,7 @@ MonoBehaviour:
   Panels:
   - {fileID: 1493558797}
   - {fileID: 1343340258}
+  SelectorBase: {fileID: 1785197650}
 --- !u!1 &1288779918
 GameObject:
   m_ObjectHideFlags: 0
@@ -4912,7 +4913,7 @@ GameObject:
   - component: {fileID: 1343340259}
   - component: {fileID: 1343340260}
   m_Layer: 5
-  m_Name: PatternHistory
+  m_Name: Pattern History
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5404,7 +5405,7 @@ GameObject:
   - component: {fileID: 1493558799}
   - component: {fileID: 1493558800}
   m_Layer: 5
-  m_Name: BonusHistory
+  m_Name: Bonus History
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
