@@ -19,6 +19,7 @@ public class ReelPatternBuilder : MonoBehaviour
 	
 	private SlotEffectMaker2023.Action.HistoryManager hm;
 	private ReelChipHolder comaData;
+	private float defaultLineHeight;
 	
     // Start is called before the first frame update
     private void Start()
@@ -42,6 +43,7 @@ public class ReelPatternBuilder : MonoBehaviour
 		BonusInCutLine[0] = transform.Find("Line").gameObject;
 		BonusInComaImg[0][0] = transform.Find("ComaImg").gameObject;
 		BonusInComaID[0][0] = transform.Find("ComaID").gameObject;
+		defaultLineHeight = BonusInCutLine[0].transform.localPosition.y;
 		
 		for (int i=0; i<reelNum; ++i){
 			if (i > 0){
@@ -86,7 +88,7 @@ public class ReelPatternBuilder : MonoBehaviour
     			if (showComa == 0){
     				BonusInCutLine[i].SetActive(true);
     				Vector3 pos = BonusInCutLine[i].transform.localPosition;
-    				pos.y += BonusInComaImg[0][0].GetComponent<RectTransform>().sizeDelta.y * j;
+    				pos.y = defaultLineHeight + BonusInComaImg[0][0].GetComponent<RectTransform>().sizeDelta.y * j;
     				BonusInCutLine[i].transform.localPosition = pos;
     			}
     		}
