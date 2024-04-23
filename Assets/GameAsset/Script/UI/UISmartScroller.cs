@@ -68,43 +68,11 @@ public class UISmartScroller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float nmPos = 1f - Rect.verticalNormalizedPosition;	// 一番上を0にする
-        float moveSize = ContentTransform.sizeDelta.y - MyTransform.sizeDelta.y;	// スクロールする幅はContentの高さ-Viewの高さ
-        // 引っ張り対策で値がオーバーする場合はトリムする
-        if (nmPos < 0f) nmPos = 0f;
-        if (nmPos > 1f) nmPos = 1f;
-        // スクロール量が存在しない場合はトリムする
-        if (moveSize < 0f) nmPos = 0f;
-        // Debug.Log(nmPos.ToString("F6"));
-        
-        float showBegin = nmPos * moveSize;
-        int beginItem = (int)(showBegin / ContentSize);
-        int ctrlBegin = beginItem % ShowContentNum;
-        
-        // コンテンツの位置を調整する
-        for (int i=0; i<ShowData.Length; ++i){
-        	int ctrl = (ctrlBegin + i) % ShowContentNum;	// 制御データ
-        	int currentID = beginItem + i - overDraw;
-        	
-        	// データが非表示の場合は要更新フラグをリセットしない
-        	NeedUpdate[ctrl] &= (currentID >= 0 && currentID < ContentCount);
-        	
-        	if (ShowContentID[ctrl] != currentID || ForceUpdateFlag){
-        		// データの更新を行う
-        		ShowContentID[ctrl] = currentID + ShowOffset;
-        		ShowData[ctrl].SetActive(currentID >= 0 && currentID < ContentCount);
-        		NeedUpdate[ctrl] = true;
-        	}
-        	// 初期位置は[0]を一番上に置く(ただし一番上は枠外)
-        	ShowData[ctrl].transform.localPosition = new Vector3(0, -(ContentSize * currentID), 0);
-        }
-        
-        // 強制更新フラグリセット
-        ForceUpdateFlag = false;
+    	ElemUpdate();
     }
     
     void OnEnable() {
-    	if (ReadyUpdate) Update();
+    	if (ReadyUpdate) ElemUpdate();
     }
     
     void CheckViewSize(){
@@ -116,6 +84,7 @@ public class UISmartScroller : MonoBehaviour
     public bool GetIsSelected(int pID){ return ShowContentID[pID] == SelectedIndex; }
     public void SetSelected(int pID){ SelectedIndex = ShowContentID[pID]; }
     public bool GetNeedUpdate(int pID){ return NeedUpdate[pID]; }
+    
     public void SetSelectedByKey(int diff){
     	SelectedIndex += diff;
     	// 範囲を表示範囲にトリム、offsetが表示されないことに注意する
@@ -137,7 +106,6 @@ public class UISmartScroller : MonoBehaviour
 	        Rect.verticalNormalizedPosition = 1f - nmPos;
     	}
     }
-
     
     public void SetContentSize(int size, int offset) {
     	// 最大スクロール量を調整する
@@ -154,5 +122,42 @@ public class UISmartScroller : MonoBehaviour
     	// 表示データ総数が変わる場合、選択データをリセットする。変わらない場合はoffset増分だけ増やす
     	if (sizeChanged) SelectedIndex = -1;
     	else SelectedIndex += (offset - lastOffset);
+    }
+    
+    // データ更新・スクロール処理
+    private void ElemUpdate(){
+        float nmPos = 1f - Rect.verticalNormalizedPosition;	// 一番上を0にする
+        float moveSize = ContentTransform.sizeDelta.y - MyTransform.sizeDelta.y;	// スクロールする幅はContentの高さ-Viewの高さ
+        // 引っ張り対策で値がオーバーする場合はトリムする
+        if (nmPos < 0f) nmPos = 0f;
+        if (nmPos > 1f) nmPos = 1f;
+        // スクロール量が存在しない場合はトリムする
+        if (moveSize < 0f) nmPos = 0f;
+        // Debug.Log(nmPos.ToString("F6"));
+        
+        float showBegin = nmPos * moveSize;
+        int beginItem = (int)(showBegin / ContentSize);
+        int ctrlBegin = beginItem % ShowContentNum;
+        
+        // コンテンツの位置を調整する
+        for (int i=0; i<ShowData.Length; ++i){
+        	int ctrl = (ctrlBegin + i) % ShowContentNum;	// 制御データ
+        	int currentID = beginItem + i - overDraw;
+        	
+        	// データが非表示の場合は要更新フラグをリセットしない
+        	NeedUpdate[ctrl] &= !(currentID >= 0 && currentID < ContentCount);
+        	
+        	if (ShowContentID[ctrl] != currentID || ForceUpdateFlag){
+        		// データの更新を行う
+        		ShowContentID[ctrl] = currentID + ShowOffset;
+        		ShowData[ctrl].SetActive(currentID >= 0 && currentID < ContentCount);
+        		NeedUpdate[ctrl] = true;
+        	}
+        	// 初期位置は[0]を一番上に置く(ただし一番上は枠外)
+        	ShowData[ctrl].transform.localPosition = new Vector3(0, -(ContentSize * currentID), 0);
+        }
+        
+        // 強制更新フラグリセット
+        ForceUpdateFlag = false;
     }
 }
