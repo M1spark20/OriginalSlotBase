@@ -75,18 +75,17 @@ public class ReelPatternBuilder : MonoBehaviour
     	transform.Find("Info").GetComponent<TextMeshProUGUI>().text = string.Empty;
     	transform.Find("BetCount").GetComponent<TextMeshProUGUI>().text = nowPtn.BetNum.ToString() + "BET";
     	for(int i=0; i<BonusInBG.Length; ++i){
-        	BonusInStopInfo[i].SetActive(true);
-        	BonusInCutLine[i].SetActive(false);
+        	BonusInCutLine[i].GetComponent<Image>().enabled = false;
     		BonusInStopInfo[i].GetComponent<TextMeshProUGUI>().text = orderPtn[nowPtn.StopOrder[i]] + " - [" + nowPtn.SlipCount[i].ToString() + "]";
     		for(int j=0; j<BonusInComaImg[i].Length; ++j){
     			int showComa = (j + nowPtn.ReelPos[i]) % SlotMaker2022.LocalDataSet.COMA_MAX;
-    			BonusInComaImg[i][j].SetActive(true);
-    			BonusInComaID[i][j].SetActive(true);
+        		BonusInComaImg[i][j].GetComponent<Image>().enabled = true;
+        		BonusInComaID[i][j].GetComponent<Image>().enabled = true;
     			// データは逆順に格納されていることに注意する。
     			BonusInComaImg[i][j].GetComponent<Image>().sprite = comaData.ReelChipData.Extract(ra[i][SlotMaker2022.LocalDataSet.COMA_MAX - showComa - 1].Coma);
     			BonusInComaID[i][j].transform.Find("Text").GetComponent<TextMeshProUGUI>().text = (showComa + 1).ToString();
     			if (showComa == 0){
-    				BonusInCutLine[i].SetActive(true);
+		        	BonusInCutLine[i].GetComponent<Image>().enabled = true;
     				Vector3 pos = BonusInCutLine[i].transform.localPosition;
     				pos.y = defaultLineHeight + BonusInComaImg[0][0].GetComponent<RectTransform>().sizeDelta.y * j;
     				BonusInCutLine[i].transform.localPosition = pos;
@@ -99,11 +98,12 @@ public class ReelPatternBuilder : MonoBehaviour
     	transform.Find("Info").GetComponent<TextMeshProUGUI>().text = "NO DATA";
     	transform.Find("BetCount").GetComponent<TextMeshProUGUI>().text = string.Empty;
     	for(int i=0; i<BonusInBG.Length; ++i){
-        	BonusInStopInfo[i].SetActive(false);
-        	BonusInCutLine[i].SetActive(false);
+        	BonusInStopInfo[i].GetComponent<TextMeshProUGUI>().text = string.Empty;
+        	BonusInCutLine[i].GetComponent<Image>().enabled = false;
         	for (int j = 0; j<BonusInComaImg[i].Length; ++j){
-        		BonusInComaImg[i][j].SetActive(false);
-        		BonusInComaID[i][j].SetActive(false);
+        		BonusInComaImg[i][j].GetComponent<Image>().enabled = false;
+        		BonusInComaID[i][j].GetComponent<Image>().enabled = false;
+    			BonusInComaID[i][j].transform.Find("Text").GetComponent<TextMeshProUGUI>().text = string.Empty;
         	}
     	}
 	}
