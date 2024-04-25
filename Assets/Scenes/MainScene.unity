@@ -1262,7 +1262,6 @@ GameObject:
   - component: {fileID: 422875805}
   - component: {fileID: 422875807}
   - component: {fileID: 422875806}
-  - component: {fileID: 422875808}
   m_Layer: 5
   m_Name: PatternPanel
   m_TagString: Untagged
@@ -1331,20 +1330,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 422875804}
   m_CullTransparentMesh: 1
---- !u!114 &422875808
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 422875804}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48cdb5520f492f8479d531c811262c42, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PatternElem: {fileID: 2079057500}
-  HistoryViewer: {fileID: 1176277083}
 --- !u!1 &432545233
 GameObject:
   m_ObjectHideFlags: 0
@@ -2491,6 +2476,7 @@ GameObject:
   m_Component:
   - component: {fileID: 690485344}
   - component: {fileID: 690485346}
+  - component: {fileID: 690485347}
   m_Layer: 5
   m_Name: HistoryPanel
   m_TagString: Untagged
@@ -2531,6 +2517,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 690485343}
   m_CullTransparentMesh: 1
+--- !u!114 &690485347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 690485343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48cdb5520f492f8479d531c811262c42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PatternElem: {fileID: 2079057500}
+  HistoryViewer: {fileID: 1176277083}
+  Date: {fileID: 1914321724}
 --- !u!1001 &696955675
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4052,7 +4053,6 @@ GameObject:
   - component: {fileID: 1176277088}
   - component: {fileID: 1176277086}
   - component: {fileID: 1176277085}
-  - component: {fileID: 1176277089}
   m_Layer: 5
   m_Name: ScrollView
   m_TagString: Untagged
@@ -4134,18 +4134,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1176277083}
   m_CullTransparentMesh: 1
---- !u!114 &1176277089
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1176277083}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f78ba89ec93908419a5a6fba1301d8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1209918599
 GameObject:
   m_ObjectHideFlags: 0

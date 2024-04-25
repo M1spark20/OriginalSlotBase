@@ -67,12 +67,12 @@ public class ReelPatternBuilder : MonoBehaviour
         Reset();
     }
 
-	public void SetData(SlotEffectMaker2023.Action.PatternHistoryElem nowPtn){
-		if (nowPtn == null) return;
+	public void SetData(SlotEffectMaker2023.Action.PatternHistoryElem nowPtn, string pInfo){
+    	transform.Find("Info").GetComponent<TextMeshProUGUI>().text = pInfo;
+		if (nowPtn == null) { Reset(); return; }
 		
 		string[] orderPtn = { "", "1st", "2nd", "3rd" };
 		
-    	transform.Find("Info").GetComponent<TextMeshProUGUI>().text = string.Empty;
     	transform.Find("BetCount").GetComponent<TextMeshProUGUI>().text = nowPtn.BetNum.ToString() + "BET";
     	for(int i=0; i<BonusInBG.Length; ++i){
         	BonusInCutLine[i].GetComponent<Image>().enabled = false;
@@ -95,7 +95,6 @@ public class ReelPatternBuilder : MonoBehaviour
 	}
 	
 	public void Reset(){
-    	transform.Find("Info").GetComponent<TextMeshProUGUI>().text = "NO DATA";
     	transform.Find("BetCount").GetComponent<TextMeshProUGUI>().text = string.Empty;
     	for(int i=0; i<BonusInBG.Length; ++i){
         	BonusInStopInfo[i].GetComponent<TextMeshProUGUI>().text = string.Empty;

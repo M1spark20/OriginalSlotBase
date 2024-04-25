@@ -8,20 +8,34 @@ public class MainMenuHistory : MonoBehaviour
 {
 	[SerializeField] private GameObject PatternElem;
 	[SerializeField] private GameObject HistoryViewer;
+	[SerializeField] private GameObject Date;
 	
 	private SlotEffectMaker2023.Action.HistoryManager hm;
 	private ReelPatternBuilder builder;
 	private UISmartScroller scroller;
+	private TextMeshProUGUI dateShow;
 	
 	private int lastShow;
+	private bool ready;
 	
     // Start is called before the first frame update
-    private void Start()
+    private void Awake()
     {
     	hm = SlotEffectMaker2023.Singleton.SlotDataSingleton.GetInstance().historyManager;
     	builder = PatternElem?.GetComponent<ReelPatternBuilder>() ?? null;
     	scroller = HistoryViewer?.GetComponent<UISmartScroller>() ?? null;
+    	dateShow = Date?.GetComponent<TextMeshProUGUI>() ?? null;
     	lastShow = int.MinValue;
+    	ready = false;
+    }
+    
+    private void Start(){
+    	ready = true;
+    	RefreshData();
+    }
+    
+    private void OnEnable(){
+    	if (ready) RefreshData();
     }
 
     // Update is called once per frame
@@ -30,16 +44,33 @@ public class MainMenuHistory : MonoBehaviour
     	if (hm.BonusHist.Count == 0 || scroller.ContentCount <= 0) return;
     	int nowShow = scroller.SelectedIndex;
     	if (nowShow != lastShow){
-    		if (nowShow < 0 || nowShow >= hm.BonusHist.Count) {
-    			builder.Reset();
-    			transform.Find("Date").GetComponent<TextMeshProUGUI>().text = string.Empty;
-    			PatternElem.transform.Find("Info").GetComponent<TextMeshProUGUI>().text = "Select Bonus Data";
-    		} else {
-				builder.SetData(hm.BonusHist[nowShow].InPattern);
-    			transform.Find("Date").GetComponent<TextMeshProUGUI>().text = hm.BonusHist[nowShow].InDate;
-				PatternElem.transform.Find("Info").GetComponent<TextMeshProUGUI>().text = "Loss game: " + hm.BonusHist[nowShow].LossGame.ToString();
-    		}
+    		ShowPattern(scroller.SelectedIndex);
     		lastShow = nowShow;
+    	}
+    }
+    
+    private void RefreshData(){
+    	// サイズ取得
+    	int size = hm.BonusHist.Count;
+    	int offset = size > 0 ? (hm.BonusHist[0].IsActivate ? 0 : 1) : 0;
+    	// サイズ指定とIndex更新
+    	scroller.SetContentSize(size - offset, offset);
+    	// データ全更新
+    	scroller.ElemUpdate(true);
+    	// 成立時出目更新
+    	ShowPattern(scroller.SelectedIndex);
+    }
+    
+    private void ShowPattern(int nowShow) {
+    	// サイズ取得
+    	int size = hm.BonusHist.Count;
+    	int offset = size > 0 ? (hm.BonusHist[0].IsActivate ? 0 : 1) : 0;
+    	dateShow.text = string.Empty;
+    	if (size - offset == 0) builder.SetData(null, "NO DATA"); // 1回目の当たりは入賞までここでマスクされる
+    	else if (nowShow < 0 || nowShow >= hm.BonusHist.Count) builder.SetData(null, "Select Bonus Data");
+    	else {
+    		builder.SetData(hm.BonusHist[nowShow].InPattern, "Loss game: " + hm.BonusHist[nowShow].LossGame.ToString());
+    		dateShow.text = hm.BonusHist[nowShow].InDate;
     	}
     }
 }
