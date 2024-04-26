@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-public class MainMenuHistory : MonoBehaviour
+public class MainMenuHistory : MainMenuElemBase
 {
 	[SerializeField] private GameObject PatternElem;
 	[SerializeField] private GameObject HistoryViewer;
@@ -16,28 +16,18 @@ public class MainMenuHistory : MonoBehaviour
 	private TextMeshProUGUI dateShow;
 	
 	private int lastShow;
-	private bool ready;
 	
     // Start is called before the first frame update
-    private void Awake()
+    protected override void Awake()
     {
+    	base.Awake();
     	hm = SlotEffectMaker2023.Singleton.SlotDataSingleton.GetInstance().historyManager;
     	builder = PatternElem?.GetComponent<ReelPatternBuilder>() ?? null;
     	scroller = HistoryViewer?.GetComponent<UISmartScroller>() ?? null;
     	dateShow = Date?.GetComponent<TextMeshProUGUI>() ?? null;
     	lastShow = int.MinValue;
-    	ready = false;
     }
     
-    private void Start(){
-    	ready = true;
-    	RefreshData();
-    }
-    
-    private void OnEnable(){
-    	if (ready) RefreshData();
-    }
-
     // Update is called once per frame
     private void Update()
     {
@@ -49,7 +39,7 @@ public class MainMenuHistory : MonoBehaviour
     	}
     }
     
-    private void RefreshData(){
+    protected override void RefreshData(){
     	// サイズ取得
     	int size = hm.BonusHist.Count;
     	int offset = size > 0 ? (hm.BonusHist[0].IsActivate ? 0 : 1) : 0;
@@ -72,5 +62,13 @@ public class MainMenuHistory : MonoBehaviour
     		builder.SetData(hm.BonusHist[nowShow].InPattern, "Loss game: " + hm.BonusHist[nowShow].LossGame.ToString());
     		dateShow.text = hm.BonusHist[nowShow].InDate;
     	}
+    }
+    
+    public override void OnGetKeyDown(EMenuButtonID eKeyID){
+    	if (eKeyID == EMenuButtonID.eScrUp) {
+			scroller.SetSelectedByKey(-1);
+    	} else if (eKeyID == EMenuButtonID.eScrDn) {
+			scroller.SetSelectedByKey(1);
+		}
     }
 }

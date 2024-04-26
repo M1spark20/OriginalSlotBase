@@ -146,6 +146,7 @@ namespace SlotEffectMaker2023.Action
 				if (hitRT < LocalDataSet.RTMODE_MAX) SetRT((byte)hitRT, false, false, cc, rtc, tm);
 			}
 			castFlag = pCastFlag;
+			if (gameMode == 0) bonusFlag = 4;
 			// Debug.Log("FlagSet: bonus->" + bonusFlag.ToString() + " cast->" + castFlag.ToString());
 		}
 		// 配当設定(必要なものだけ設定する)

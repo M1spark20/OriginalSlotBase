@@ -5439,9 +5439,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1493558797}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbd5118c18885a54689f68712d9ac615, type: 3}
+  m_Script: {fileID: 11500000, guid: 48cdb5520f492f8479d531c811262c42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PatternElem: {fileID: 2079057500}
+  HistoryViewer: {fileID: 1176277083}
+  Date: {fileID: 1914321724}
 --- !u!1 &1530509991
 GameObject:
   m_ObjectHideFlags: 0
