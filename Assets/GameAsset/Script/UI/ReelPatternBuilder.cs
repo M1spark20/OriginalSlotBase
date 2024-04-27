@@ -22,7 +22,7 @@ public class ReelPatternBuilder : MonoBehaviour
 	private float defaultLineHeight;
 	
     // Start is called before the first frame update
-    private void Start()
+    private void Awake()
     {
         // 成立時出目データ初期化
         const int reelNum = SlotMaker2022.LocalDataSet.REEL_MAX;
