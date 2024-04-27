@@ -32,10 +32,10 @@ public class MainMenuPattern : MainMenuElemBase
     }
     
     public override void OnGetKeyDown(EMenuButtonID eKeyID){
-    	/*if (eKeyID == EMenuButtonID.eScrUp) {
-			scroller.SetSelectedByKey(-1);
+    	if (eKeyID == EMenuButtonID.eScrUp) {
+			scroller.MovePosition(-0.5f);
     	} else if (eKeyID == EMenuButtonID.eScrDn) {
-			scroller.SetSelectedByKey(1);
-		}*/
+			scroller.MovePosition(0.5f);
+		}
     }
 }

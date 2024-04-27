@@ -74,10 +74,11 @@ public class UISmartScroller : MonoBehaviour
     	// 範囲を表示範囲にトリム、offsetが表示されないことに注意する
     	if (SelectedIndex < ShowOffset) SelectedIndex = ShowOffset;
     	if (SelectedIndex >= ContentCount + ShowOffset) SelectedIndex = ContentCount + ShowOffset - 1;
-    	Debug.Log(SelectedIndex.ToString());
-    	
-    	// 選択データを中央に持ってくる
-    	float MarkPos = (MyTransform.sizeDelta.y - ContentSize) / 2f;
+    }
+    
+    // 選択中データを中心に移動させる
+    public void MoveSelectedCenter() {
+    	float MarkPos = (MyTransform.sizeDelta.y + ContentSize) / 2f;
     	float ScrPos = SelectedIndex * ContentSize - MarkPos;
     	float moveSize = ContentTransform.sizeDelta.y - MyTransform.sizeDelta.y;
     	if (moveSize <= 0f) Rect.verticalNormalizedPosition = 1f;
@@ -89,6 +90,16 @@ public class UISmartScroller : MonoBehaviour
 	        // Verticalは反転させる
 	        Rect.verticalNormalizedPosition = 1f - nmPos;
     	}
+    }
+    
+    // データを指定した高さ文移動させる、移動量は1でMyTransformの高さ分とする
+    public void MovePosition(float MoveSizeByOriginalHeight){
+        // Verticalは反転させる
+    	float moveSize = ContentTransform.sizeDelta.y - MyTransform.sizeDelta.y;
+    	float nmPos = (1f - Rect.verticalNormalizedPosition) + (MoveSizeByOriginalHeight * MyTransform.sizeDelta.y) / moveSize;
+        if (nmPos < 0f) nmPos = 0f;
+        if (nmPos > 1f) nmPos = 1f;
+        Rect.verticalNormalizedPosition = 1f - nmPos;
     }
     
     public void SetContentSize(int size, int offset) {

@@ -67,8 +67,10 @@ public class MainMenuHistory : MainMenuElemBase
     public override void OnGetKeyDown(EMenuButtonID eKeyID){
     	if (eKeyID == EMenuButtonID.eScrUp) {
 			scroller.SetSelectedByKey(-1);
+			scroller.MoveSelectedCenter();
     	} else if (eKeyID == EMenuButtonID.eScrDn) {
 			scroller.SetSelectedByKey(1);
+			scroller.MoveSelectedCenter();
 		}
     }
 }
