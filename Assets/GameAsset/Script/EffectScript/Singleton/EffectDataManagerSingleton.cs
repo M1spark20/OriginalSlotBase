@@ -21,7 +21,8 @@ namespace SlotEffectMaker2023.Singleton
         public Data.TimerList           TimerList     { get; set; } // 生成タイマ一覧
         public Data.SlotTimeline        Timeline      { get; set; } // サブ基板処理内容
         public Data.ColorMapDataManager ColorMap      { get; set; } // 演出色マップ
-        public Data.HistoryConfig      HistoryConf   { get; set; } // ボーナス履歴用コンフィグ
+        public Data.HistoryConfig       HistoryConf   { get; set; } // ボーナス履歴用コンフィグ
+        public Data.CollectionData      Collection    { get; set; } // リーチ目コレクション
 
         private EffectDataManagerSingleton()
         {
@@ -33,6 +34,7 @@ namespace SlotEffectMaker2023.Singleton
             Timeline      = new Data.SlotTimeline();
             ColorMap      = new Data.ColorMapDataManager();
             HistoryConf   = new Data.HistoryConfig();
+            Collection    = new Data.CollectionData();
         }
         public static EffectDataManagerSingleton GetInstance()
         {
@@ -66,6 +68,7 @@ namespace SlotEffectMaker2023.Singleton
             if (!rd.ReadData(Timeline)) return false;
             if (!rd.ReadData(ColorMap)) return false;
             if (!rd.ReadData(HistoryConf)) return false;
+            if (!rd.ReadData(Collection)) return false;
             return true;
         }
         public bool SaveData()
@@ -104,6 +107,7 @@ namespace SlotEffectMaker2023.Singleton
             sw.WriteData(Timeline);
             sw.WriteData(ColorMap);
             sw.WriteData(HistoryConf);
+            sw.WriteData(Collection);
             return true;
         }
 
@@ -117,6 +121,7 @@ namespace SlotEffectMaker2023.Singleton
             Timeline.Rename(type, src, dst);
             ColorMap.Rename(type, src, dst);
             HistoryConf.Rename(type, src, dst);
+            Collection.Rename(type, src, dst);
         }
 
         /* プログラム内共通機能(全体での共有事項をここで定義) */

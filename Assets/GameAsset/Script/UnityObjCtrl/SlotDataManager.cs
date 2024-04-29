@@ -40,7 +40,7 @@ public class SlotDataManager : MonoBehaviour
 		if (!slotData  .ReadData(ref tList))  Debug.Log("slotData Read: Error");   else Debug.Log("slotData Read: Done");
 		
 		// Singleton初期化
-		slotData.Init(effectData.SoundPlayList, effectData.TimerList, effectData.VarList, effectData.ColorMap.shifter);
+		slotData.Init(effectData.SoundPlayList, effectData.TimerList, effectData.VarList, effectData.ColorMap.shifter, effectData.Collection);
 		
 		// コントローラー初期インスタンス生成
 		controller = new SCWaitBet();

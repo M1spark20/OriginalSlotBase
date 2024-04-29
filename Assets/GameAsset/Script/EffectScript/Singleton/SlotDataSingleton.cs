@@ -36,7 +36,7 @@ namespace SlotEffectMaker2023.Singleton {
 			historyManager = new Action.HistoryManager();
 		}
 
-		public void Init(List<Data.SoundPlayData> pSoundPlayData, Data.TimerList pTimer, Data.VarList pVar, List<Data.ColorMapShifter> pMapPlayData)
+		public void Init(List<Data.SoundPlayData> pSoundPlayData, Data.TimerList pTimer, Data.VarList pVar, List<Data.ColorMapShifter> pMapPlayData, Data.CollectionData pColle)
         {   // 各データへの初期値設定を行う
 			timerData.Init(pTimer);
 			valManager.Init(pVar);

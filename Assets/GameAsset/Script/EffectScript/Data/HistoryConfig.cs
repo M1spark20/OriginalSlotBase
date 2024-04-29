@@ -73,7 +73,7 @@ namespace SlotEffectMaker2023.Data
 			LaunchEffect = fs.ReadString();
 			InGameHolder = fs.ReadString();
 			dataCount = fs.ReadInt32();
-			for (int i = 0; i < dataCount && i < BONUS_TYPE_MAX; ++i)
+			for (int i = 0; i < dataCount && i <= BONUS_TYPE_MAX; ++i)
 				BonusCountHolder[i] = fs.ReadString();
 			return true;
 		}
