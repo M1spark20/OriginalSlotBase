@@ -14,12 +14,14 @@ public class MainMenuManager : MonoBehaviour
 	
 	// 各パネルからキー入力情報を取得するための記録機能
 	private MainMenuElemBase[] PanelScr;
+	private Canvas[] PanelsCanvas;
 	
     // Start is called before the first frame update
     void Start()
     {
         SelectedID = -1;
         PanelScr = new MainMenuElemBase[Panels.Length];
+        PanelsCanvas = new Canvas[Panels.Length];
         
         Selector = new Button[Panels.Length];
         Selector[0] = SelectorBase;
@@ -27,7 +29,8 @@ public class MainMenuManager : MonoBehaviour
         
         for(int i=0; i<Panels.Length; ++i) {
 	        // 選択用ボタン配置
-        	Panels[i].SetActive(false);
+        	PanelsCanvas[i] = Panels[i].GetComponent<Canvas>();
+        	PanelsCanvas[i].enabled = false;
         	if (i > 0) {
         		Selector[i] = Instantiate(SelectorBase, this.transform);
         		Selector[i].transform.localPosition += new Vector3(sizeX * i, 0, 0);
@@ -62,8 +65,11 @@ public class MainMenuManager : MonoBehaviour
     // アクティブにするパネルを決める
     private void RefreshActivate(int activeID){
     	if (activeID != SelectedID){
-    		if (SelectedID >= 0) Panels[SelectedID].SetActive(false);
-    		if (activeID >= 0) Panels[activeID].SetActive(true);
+    		if (SelectedID >= 0) PanelsCanvas[SelectedID].enabled = false;
+    		if (activeID >= 0){
+    			PanelScr[activeID].RefreshData();
+    			PanelsCanvas[activeID].enabled = true;
+    		}
     		SelectedID = activeID;
     	} 
     }

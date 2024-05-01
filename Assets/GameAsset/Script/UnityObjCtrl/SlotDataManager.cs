@@ -21,6 +21,7 @@ public class SlotDataManager : MonoBehaviour
 	[SerializeField] private TextAsset EffectData;
 	
 	[SerializeField] private GameObject MainMenuObj;
+	private Canvas MainMenuCanvas;
 	private MainMenuManager MainMenuScr;
 	
 	void Awake()
@@ -48,8 +49,9 @@ public class SlotDataManager : MonoBehaviour
 		
 		// メニュー非表示からスタート
 		MainMenuScr = MainMenuObj.GetComponent<MainMenuManager>();
+		MainMenuCanvas = MainMenuObj.GetComponent<Canvas>();
 		MenuShown = false;
-		MainMenuObj.SetActive(MenuShown);
+		MainMenuCanvas.enabled = MenuShown;
 	}
 
 	// Update is called once per frame
@@ -61,7 +63,7 @@ public class SlotDataManager : MonoBehaviour
 		// Menu表示ボタン(描画は暫定)
 		if (Input.GetKeyDown("m")) {
 			MenuShown ^= true;
-			MainMenuObj.SetActive(MenuShown);
+			MainMenuCanvas.enabled = MenuShown;
 		}
 		
 		// KeyDown設定(Menu表示状態により制御を変える)

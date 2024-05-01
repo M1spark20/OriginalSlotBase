@@ -22,7 +22,7 @@ public class MainMenuCollection : MainMenuElemBase
     // Update is called once per frame
     private void Update() { }
     
-    protected override void RefreshData(){
+    public override void RefreshData(){
     	// サイズ取得
     	int size = (cd.Collections.Count + 3) / 4;	// 4コ毎に更新するためsizeを4で割る、端数切り上げ
     	// サイズ指定とIndex更新

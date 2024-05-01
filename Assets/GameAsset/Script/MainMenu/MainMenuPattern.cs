@@ -22,7 +22,7 @@ public class MainMenuPattern : MainMenuElemBase
     // Update is called once per frame
     private void Update() { }
     
-    protected override void RefreshData(){
+    public override void RefreshData(){
     	// サイズ取得
     	int size = (hm.PatternHist.Count + 1) / 2;	// 2コ毎に更新するためsizeを2で割る、端数切り上げ
     	// サイズ指定とIndex更新

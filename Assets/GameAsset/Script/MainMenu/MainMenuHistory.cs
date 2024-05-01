@@ -39,7 +39,7 @@ public class MainMenuHistory : MainMenuElemBase
     	}
     }
     
-    protected override void RefreshData(){
+    public override void RefreshData(){
     	// サイズ取得
     	int size = hm.BonusHist.Count;
     	int offset = size > 0 ? (hm.BonusHist[0].IsActivate ? 0 : 1) : 0;

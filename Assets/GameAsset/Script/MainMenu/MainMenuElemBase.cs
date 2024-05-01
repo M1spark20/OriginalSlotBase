@@ -17,12 +17,7 @@ public abstract class MainMenuElemBase : MonoBehaviour
     	RefreshData();
     }
     
-    virtual protected void OnEnable(){
-    	// 特段データを更新するだけでいい場合はオーバーライドしない
-    	if (ready) RefreshData();
-    }
-    
-    abstract protected void RefreshData();
+    abstract public void RefreshData();
     
     abstract public void OnGetKeyDown(EMenuButtonID eKeyID);
 }
