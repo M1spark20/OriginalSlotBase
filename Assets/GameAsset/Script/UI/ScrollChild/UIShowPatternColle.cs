@@ -7,6 +7,7 @@ using TMPro;
 public class UIShowPatternColle : ScrollPrehabBase
 {
 	private SlotEffectMaker2023.Data.CollectionData cd;
+	private SlotEffectMaker2023.Action.CollectionLogger logger;
 	private GameObject[] refObj;
 	private CollectionBuilder[] refScr;
 	
@@ -15,6 +16,7 @@ public class UIShowPatternColle : ScrollPrehabBase
 	protected override void Awake(){
 		base.Awake();
     	cd = SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.GetInstance().Collection;
+    	logger = SlotEffectMaker2023.Singleton.SlotDataSingleton.GetInstance().collectionManager;
         
         refObj = new GameObject[showNum];
         refScr = new CollectionBuilder[showNum];
@@ -31,9 +33,9 @@ public class UIShowPatternColle : ScrollPrehabBase
 		for (int i=0; i<showNum; ++i){
 			int refID = showNum * pID + i;
 			if (refID < 0 || refID >= cd.Collections.Count) {
-				refScr[i].SetData(null, 0);
+				refScr[i].SetData(null, null, 0);
 			} else {
-				refScr[i].SetData(cd.Collections[refID], refID+1);
+				refScr[i].SetData(cd.Collections[refID], logger.Achievements[refID], refID+1);
 			}
 		}
 		Debug.Log("test");
