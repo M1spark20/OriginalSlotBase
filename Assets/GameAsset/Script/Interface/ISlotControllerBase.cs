@@ -281,12 +281,14 @@ public class SCReelOperation : ISlotControllerBase {
 	SlotMaker2022.MainROMDataManagerSingleton mainROM;
 	SlotEffectMaker2023.Action.SlotTimerManager timer;
 	SlotEffectMaker2023.Singleton.SlotDataSingleton slotData;
+	SlotEffectMaker2023.Singleton.EffectDataManagerSingleton subROM;
 	
 	public SCReelOperation(){
 		// Singleton取得
 		mainROM  = SlotMaker2022.MainROMDataManagerSingleton.GetInstance();
 		slotData = SlotEffectMaker2023.Singleton.SlotDataSingleton.GetInstance();
 		timer    = slotData.timerData;
+		subROM   = SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.GetInstance();
 		
 		// 制御用変数初期化
 		isAllReleased = false;
@@ -426,6 +428,10 @@ public class SCReelOperation : ISlotControllerBase {
 		// ストップ数加算
 		++stopReelCount;
 		
+		// リーチ目判定(ただし全停止後の判定はモード移行終了後:SCJudgeAndPayoutのコンストラクタにて行う)
+		if (stopReelCount < reelNum)
+			slotData.collectionManager.JudgeCollection(subROM.Collection, slotData.reelData, mainROM.ReelArray, slotData.valManager, slotData.basicData);
+		
 		// フリーズ取得
 		if (stopReelCount == 1) reelFreezeTime += slotData.freezeManager.GetFreeze(SlotMaker2022.LocalDataSet.FreezeControlData.FreezeTiming.Stop1st);
 		if (stopReelCount == 2) reelFreezeTime += slotData.freezeManager.GetFreeze(SlotMaker2022.LocalDataSet.FreezeControlData.FreezeTiming.Stop2nd);
@@ -450,6 +456,7 @@ public class SCJudgeAndPayout : ISlotControllerBase {
 	SlotMaker2022.MainROMDataManagerSingleton mainROM;
 	SlotEffectMaker2023.Action.SlotTimerManager timer;
 	SlotEffectMaker2023.Singleton.SlotDataSingleton slotData;
+	SlotEffectMaker2023.Singleton.EffectDataManagerSingleton subROM;
 
 	// SC移行時処理
 	public SCJudgeAndPayout(){
@@ -463,6 +470,7 @@ public class SCJudgeAndPayout : ISlotControllerBase {
 		mainROM  = SlotMaker2022.MainROMDataManagerSingleton.GetInstance();
 		slotData = SlotEffectMaker2023.Singleton.SlotDataSingleton.GetInstance();
 		timer    = slotData.timerData;
+		subROM   = SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.GetInstance();
 		
 		// リール制御クラス初期化
 		reelManager = new SlotMaker2022.main_function.MainReelManager();
@@ -557,9 +565,11 @@ public class SCJudgeAndPayout : ISlotControllerBase {
 		mPayoutNum = basicData.SetPayout(castResult, mainROM.CastCommonData, slotData.historyManager, slotData.reelData, slotData.valManager);
 		// モードとRTの変更処理を行う。変更された場合はタイマを作動させる。
 		// SetPayoutより後で呼び出すことで当該Gのゲーム数減算をさせない。
-		basicData.ModeChange(castResult, mainROM.CastCommonData, mainROM.RTCommonData, mainROM.RTMoveData, timer, slotData.historyManager, slotData.valManager);
+		basicData.ModeChange(castResult, mainROM.CastCommonData, mainROM.RTCommonData, mainROM.RTMoveData, timer, slotData.historyManager, slotData.collectionManager, slotData.valManager);
 		// モード移行処理(終了側)を行う
 		slotData.basicData.ModeReset(mainROM.CastCommonData, mainROM.RTCommonData, mainROM.RTMoveData, timer, mPayoutNum < 0 ? 0 : mPayoutNum, slotData.historyManager);
+		// gameModeを更新した後に全停止時のリーチ目コレクション処理を行う
+		slotData.collectionManager.JudgeCollection(subROM.Collection, slotData.reelData, mainROM.ReelArray, slotData.valManager, basicData);
 		
 		// フリーズ抽選
 		slotData.freezeManager.SetFreezeMode(mainROM.FreezeControlData, mainROM.FreezeTimeData, lastMode, basicData.gameMode);

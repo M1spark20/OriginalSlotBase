@@ -87,13 +87,18 @@ namespace SlotEffectMaker2023.Action
         {   // データ読込後、コレクション達成変数がコレクション数より小さければアイテムを追加する
             while (Achievements.Count < pColle.Collections.Count) Achievements.Add(new CollectionAchieveElem());
         }
-        public void JudgeCollection(Data.CollectionData cd, List<ReelBasicData> rd, LocalDataSet.ReelArray[][] ra, SlotValManager vm)
+        public void JudgeCollection(Data.CollectionData cd, List<ReelBasicData> rd, LocalDataSet.ReelArray[][] ra, SlotValManager vm, SlotBasicData sb)
         {   // コレクション判定(リール停止毎に判定)
             const int REEL_NUM = LocalDataSet.REEL_MAX;
+
+            // 判定条件(前提としてgameMode = 0であることが必要)
+            if (sb.gameMode != 0) return;
+            if ((vm.GetVariable(cd.JudgeCondName)?.val ?? 0) == 0) return;
 
             // はずれ判定取得
             bool hazureFlag = (vm.GetVariable(cd.JudgeHazure)?.val ?? 0) != 0;
             bool aimingFlag = (vm.GetVariable(cd.JudgeAiming)?.val ?? 0) != 0;
+            UnityEngine.Debug.Log("Judge start");
 
             for (int id=0; id<cd.Collections.Count; ++id)
             {
@@ -109,23 +114,23 @@ namespace SlotEffectMaker2023.Action
                 {
                     // 左回転中以外 かつ 左1st以外なら処理しない
                     if (reelC == 0)
-                        achieveFlag &= (jd[reelC].Pattern != Data.CollectionReelPattern.eRotating && rd[reelC].stopOrder != 1);
-                    // 各リール判定処理
+                        achieveFlag &= !(jd[reelC].Pattern != Data.CollectionReelPattern.eRotating && rd[reelC].stopOrder != 1);
+                    // 各リール判定処理(REEL_NPOS: 回転中)
                     switch (jd[reelC].Pattern)
                     {
                         case Data.CollectionReelPattern.eAny:
                             break;
                         case Data.CollectionReelPattern.eRotating:
-                            achieveFlag &= rd[reelC].isRotate;
+                            achieveFlag &= rd[reelC].stopPos == ReelBasicData.REEL_NPOS;
                             break;
                         case Data.CollectionReelPattern.eHazure:
-                            achieveFlag &= !rd[reelC].isRotate && hazureFlag;
+                            achieveFlag &= rd[reelC].stopPos != ReelBasicData.REEL_NPOS && hazureFlag;
                             break;
                         case Data.CollectionReelPattern.eAiming:
-                            achieveFlag &= !rd[reelC].isRotate && aimingFlag;
+                            achieveFlag &= rd[reelC].stopPos != ReelBasicData.REEL_NPOS && aimingFlag;
                             break;
                         case Data.CollectionReelPattern.eReelPos:
-                            achieveFlag &= !rd[reelC].isRotate && rd[reelC].stopPos == jd[reelC].ReelPos;
+                            achieveFlag &= rd[reelC].stopPos != ReelBasicData.REEL_NPOS && rd[reelC].stopPos == jd[reelC].ReelPos;
                             break;
                         case Data.CollectionReelPattern.eComaItem:
                             achieveFlag &= CheckSymbol(jd[reelC], rd[reelC], ra[reelC]);
@@ -142,14 +147,17 @@ namespace SlotEffectMaker2023.Action
                 if (Achievements[id].CompTimes == 0) AddNewAchieve(id);
                 achievedID.Add(id);
                 Achievements[id].SetAchieved();
+                UnityEngine.Debug.Log("Colle Latch: " + (id+1).ToString());
             }
         }
         public void ClearLatch()
         {   // ボーナス入賞に伴うLatchのクリア
+        	UnityEngine.Debug.Log("Clear Latch: " + LatchID.Count.ToString());
             LatchID.Clear();
         }
         public void EndGame()
         {   // 1G終了によるachievedIDのクリア
+        	UnityEngine.Debug.Log("Clear achieved");
             achievedID.Clear();
         }
         public int GetAchievedCount()
@@ -161,7 +169,7 @@ namespace SlotEffectMaker2023.Action
 
         private bool CheckSymbol(Data.CollectionReelElem cd, ReelBasicData rd, LocalDataSet.ReelArray[] ra)
         {   // リールのシンボルチェックを行う
-            if (rd.isRotate) return false;
+            if (rd.stopPos == ReelBasicData.REEL_NPOS) return false;
 
             const int SHOW_NUM = LocalDataSet.SHOW_MAX;
             const int COMA_NUM = LocalDataSet.COMA_MAX;

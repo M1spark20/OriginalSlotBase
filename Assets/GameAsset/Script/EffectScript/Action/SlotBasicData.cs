@@ -210,7 +210,7 @@ namespace SlotEffectMaker2023.Action
 			creditShow = (byte)Math.Min(creditShow + 1, CREDIT_MAX);
 		}
 		// モード移行処理(入賞による) modeChangeとRTChangeで状態変化結果を返す
-		public void ModeChange(MainReelManager.GetCastResult castResult, LocalDataSet.CastCommonData cc, LocalDataSet.RTCommonData rtc, List<LocalDataSet.RTMoveData> rmList, SlotTimerManager tm, HistoryManager hm, SlotValManager vm)
+		public void ModeChange(MainReelManager.GetCastResult castResult, LocalDataSet.CastCommonData cc, LocalDataSet.RTCommonData rtc, List<LocalDataSet.RTMoveData> rmList, SlotTimerManager tm, HistoryManager hm, CollectionLogger cl, SlotValManager vm)
 		{
 			for (int castC = 0; castC < castResult.matchCast.Count; ++castC)
 			{
@@ -218,7 +218,8 @@ namespace SlotEffectMaker2023.Action
 				// モード更新とこれに伴うRT更新
 				if (checkData.ChangeGameModeFlag)
 				{
-					hm.StartBonus(this, vm);	// ボーナス履歴更新
+					hm.StartBonus(this, vm);    // ボーナス履歴更新
+					cl.ClearLatch();			// 入賞までの新規リーチ目コレクション流し
 					bonusFlag = 0;
 					SetMode(checkData.ChangeGameModeDest, checkData.BonusPayoutMaxID, checkData.BonusGameMaxID, cc, rtc, rmList, tm);
 				}

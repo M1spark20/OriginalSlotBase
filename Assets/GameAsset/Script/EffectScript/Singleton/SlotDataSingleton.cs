@@ -17,6 +17,7 @@ namespace SlotEffectMaker2023.Singleton {
 		public Action.FreezeManager			freezeManager { get; set; }
 		// 履歴関連データ
 		public Action.HistoryManager		historyManager { get; set; }
+		public Action.CollectionLogger		collectionManager { get; set; }
 	
 		// Singletonインスタンス
 		private static SlotDataSingleton ins = new SlotDataSingleton();
@@ -34,6 +35,7 @@ namespace SlotEffectMaker2023.Singleton {
 			colorMapData = new Action.DataShifterManager<Data.ColorMapShifter>();
 			freezeManager = new Action.FreezeManager();
 			historyManager = new Action.HistoryManager();
+			collectionManager = new Action.CollectionLogger();
 		}
 
 		public void Init(List<Data.SoundPlayData> pSoundPlayData, Data.TimerList pTimer, Data.VarList pVar, List<Data.ColorMapShifter> pMapPlayData, Data.CollectionData pColle)
@@ -42,6 +44,7 @@ namespace SlotEffectMaker2023.Singleton {
 			valManager.Init(pVar);
 			soundData.Init(pSoundPlayData);
 			colorMapData.Init(pMapPlayData);
+			collectionManager.Init(pColle);
         }
 	
 		/// <summary>
