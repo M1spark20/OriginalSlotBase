@@ -60,7 +60,9 @@ public class UISmartScroller : MonoBehaviour
     {
     	ElemUpdate(false);
     	if (RaycasterReference != null) {
-    		foreach (var item in ShowScr) item.SetRaycaster(RaycasterReference.enabled);
+    		bool flag = RaycasterReference.enabled;
+    		foreach (var item in ShowScr) item.SetRaycaster(flag);
+    		Rect.enabled = flag;
     	}
     }
     

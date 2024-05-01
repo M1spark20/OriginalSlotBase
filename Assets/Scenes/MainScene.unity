@@ -4003,7 +4003,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000019689363}
+  m_AnchoredPosition: {x: 0, y: -0.00002503223}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1001 &916435913
@@ -4371,7 +4371,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ContentPrehab: {fileID: 5336366567018601690, guid: a8d20706f3728ec43b25602e84ddc10d, type: 3}
-  RaycasterReference: {fileID: 0}
+  RaycasterReference: {fileID: 1783988112}
 --- !u!114 &1005071840
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6759,7 +6759,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000010828215}
+  m_AnchoredPosition: {x: 0, y: -0.00002503223}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1534532079
@@ -7421,7 +7421,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ContentPrehab: {fileID: 5336366567018601690, guid: c2aefd57a99e0c04281600de9db75426, type: 3}
-  RaycasterReference: {fileID: 0}
+  RaycasterReference: {fileID: 1050538862}
 --- !u!114 &1757114178
 MonoBehaviour:
   m_ObjectHideFlags: 0
