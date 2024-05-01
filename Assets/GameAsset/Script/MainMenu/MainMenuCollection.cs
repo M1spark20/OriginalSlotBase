@@ -7,9 +7,11 @@ using UnityEngine.UI;
 public class MainMenuCollection : MainMenuElemBase
 {
 	[SerializeField] private GameObject HistoryViewer;
+	[SerializeField] private GameObject RecentViewer;
 	
 	private SlotEffectMaker2023.Data.CollectionData cd;
 	private UISmartScroller scroller;
+	private UIShowPatternColleRecent recentScr;
 	
     // Start is called before the first frame update
     protected override void Awake()
@@ -17,6 +19,7 @@ public class MainMenuCollection : MainMenuElemBase
     	base.Awake();
     	cd = SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.GetInstance().Collection;
     	scroller = HistoryViewer?.GetComponent<UISmartScroller>() ?? null;
+    	recentScr = RecentViewer.GetComponent<UIShowPatternColleRecent>();
     }
     
     // Update is called once per frame
@@ -29,13 +32,16 @@ public class MainMenuCollection : MainMenuElemBase
     	scroller.SetContentSize(size, 0);
     	// データ全更新
     	scroller.ElemUpdate(true);
+    	
+    	// 最近達成したデータ更新
+    	recentScr.RefreshData(0, false);
     }
     
     public override void OnGetKeyDown(EMenuButtonID eKeyID){
     	if (eKeyID == EMenuButtonID.eScrUp) {
-			scroller.MovePosition(-1/3f);
+			scroller.MovePosition(-1/2f);
     	} else if (eKeyID == EMenuButtonID.eScrDn) {
-			scroller.MovePosition( 1/3f);
+			scroller.MovePosition( 1/2f);
 		}
     }
 }
