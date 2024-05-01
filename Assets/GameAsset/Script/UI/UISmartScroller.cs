@@ -53,6 +53,7 @@ public class UISmartScroller : MonoBehaviour
         	ShowData[i].transform.localPosition = new Vector3(0, -ContentSize * ShowContentID[i], 0);
     		ShowScr[i].SetVisible(i >= 0 && i < ContentCount);
         }
+        Rect.verticalNormalizedPosition = 1f;
     }
 
     // Update is called once per frame
