@@ -113,7 +113,7 @@ public class CollectionBuilder : MonoBehaviour
 	        		modComa.SetActive(true);
 	        		BonusInComaID[i][j].GetComponent<Image>().enabled = true;
 	    			// データは逆順に格納されていることに注意する。
-	    			modComa.transform.Find("0").GetComponent<Image>().sprite = comaData.ReelChipData.Extract(ra[i][SlotMaker2022.LocalDataSet.COMA_MAX - showComa - 1].Coma);
+	    			modComa.transform.Find("0").GetComponent<Image>().sprite = comaData.ReelChipDataMini.Extract(ra[i][SlotMaker2022.LocalDataSet.COMA_MAX - showComa - 1].Coma);
 	    			BonusInComaID[i][j].transform.Find("Text").GetComponent<TextMeshProUGUI>().text = (showComa + 1).ToString();
 	    			if (showComa == 0){
 			        	BonusInCutLine[i].GetComponent<Image>().enabled = true;
@@ -134,7 +134,7 @@ public class CollectionBuilder : MonoBehaviour
 	        		modComa.SetActive(true);
 	        		// コマ配置
 	    			for(byte symC = 0; symC < comaSet.Count; ++symC)
-	    				modComa.transform.Find(symC.ToString()).GetComponent<Image>().sprite = comaData.ReelChipData.Extract(comaSet[symC]);
+	    				modComa.transform.Find(symC.ToString()).GetComponent<Image>().sprite = comaData.ReelChipDataMini.Extract(comaSet[symC]);
 	    			// Invert描画
 	    			BonusInComaImg[i][comaC].transform.Find("Invert").GetComponent<Image>().enabled = nowPtn.CollectionElem[i].ComaItem[comaC] < 0;
     			}

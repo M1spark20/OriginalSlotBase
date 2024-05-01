@@ -31,7 +31,7 @@ public class UIShowBonusHistScr : ScrollPrehabBase
 		transform.Find("Number").GetComponent<TextMeshProUGUI>().color = txtColor;
 		transform.Find("Game").GetComponent<TextMeshProUGUI>().text = refData.InGame.ToString();
 		transform.Find("Game").GetComponent<TextMeshProUGUI>().color = txtColor;
-		transform.Find("Coma").GetComponent<Image>().sprite = comaData.ReelChipData.Extract(hc.GetConfig(refData.BonusFlag).ComaID);
+		transform.Find("Coma").GetComponent<Image>().sprite = comaData.ReelChipDataMini.Extract(hc.GetConfig(refData.BonusFlag).ComaID);
 		transform.Find("Get").GetComponent<TextMeshProUGUI>().text = refData.IsFinished ? (refData.MedalAfter - refData.MedalBefore).ToString() : string.Empty;
 		transform.Find("Get").GetComponent<TextMeshProUGUI>().color = txtColor;
 	}

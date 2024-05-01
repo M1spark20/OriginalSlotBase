@@ -122,7 +122,7 @@ public class UIShowHistory : MonoBehaviour
 			}
 			if (Symbol[setPos] != null) {
 				Symbol[setPos].SetActive(true);
-				Symbol[setPos].GetComponent<Image>().sprite = comaData.ReelChipData.Extract(hc.GetConfig(refData.BonusFlag).ComaID);
+				Symbol[setPos].GetComponent<Image>().sprite = comaData.ReelChipDataMini.Extract(hc.GetConfig(refData.BonusFlag).ComaID);
 			}
 			if (Number[setPos] != null) {
 				Number[setPos].SetActive(false);

@@ -16,6 +16,7 @@ public class SlotDataManager : MonoBehaviour
 	
 	// リールチップ画像を指定
 	[SerializeField] private Texture2D ReelChip;
+	[SerializeField] private Texture2D ReelChipMini;
 	[SerializeField] private TextAsset MainROM;
 	[SerializeField] private TextAsset EffectData;
 	
@@ -29,7 +30,7 @@ public class SlotDataManager : MonoBehaviour
 		slotData   = SlotEffectMaker2023.Singleton.SlotDataSingleton.GetInstance();
 		timer      = slotData.timerData;
 		chipData   = ReelChipHolder.GetInstance();
-		chipData.Init(ReelChip);
+		chipData.Init(ReelChip, ReelChipMini);
 		
 		// タイマ作成用データ生成
 		var tList = new SlotEffectMaker2023.Data.TimerList();

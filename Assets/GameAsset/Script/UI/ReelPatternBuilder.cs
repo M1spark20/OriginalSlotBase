@@ -82,7 +82,7 @@ public class ReelPatternBuilder : MonoBehaviour
         		BonusInComaImg[i][j].GetComponent<Image>().enabled = true;
         		BonusInComaID[i][j].GetComponent<Image>().enabled = true;
     			// データは逆順に格納されていることに注意する。
-    			BonusInComaImg[i][j].GetComponent<Image>().sprite = comaData.ReelChipData.Extract(ra[i][SlotMaker2022.LocalDataSet.COMA_MAX - showComa - 1].Coma);
+    			BonusInComaImg[i][j].GetComponent<Image>().sprite = comaData.ReelChipDataMini.Extract(ra[i][SlotMaker2022.LocalDataSet.COMA_MAX - showComa - 1].Coma);
     			BonusInComaID[i][j].transform.Find("Text").GetComponent<TextMeshProUGUI>().text = (showComa + 1).ToString();
     			if (showComa == 0){
 		        	BonusInCutLine[i].GetComponent<Image>().enabled = true;
