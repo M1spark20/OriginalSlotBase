@@ -87,12 +87,13 @@ namespace SlotEffectMaker2023.Action
         {   // データ読込後、コレクション達成変数がコレクション数より小さければアイテムを追加する
             while (Achievements.Count < pColle.Collections.Count) Achievements.Add(new CollectionAchieveElem());
         }
-        public void JudgeCollection(Data.CollectionData cd, List<ReelBasicData> rd, LocalDataSet.ReelArray[][] ra, SlotValManager vm, SlotBasicData sb)
+        public void JudgeCollection(Data.CollectionData cd, List<ReelBasicData> rd, LocalDataSet.ReelArray[][] ra, SlotValManager vm, SlotBasicData sb, bool maskFlag)
         {   // コレクション判定(リール停止毎に判定)
             const int REEL_NUM = LocalDataSet.REEL_MAX;
 
-            // 判定条件(前提としてgameMode = 0であることが必要)
-            if (sb.gameMode != 0) return;
+            // 判定条件(前提としてgameMode = 0であることが必要、ただし入賞Gのみマスク: maskFlag)
+            // 判定の中にHazure, Aimingが含まれる場合は入賞Gも判定を行う
+            if (sb.gameMode != 0 && !maskFlag) return;
             if ((vm.GetVariable(cd.JudgeCondName)?.val ?? 0) == 0) return;
 
             // はずれ判定取得
@@ -104,8 +105,9 @@ namespace SlotEffectMaker2023.Action
             {
                 // 探索除外判定を行う
                 bool achieveFlag = true;
-                foreach (var item in achievedID)
-                    achieveFlag &= item != id;
+                bool hasHazure = false;
+
+                foreach (var item in achievedID) achieveFlag &= item != id;
                 if (!achieveFlag) continue;
 
                 // 達成判定を行う
@@ -125,9 +127,11 @@ namespace SlotEffectMaker2023.Action
                             break;
                         case Data.CollectionReelPattern.eHazure:
                             achieveFlag &= rd[reelC].stopPos != ReelBasicData.REEL_NPOS && hazureFlag;
+                            hasHazure = true;
                             break;
                         case Data.CollectionReelPattern.eAiming:
                             achieveFlag &= rd[reelC].stopPos != ReelBasicData.REEL_NPOS && aimingFlag;
+                            hasHazure = true;
                             break;
                         case Data.CollectionReelPattern.eReelPos:
                             achieveFlag &= rd[reelC].stopPos != ReelBasicData.REEL_NPOS && rd[reelC].stopPos == jd[reelC].ReelPos;
@@ -141,7 +145,8 @@ namespace SlotEffectMaker2023.Action
                     }
                     if (!achieveFlag) break;
                 }
-                if (!achieveFlag) continue;
+                // 判定の中にHazure, Aimingが含まれる場合は入賞Gも判定を行う。逆論理でここで判定
+                if (!achieveFlag || (!hasHazure && sb.gameMode != 0)) continue;
 
                 // ここまで来ると達成、達成処理を行う
                 if (Achievements[id].CompTimes == 0) AddNewAchieve(id);

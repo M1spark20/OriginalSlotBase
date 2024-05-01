@@ -430,7 +430,7 @@ public class SCReelOperation : ISlotControllerBase {
 		
 		// リーチ目判定(ただし全停止後の判定はモード移行終了後:SCJudgeAndPayoutのコンストラクタにて行う)
 		if (stopReelCount < reelNum)
-			slotData.collectionManager.JudgeCollection(subROM.Collection, slotData.reelData, mainROM.ReelArray, slotData.valManager, slotData.basicData);
+			slotData.collectionManager.JudgeCollection(subROM.Collection, slotData.reelData, mainROM.ReelArray, slotData.valManager, slotData.basicData, false);
 		
 		// フリーズ取得
 		if (stopReelCount == 1) reelFreezeTime += slotData.freezeManager.GetFreeze(SlotMaker2022.LocalDataSet.FreezeControlData.FreezeTiming.Stop1st);
@@ -568,8 +568,8 @@ public class SCJudgeAndPayout : ISlotControllerBase {
 		basicData.ModeChange(castResult, mainROM.CastCommonData, mainROM.RTCommonData, mainROM.RTMoveData, timer, slotData.historyManager, slotData.collectionManager, slotData.valManager);
 		// モード移行処理(終了側)を行う
 		slotData.basicData.ModeReset(mainROM.CastCommonData, mainROM.RTCommonData, mainROM.RTMoveData, timer, mPayoutNum < 0 ? 0 : mPayoutNum, slotData.historyManager);
-		// gameModeを更新した後に全停止時のリーチ目コレクション処理を行う
-		slotData.collectionManager.JudgeCollection(subROM.Collection, slotData.reelData, mainROM.ReelArray, slotData.valManager, basicData);
+		// gameModeを更新した後に全停止時のリーチ目コレクション処理を行う(モード変化時にはマスクをかける)
+		slotData.collectionManager.JudgeCollection(subROM.Collection, slotData.reelData, mainROM.ReelArray, slotData.valManager, basicData, lastMode != basicData.gameMode);
 		
 		// フリーズ抽選
 		slotData.freezeManager.SetFreezeMode(mainROM.FreezeControlData, mainROM.FreezeTimeData, lastMode, basicData.gameMode);
