@@ -10,6 +10,7 @@ public class UIShowPatternScr : ScrollPrehabBase
 	private SlotEffectMaker2023.Action.HistoryManager hm;
 	private ReelChipHolder comaData;
 	private GameObject[] refObj;
+	private Canvas[] refCanvas;
 	private ReelPatternBuilder[] refScr;
 	private TextMeshProUGUI[] info;
 	
@@ -22,12 +23,14 @@ public class UIShowPatternScr : ScrollPrehabBase
         comaData = ReelChipHolder.GetInstance();
         
         refObj = new GameObject[showNum];
+        refCanvas = new Canvas[showNum];
         refScr = new ReelPatternBuilder[showNum];
         info = new TextMeshProUGUI[showNum];
         
         // scr取得(マジックナンバー要調整)
         for (int i=0; i<showNum; ++i){
         	refObj[i] = transform.Find("Elem+" + i.ToString()).gameObject;
+        	refCanvas[i] = refObj[i].transform.GetComponent<Canvas>();
         	refScr[i] = refObj[i].transform.GetComponent<ReelPatternBuilder>();
         	info[i] = refObj[i].transform.Find("Info").GetComponent<TextMeshProUGUI>();
         }
@@ -38,8 +41,9 @@ public class UIShowPatternScr : ScrollPrehabBase
 		for (int i=0; i<showNum; ++i){
 			int refID = showNum * pID + i;
 			if (refID < 0 || refID >= hm.PatternHist.Count) {
-				refScr[i].SetData(null, "NO DATA");
+				refCanvas[i].enabled = false;
 			} else {
+				refCanvas[i].enabled = true;
 				refScr[i].SetData(hm.PatternHist[refID], refID.ToString() + " Game(s) before");
 			}
 		}

@@ -254,7 +254,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 3314453405649544639}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
@@ -269,6 +269,8 @@ GameObject:
   - component: {fileID: 2684588408585739803}
   - component: {fileID: 2684588408585739782}
   - component: {fileID: 191485961657349426}
+  - component: {fileID: 4052497053291722894}
+  - component: {fileID: 1974539633647738010}
   m_Layer: 5
   m_Name: BonusHistScroll
   m_TagString: Untagged
@@ -322,6 +324,44 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Select: {fileID: 6246008081544375729}
+--- !u!223 &4052497053291722894
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2684588408585739802}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 25
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
+--- !u!114 &1974539633647738010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2684588408585739802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &2684588408767689675
 GameObject:
   m_ObjectHideFlags: 0

@@ -85,11 +85,10 @@ public class CollectionBuilder : MonoBehaviour
     }
 
 	public void SetData(SlotEffectMaker2023.Data.CollectionDataElem nowPtn, SlotEffectMaker2023.Action.CollectionAchieveElem achievement, int pID){
-		Reset();
 		if (nowPtn == null) return;
 		
 		// 番号・達成状況描画
-		Labels.SetActive(true);
+		Reset();
 		NCMask.GetComponent<Image>().enabled = !(achievement.CompTimes > 0);
 		Labels.transform.Find("No").GetComponent<TextMeshProUGUI>().text = "No." + pID.ToString("D03");
 		Labels.transform.Find("CompCount").GetComponent<TextMeshProUGUI>().text = achievement.CompTimes.ToString();
@@ -110,7 +109,7 @@ public class CollectionBuilder : MonoBehaviour
 	    		for(int j=0; j<BonusInComaImg[i].Length; ++j){
 	    			int showComa = (j + nowPtn.CollectionElem[i].ReelPos) % SlotMaker2022.LocalDataSet.COMA_MAX;
 	    			GameObject modComa = BonusInComaImg[i][j].transform.Find("ComaImg+1").gameObject;
-	        		modComa.SetActive(true);
+	        		modComa.GetComponent<Canvas>().enabled = true;
 	        		BonusInComaID[i][j].GetComponent<Image>().enabled = true;
 	    			// データは逆順に格納されていることに注意する。
 	    			modComa.transform.Find("0").GetComponent<Image>().sprite = comaData.ReelChipDataMini.Extract(ra[i][SlotMaker2022.LocalDataSet.COMA_MAX - showComa - 1].Coma);
@@ -131,7 +130,7 @@ public class CollectionBuilder : MonoBehaviour
 	    			List<byte> comaSet = nowPtn.CollectionElem[i].GetItemList(comaC);
 	    			GameObject modComa = BonusInComaImg[i][comaC].transform.Find("ComaImg+" + comaSet.Count.ToString())?.gameObject ?? null;
 	    			if (modComa == null) continue;
-	        		modComa.SetActive(true);
+	        		modComa.GetComponent<Canvas>().enabled = true;
 	        		// コマ配置
 	    			for(byte symC = 0; symC < comaSet.Count; ++symC)
 	    				modComa.transform.Find(symC.ToString()).GetComponent<Image>().sprite = comaData.ReelChipDataMini.Extract(comaSet[symC]);
@@ -143,7 +142,6 @@ public class CollectionBuilder : MonoBehaviour
 	}
 	
 	public void Reset(){
-		Labels.SetActive(false);
 		NCMask.GetComponent<Image>().enabled = false;
     	for(int i=0; i<BonusInBG.Length; ++i){
         	BonusInStopInfo[i].GetComponent<TextMeshProUGUI>().text = string.Empty;
@@ -152,7 +150,7 @@ public class CollectionBuilder : MonoBehaviour
         		BonusInComaID[i][j].GetComponent<Image>().enabled = false;
     			BonusInComaID[i][j].transform.Find("Text").GetComponent<TextMeshProUGUI>().text = string.Empty;
         		BonusInComaImg[i][j].transform.Find("Invert").GetComponent<Image>().enabled = false;
-    			for (int k = 1; k<=ComaShowMax; ++k) BonusInComaImg[i][j].transform.Find("ComaImg+" + k.ToString()).gameObject.SetActive(false);
+    			for (int k = 1; k<=ComaShowMax; ++k) BonusInComaImg[i][j].transform.Find("ComaImg+" + k.ToString()).GetComponent<Canvas>().enabled = false;
         	}
     	}
 	}

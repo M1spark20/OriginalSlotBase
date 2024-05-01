@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SlotDataManager : MonoBehaviour
 {
@@ -22,6 +23,7 @@ public class SlotDataManager : MonoBehaviour
 	
 	[SerializeField] private GameObject MainMenuObj;
 	private Canvas MainMenuCanvas;
+	private GraphicRaycaster MainMenuTouch;
 	private MainMenuManager MainMenuScr;
 	
 	void Awake()
@@ -50,8 +52,10 @@ public class SlotDataManager : MonoBehaviour
 		// メニュー非表示からスタート
 		MainMenuScr = MainMenuObj.GetComponent<MainMenuManager>();
 		MainMenuCanvas = MainMenuObj.GetComponent<Canvas>();
+		MainMenuTouch = MainMenuObj.GetComponent<GraphicRaycaster>();
 		MenuShown = false;
 		MainMenuCanvas.enabled = MenuShown;
+		MainMenuTouch.enabled = MenuShown;
 	}
 
 	// Update is called once per frame
@@ -63,7 +67,7 @@ public class SlotDataManager : MonoBehaviour
 		// Menu表示ボタン(描画は暫定)
 		if (Input.GetKeyDown("m")) {
 			MenuShown ^= true;
-			MainMenuCanvas.enabled = MenuShown;
+			SetMenuShown();
 		}
 		
 		// KeyDown設定(Menu表示状態により制御を変える)
@@ -93,5 +97,11 @@ public class SlotDataManager : MonoBehaviour
 		controller = controller.ProcessAfterInput();
 		// システム変数更新
 		slotData.Process();
+	}
+	
+	private void SetMenuShown(){
+		MainMenuCanvas.enabled = MenuShown;
+		MainMenuTouch.enabled = MenuShown;
+		MainMenuScr.OnMenuShownChange(MenuShown);
 	}
 }

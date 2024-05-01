@@ -15,6 +15,7 @@ public class MainMenuManager : MonoBehaviour
 	// 各パネルからキー入力情報を取得するための記録機能
 	private MainMenuElemBase[] PanelScr;
 	private Canvas[] PanelsCanvas;
+	private GraphicRaycaster[] PanelsTouch;
 	
     // Start is called before the first frame update
     void Start()
@@ -22,6 +23,7 @@ public class MainMenuManager : MonoBehaviour
         SelectedID = -1;
         PanelScr = new MainMenuElemBase[Panels.Length];
         PanelsCanvas = new Canvas[Panels.Length];
+        PanelsTouch = new GraphicRaycaster[Panels.Length];
         
         Selector = new Button[Panels.Length];
         Selector[0] = SelectorBase;
@@ -30,7 +32,9 @@ public class MainMenuManager : MonoBehaviour
         for(int i=0; i<Panels.Length; ++i) {
 	        // 選択用ボタン配置
         	PanelsCanvas[i] = Panels[i].GetComponent<Canvas>();
+        	PanelsTouch[i] = Panels[i].GetComponent<GraphicRaycaster>();
         	PanelsCanvas[i].enabled = false;
+        	PanelsTouch[i].enabled = false;
         	if (i > 0) {
         		Selector[i] = Instantiate(SelectorBase, this.transform);
         		Selector[i].transform.localPosition += new Vector3(sizeX * i, 0, 0);
@@ -41,7 +45,9 @@ public class MainMenuManager : MonoBehaviour
         	// スクリプト登録
         	PanelScr[i] = Panels[i].GetComponent<MainMenuElemBase>();
         }
+        // 表示初期化(Menuが表示されていない前提)
         RefreshActivate(0);
+        PanelsTouch[0].enabled = false;
     }
 
     // Update is called once per frame
@@ -65,13 +71,24 @@ public class MainMenuManager : MonoBehaviour
     // アクティブにするパネルを決める
     private void RefreshActivate(int activeID){
     	if (activeID != SelectedID){
-    		if (SelectedID >= 0) PanelsCanvas[SelectedID].enabled = false;
+    		if (SelectedID >= 0){
+    			PanelsCanvas[SelectedID].enabled = false;
+    			PanelsTouch[SelectedID].enabled = false;
+    		}
     		if (activeID >= 0){
     			PanelScr[activeID].RefreshData();
     			PanelsCanvas[activeID].enabled = true;
+    			PanelsTouch[activeID].enabled = true;
     		}
     		SelectedID = activeID;
     	} 
+    }
+    
+    // メニュー再表示時の描画をかける
+    public void OnMenuShownChange(bool visible){
+    	if (SelectedID < 0) return;
+    	PanelsTouch[SelectedID].enabled = visible;
+    	if(visible) PanelScr[SelectedID].RefreshData();
     }
     
     public void OnClickButton(int index){

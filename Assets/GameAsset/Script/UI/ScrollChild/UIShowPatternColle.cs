@@ -9,6 +9,7 @@ public class UIShowPatternColle : ScrollPrehabBase
 	private SlotEffectMaker2023.Data.CollectionData cd;
 	private SlotEffectMaker2023.Action.CollectionLogger logger;
 	private GameObject[] refObj;
+	private Canvas[] refCanvas;
 	private CollectionBuilder[] refScr;
 	
 	private int showNum = 4;
@@ -19,11 +20,13 @@ public class UIShowPatternColle : ScrollPrehabBase
     	logger = SlotEffectMaker2023.Singleton.SlotDataSingleton.GetInstance().collectionManager;
         
         refObj = new GameObject[showNum];
+        refCanvas = new Canvas[showNum];
         refScr = new CollectionBuilder[showNum];
         
         // scr取得(マジックナンバー要調整)
         for (int i=0; i<showNum; ++i){
         	refObj[i] = transform.Find("Elem+" + i.ToString()).gameObject;
+        	refCanvas[i] = refObj[i].transform.GetComponent<Canvas>();
         	refScr[i] = refObj[i].transform.GetComponent<CollectionBuilder>();
         }
     }
@@ -33,8 +36,9 @@ public class UIShowPatternColle : ScrollPrehabBase
 		for (int i=0; i<showNum; ++i){
 			int refID = showNum * pID + i;
 			if (refID < 0 || refID >= cd.Collections.Count) {
-				refScr[i].SetData(null, null, 0);
+				refCanvas[i].enabled = false;
 			} else {
+				refCanvas[i].enabled = true;
 				refScr[i].SetData(cd.Collections[refID], logger.Achievements[refID], refID+1);
 			}
 		}

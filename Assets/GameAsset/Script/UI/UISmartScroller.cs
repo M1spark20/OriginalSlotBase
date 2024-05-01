@@ -7,6 +7,7 @@ using TMPro;
 public class UISmartScroller : MonoBehaviour
 {
 	[SerializeField] private GameObject ContentPrehab;
+	[SerializeField] private GraphicRaycaster RaycasterReference;
 	
 	private GameObject[] ShowData;		// オブジェクトの表示を行うデータ
 	private ScrollPrehabBase[] ShowScr;	// オブジェクトのスクリプト
@@ -50,7 +51,7 @@ public class UISmartScroller : MonoBehaviour
         	ShowContentID[i] = int.MinValue;
         	// 初期位置は[0]を一番上に置く(ただし一番上は枠外)
         	ShowData[i].transform.localPosition = new Vector3(0, -ContentSize * ShowContentID[i], 0);
-    		ShowData[i].SetActive(i >= 0 && i < ContentCount);
+    		ShowScr[i].SetVisible(i >= 0 && i < ContentCount);
         }
     }
 
@@ -58,6 +59,9 @@ public class UISmartScroller : MonoBehaviour
     void Update()
     {
     	ElemUpdate(false);
+    	if (RaycasterReference != null) {
+    		foreach (var item in ShowScr) item.SetRaycaster(RaycasterReference.enabled);
+    	}
     }
     
     void CheckViewSize(){
@@ -141,7 +145,7 @@ public class UISmartScroller : MonoBehaviour
         	if (ShowContentID[ctrl] != currentID || ShowScr[ctrl].Selected ^ (currentID == SelectedIndex) || pForceUpdate){
         		// データの更新を行う
         		ShowContentID[ctrl] = currentID;
-        		ShowData[ctrl].SetActive(currentID >= 0 && currentID < ContentCount + ShowOffset);
+        		ShowScr[ctrl].SetVisible(currentID >= 0 && currentID < ContentCount + ShowOffset);
         		ShowScr[ctrl].RefreshData(currentID, currentID == SelectedIndex);
         	}
         	// 初期位置は[0]を一番上に置く(ただし一番上は枠外)
