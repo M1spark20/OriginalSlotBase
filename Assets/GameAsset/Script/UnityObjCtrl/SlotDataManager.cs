@@ -65,10 +65,7 @@ public class SlotDataManager : MonoBehaviour
 		timer.Process(Time.deltaTime);
 		
 		// Menu表示ボタン(描画は暫定)
-		if (Input.GetKeyDown("m")) {
-			MenuShown ^= true;
-			SetMenuShown();
-		}
+		if (Input.GetKeyDown("m")) MenuShowToggle();
 		
 		// KeyDown設定(Menu表示状態により制御を変える)
 		if (MenuShown){
@@ -103,5 +100,15 @@ public class SlotDataManager : MonoBehaviour
 		MainMenuCanvas.enabled = MenuShown;
 		MainMenuTouch.enabled = MenuShown;
 		MainMenuScr.OnMenuShownChange(MenuShown);
+	}
+	
+	public void MenuShowToggle(){
+		MenuShown ^= true;
+		SetMenuShown();
+	}
+	
+	public void MenuHide(){
+		MenuShown = false;
+		SetMenuShown();
 	}
 }

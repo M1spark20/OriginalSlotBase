@@ -11,6 +11,8 @@ public class MainMenuManager : MonoBehaviour
 	
 	private int SelectedID;
 	private Button[] Selector;
+	private Image[] SelImage;
+	private TextMeshProUGUI[] SelName;
 	
 	// 各パネルからキー入力情報を取得するための記録機能
 	private MainMenuElemBase[] PanelScr;
@@ -26,6 +28,8 @@ public class MainMenuManager : MonoBehaviour
         PanelsTouch = new GraphicRaycaster[Panels.Length];
         
         Selector = new Button[Panels.Length];
+        SelImage = new Image[Panels.Length];
+        SelName = new TextMeshProUGUI[Panels.Length];
         Selector[0] = SelectorBase;
         float sizeX = SelectorBase.GetComponent<RectTransform>().sizeDelta.x;
         
@@ -39,7 +43,9 @@ public class MainMenuManager : MonoBehaviour
         		Selector[i] = Instantiate(SelectorBase, this.transform);
         		Selector[i].transform.localPosition += new Vector3(sizeX * i, 0, 0);
         	}
-        	Selector[i].transform.Find("name").GetComponent<TextMeshProUGUI>().text = Panels[i].name;
+        	SelImage[i] = Selector[i].GetComponent<Image>();
+        	SelName[i] = Selector[i].transform.Find("name").GetComponent<TextMeshProUGUI>();
+        	SelName[i].text = Panels[i].name;
         	var prm = i;	// 変数に入れないとデルタがうまく動かないらしい…
         	Selector[i].onClick.AddListener(() => OnClickButton(prm));
         	// スクリプト登録
@@ -53,8 +59,11 @@ public class MainMenuManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Panels.Length == 0) return;
         // タブの描画(後から追加)
+        for (int i=0; i<Selector.Length; ++i) {
+        	SelImage[i].color = SelectedID == i ? Color.yellow : new Color(0.88f, 0.88f, 0.88f);
+        	SelName[i].color = SelectedID == i ? Color.yellow : Color.white;
+        }
     }
     
     public void OnGetKeyDown(EMenuButtonID eKeyID){
