@@ -8,8 +8,11 @@ public class MainMenuCollection : MainMenuElemBase
 {
 	[SerializeField] private GameObject HistoryViewer;
 	[SerializeField] private GameObject RecentViewer;
+	[SerializeField] private TextMeshProUGUI AchieveCount;
+	[SerializeField] private RectTransform AchieveGraph;
 	
 	private SlotEffectMaker2023.Data.CollectionData cd;
+	private SlotEffectMaker2023.Action.CollectionLogger log;
 	private UISmartScroller scroller;
 	private UIShowPatternColleRecent recentScr;
 	
@@ -18,6 +21,7 @@ public class MainMenuCollection : MainMenuElemBase
     {
     	base.Awake();
     	cd = SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.GetInstance().Collection;
+    	log = SlotEffectMaker2023.Singleton.SlotDataSingleton.GetInstance().collectionManager;
     	scroller = HistoryViewer?.GetComponent<UISmartScroller>() ?? null;
     	recentScr = RecentViewer.GetComponent<UIShowPatternColleRecent>();
     }
@@ -35,6 +39,10 @@ public class MainMenuCollection : MainMenuElemBase
     	
     	// 最近達成したデータ更新
     	recentScr.RefreshData(0, false);
+    	// 達成数とグラフ更新
+    	int percent = log.GetAchievedCount() * 100 / cd.Collections.Count;
+    	AchieveCount.text = log.GetAchievedCount().ToString("D03") + " / " + cd.Collections.Count.ToString("D03") + " (" + percent.ToString("D03") + "%)";
+    	AchieveGraph.localScale = new Vector2(percent / 100f, 1f);
     }
     
     public override void OnGetKeyDown(EMenuButtonID eKeyID){
