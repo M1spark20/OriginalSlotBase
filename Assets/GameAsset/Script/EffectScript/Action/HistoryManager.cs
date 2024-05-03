@@ -105,6 +105,72 @@ namespace SlotEffectMaker2023.Action
             return InPattern.ReadData(ref fs, version);
         }
     }
+    public class BalanceGraph : SlotMaker2022.ILocalDataInterface
+    {
+        public const int COUNT_INTERVAL = 10;
+        public const int BUF_MAX = 10000;
+
+        private int GameCounter;
+        private int RingBegin;
+        private List<int> GraphData;    // リングバッファ
+
+        public BalanceGraph()
+        {
+            GameCounter = 0;
+            RingBegin = 0;
+            GraphData = new List<int>();
+        }
+        public void Init()
+        {   // ファイル読込後に要素数がない場合は0を初期値に指定する
+            if (GraphData.Count == 0) GraphData.Add(0);
+        }
+        public bool StoreData(ref BinaryWriter fs, int version)
+        {
+            fs.Write(GameCounter);
+            fs.Write(RingBegin);
+            fs.Write(GraphData.Count);
+            foreach (var item in GraphData) fs.Write(item);
+            return true;
+        }
+        public bool ReadData(ref BinaryReader fs, int version)
+        {
+            GameCounter = fs.ReadInt32();
+            RingBegin = fs.ReadInt32();
+            int dataSize = fs.ReadInt32();
+            for (int i = 0; i < dataSize; ++i) GraphData.Add(fs.ReadInt32());
+            return true;
+        }
+
+        public void LatchGame(SlotBasicData bs)
+        {
+            if (++GameCounter < COUNT_INTERVAL) return;
+            GameCounter = 0;
+            if (GraphData.Count < BUF_MAX)
+            {
+                GraphData.Add((int)bs.outCount - (int)bs.inCount);
+            }
+            else
+            {
+                GraphData[RingBegin] = (int)bs.outCount - (int)bs.inCount;
+                RingBegin = (RingBegin + 1) % BUF_MAX;
+            }
+        }
+
+        public float? GetValue(int pos, int size)
+        {   // pos: [0, (size - 1)]
+            // データが範囲外アクセスの場合nullを返す
+            if (pos >= GraphData.Count) return null;
+            // データ数がsizeを超過していない場合要素をそのまま返す
+            if (GraphData.Count <= size) return GraphData[(pos + RingBegin) % GraphData.Count];
+
+            // 超過している場合はデータ数と描画数に応じて計算位置を決定。0とCount-1が出るように調整
+            float referenceF = (GraphData.Count-1) / (float)(size-1) * pos;
+            int ref1 = ((int)referenceF + RingBegin) % GraphData.Count;
+            int ref2 = (ref1 + 1) % GraphData.Count;
+            float ratio = referenceF % 1f;
+            return GraphData[ref1] * (1f - ratio) + GraphData[ref2] * ratio;
+        }
+    }
     public class HistoryManager : SlotMaker2022.ILocalDataInterface
     {	// 各種履歴管理クラス(Sav)
         public const int PATTERN_MAX = 32;
@@ -112,11 +178,17 @@ namespace SlotEffectMaker2023.Action
 
         public List<PatternHistoryElem> PatternHist { get; set; }
         public List<BonusHistoryElem> BonusHist { get; set; }
+        public BalanceGraph Graph { get; set; }
 
         public HistoryManager()
         {
             PatternHist = new List<PatternHistoryElem>();
             BonusHist = new List<BonusHistoryElem>();
+            Graph = new BalanceGraph();
+        }
+        public void Init()
+        {
+            Graph.Init();
         }
         public bool StoreData(ref BinaryWriter fs, int version)
         {
@@ -124,6 +196,7 @@ namespace SlotEffectMaker2023.Action
             foreach (var item in PatternHist) item.StoreData(ref fs, version);
             fs.Write(BonusHist.Count);
             foreach (var item in BonusHist) item.StoreData(ref fs, version);
+            Graph.StoreData(ref fs, version);
             return true;
         }
         public bool ReadData(ref BinaryReader fs, int version)
@@ -142,6 +215,7 @@ namespace SlotEffectMaker2023.Action
                 bh.ReadData(ref fs, version);
                 BonusHist.Add(bh);
             }
+            if (!Graph.ReadData(ref fs, version)) return false;
             return true;
         }
         public void Process(SlotValManager vm)
@@ -204,13 +278,17 @@ namespace SlotEffectMaker2023.Action
             ShiftAdd(BonusHist, inData, -1);
             Debug.Log("BonusHist BonusFlag: " + inData.BonusFlag.ToString() + ", size:" + BonusHist.Count.ToString());
         }
-        public void AddLossGame()
+        public void ReelStart()
         {
             if (BonusHist.Count <= 0) return;
             var mod = BonusHist[0];
             if (mod.IsActivate) return;
             ++mod.LossGame;
             Debug.Log("Add LossGame: " + mod.LossGame.ToString());
+        }
+        public void OnPayoutEnd(SlotBasicData bs)
+        {
+            Graph.LatchGame(bs);
         }
         public void StartBonus(SlotBasicData bs, SlotValManager vm)
         {

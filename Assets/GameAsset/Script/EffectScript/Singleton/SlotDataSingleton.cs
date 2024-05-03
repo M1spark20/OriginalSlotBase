@@ -44,6 +44,7 @@ namespace SlotEffectMaker2023.Singleton {
 			valManager.Init(pVar);
 			soundData.Init(pSoundPlayData);
 			colorMapData.Init(pMapPlayData);
+			historyManager.Init();
 			collectionManager.Init(pColle);
         }
 	

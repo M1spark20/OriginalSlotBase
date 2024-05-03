@@ -9,6 +9,7 @@ public class MainMenuHistory : MainMenuElemBase
 	[SerializeField] private GameObject PatternElem;
 	[SerializeField] private GameObject HistoryViewer;
 	[SerializeField] private GameObject Date;
+	[SerializeField] private UIBalanceGraph GraphScript;
 	
 	private SlotEffectMaker2023.Action.HistoryManager hm;
 	private ReelPatternBuilder builder;
@@ -49,6 +50,8 @@ public class MainMenuHistory : MainMenuElemBase
     	scroller.ElemUpdate(true);
     	// 成立時出目更新
     	ShowPattern(scroller.SelectedIndex);
+    	// グラフ更新(なぜか初回だけnullになる…)
+    	GraphScript?.GraphDraw();
     }
     
     private void ShowPattern(int nowShow) {

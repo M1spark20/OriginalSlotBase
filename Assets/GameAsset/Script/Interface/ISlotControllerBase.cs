@@ -179,7 +179,9 @@ public class SCWaitBeforeReelStart : ISlotControllerBase {
 		waitTime = WAIT_MAX;
 		
 		// BET消化処理
-		slotData.basicData.LatchBet(slotData.historyManager);
+		slotData.basicData.LatchBet();
+		// 履歴関係処理(成立後G数)
+		slotData.historyManager.ReelStart();
 		
 		// 乱数抽選処理
 		SetCastFlag();
@@ -534,13 +536,21 @@ public class SCJudgeAndPayout : ISlotControllerBase {
 			// afterフリーズがある場合は作動させる
 			if (mFreezeAfter > 0) timer.GetTimer("afterPayFreeze").Activate();
 			// なければモード移行する
-			else return new SCWaitBet();
+			else {
+				// 移行前にグラフを記録する
+				slotData.historyManager.OnPayoutEnd(slotData.basicData);
+				return new SCWaitBet();
+			}
 		}
 		
 		// afterフリーズ消化判定
 		if (timer.GetTimer("afterPayFreeze").isActivate && !timer.GetTimer("beforePayFreeze").isActivate){
 			// 時間の消化が完了したらモード移行する
-			if (timer.GetTimer("afterPayFreeze").elapsedTime > (float)mFreezeAfter / divMS) return new SCWaitBet();
+			if (timer.GetTimer("afterPayFreeze").elapsedTime > (float)mFreezeAfter / divMS){
+				// 移行前にグラフを記録する
+				slotData.historyManager.OnPayoutEnd(slotData.basicData);
+				return new SCWaitBet();
+			}
 		}
 		
 		return this;
