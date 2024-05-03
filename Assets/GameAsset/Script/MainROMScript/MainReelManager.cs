@@ -589,6 +589,7 @@ namespace SlotMaker2022.main_function
                 // step4: リーチ目に合致するものを抽選して返す
                 int ansMemo = -1;
                 int[] reachPos = new int[pStopPos.Length];
+                bool passReachSecondary = false;    // Lv.2を踏んだか
                 foreach(var item in slipPri_Step3)
                 {
                     for (int reelC = 0; reelC < pStopPos.Length; ++reelC)
@@ -603,7 +604,8 @@ namespace SlotMaker2022.main_function
                         uint checkIndex = (uint)reachLevel - 1;
                         if (ctrl.ReachAvail.GetData(checkIndex) == 0) continue;
                         if (ctrl.ReachPri.GetData(checkIndex) > 0) return item;
-                        if (ctrl.ReachAvoid.GetData(checkIndex) > 0 || ansMemo == -1) ansMemo = item;
+                        if (ctrl.ReachSec.GetData(checkIndex) > 0  && !passReachSecondary) { ansMemo = item; passReachSecondary = true; }
+                        if (ctrl.ReachSec.GetData(checkIndex) == 0 && ansMemo == -1) ansMemo = item;
                     }
                     else if (ansMemo == -1) ansMemo = item;
                 }

@@ -1037,8 +1037,8 @@ namespace SlotMaker2022
             public byte BonusFlag { get; set; }                         // 制御対象ボーナスフラグ
             public byte CastFlag { get; set; }                          // 制御対象小役フラグ
             public UserBaseData ReachAvail { get; set; }                // リーチ目停止可否
-            public UserBaseData ReachPri { get; set; }                  // リーチ目優先フラグ
-            public UserBaseData ReachAvoid { get; set; }                // リーチ目回避フラグ
+            public UserBaseData ReachPri { get; set; }                  // リーチ目優先Lv1フラグ
+            public UserBaseData ReachSec { get; set; }                  // リーチ目優先Lv2フラグ
             public List<ReelControlElem3Reels> ElemData { get; set; }   // 各停止位置要素データ
             public byte CombiPriority { get; set; }                     // 組み合わせ優先制御容認データID(1stのみ)
 
@@ -1050,7 +1050,7 @@ namespace SlotMaker2022
                 CastFlag = 0;
                 ReachAvail = new UserBaseData(1, true, ReachData.ReachLevelMax);
                 ReachPri = new UserBaseData(1, true, ReachData.ReachLevelMax);
-                ReachAvoid = new UserBaseData(1, true, ReachData.ReachLevelMax);
+                ReachSec = new UserBaseData(1, true, ReachData.ReachLevelMax);
                 ElemData = new List<ReelControlElem3Reels>();
                 CombiPriority = 0;
             }
@@ -1062,7 +1062,7 @@ namespace SlotMaker2022
                 fs.Write(CastFlag);
                 fs.Write((byte)ReachAvail.Export());
                 fs.Write((byte)ReachPri.Export());
-                fs.Write((byte)ReachAvoid.Export());
+                fs.Write((byte)ReachSec.Export());
                 fs.Write(ElemData.Count);
                 for (int i = 0; i < ElemData.Count; ++i) ElemData[i].StoreData(ref fs, version);
                 fs.Write(CombiPriority);
@@ -1076,7 +1076,7 @@ namespace SlotMaker2022
                 CastFlag = fs.ReadByte();
                 ReachAvail.Import(fs.ReadByte());
                 ReachPri.Import(fs.ReadByte());
-                ReachAvoid.Import(fs.ReadByte());
+                ReachSec.Import(fs.ReadByte());
                 int elemDataSize = fs.ReadInt32();
                 for (int i=0; i<elemDataSize; ++i)
                 {
