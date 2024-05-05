@@ -105,6 +105,7 @@ namespace SlotEffectMaker2023.Action
             {
                 // 探索除外判定を行う
                 bool achieveFlag = true;
+                // ボーナス入賞時の達成判定。除外しない場合はtrueとする
                 bool hasHazure = false;
 
                 foreach (var item in achievedID) achieveFlag &= item != id;
@@ -121,17 +122,18 @@ namespace SlotEffectMaker2023.Action
                     switch (jd[reelC].Pattern)
                     {
                         case Data.CollectionReelPattern.eAny:
+                            if (rd[reelC].stopOrder == REEL_NUM) hasHazure = true;
                             break;
                         case Data.CollectionReelPattern.eRotating:
                             achieveFlag &= rd[reelC].stopPos == ReelBasicData.REEL_NPOS;
                             break;
                         case Data.CollectionReelPattern.eHazure:
                             achieveFlag &= rd[reelC].stopPos != ReelBasicData.REEL_NPOS && hazureFlag;
-                            hasHazure = true;
+                            if (rd[reelC].stopOrder == REEL_NUM) hasHazure = true;
                             break;
                         case Data.CollectionReelPattern.eAiming:
                             achieveFlag &= rd[reelC].stopPos != ReelBasicData.REEL_NPOS && aimingFlag;
-                            hasHazure = true;
+                            if (rd[reelC].stopOrder == REEL_NUM) hasHazure = true;
                             break;
                         case Data.CollectionReelPattern.eReelPos:
                             achieveFlag &= rd[reelC].stopPos != ReelBasicData.REEL_NPOS && rd[reelC].stopPos == jd[reelC].ReelPos;
@@ -145,7 +147,7 @@ namespace SlotEffectMaker2023.Action
                     }
                     if (!achieveFlag) break;
                 }
-                // 判定の中にHazure, Aimingが含まれる場合は入賞Gも判定を行う。逆論理でここで判定
+                // 判定の中にHazure, Aimingが含まれる場合、当該リールが最終停止以外なら入賞Gも判定を行う。逆論理でここで判定
                 if (!achieveFlag || (!hasHazure && sb.gameMode != 0)) continue;
 
                 // ここまで来ると達成、達成処理を行う
