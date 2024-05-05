@@ -51,7 +51,7 @@ public class UISmartScroller : MonoBehaviour
         	ShowContentID[i] = int.MinValue;
         	// 初期位置は[0]を一番上に置く(ただし一番上は枠外)
         	ShowData[i].transform.localPosition = new Vector3(0, -ContentSize * ShowContentID[i], 0);
-    		ShowScr[i].SetVisible(i >= 0 && i < ContentCount);
+    		ShowScr[i].SetVisible(i >= ShowOffset && i < ContentCount);
         }
         Rect.verticalNormalizedPosition = 1f;
     }
@@ -149,7 +149,7 @@ public class UISmartScroller : MonoBehaviour
         	if (ShowContentID[ctrl] != currentID || ShowScr[ctrl].Selected ^ (currentID == SelectedIndex) || pForceUpdate){
         		// データの更新を行う
         		ShowContentID[ctrl] = currentID;
-        		ShowScr[ctrl].SetVisible(currentID >= 0 && currentID < ContentCount + ShowOffset);
+        		ShowScr[ctrl].SetVisible(currentID >= ShowOffset && currentID < ContentCount + ShowOffset);
         		ShowScr[ctrl].RefreshData(currentID, currentID == SelectedIndex);
         	}
         	// 初期位置は[0]を一番上に置く(ただし一番上は枠外)
