@@ -119,8 +119,10 @@ public class UISmartScroller : MonoBehaviour
     	contSize.y = ContentSize * (ContentCount);
     	ContentTransform.sizeDelta = contSize;
     	
-    	// 選択データを更新する
-    	SelectedIndex += (size - lastSize) + (offset - lastOffset);
+    	// 選択データを更新する(サイズが増えた場合は最新のデータを選択する)
+    	if (size != lastSize) SelectedIndex = 0;
+    	else SelectedIndex += (offset - lastOffset);
+    	// データがない場合は選ばない
     	if (size == 0) SelectedIndex = -1;
     }
     

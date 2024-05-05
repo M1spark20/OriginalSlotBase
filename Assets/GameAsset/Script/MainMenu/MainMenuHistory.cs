@@ -46,8 +46,9 @@ public class MainMenuHistory : MainMenuElemBase
     	int offset = size > 0 ? (hm.BonusHist[0].IsActivate ? 0 : 1) : 0;
     	// サイズ指定とIndex更新
     	scroller.SetContentSize(size - offset, offset);
-    	// データ全更新
+    	// データ全更新、選択データを表示させる
     	scroller.ElemUpdate(true);
+    	scroller.MoveSelectedCenter();
     	// 成立時出目更新
     	ShowPattern(scroller.SelectedIndex);
     	// グラフ更新(なぜか初回だけnullになる…)

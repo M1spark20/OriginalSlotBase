@@ -12,6 +12,7 @@ public class UIBalanceGraph : MonoBehaviour
 	[SerializeField] GameObject LineBase;
 	[SerializeField] float LineLengthX;
 	[SerializeField] float RangeBase;
+	[SerializeField] float RangeLeast;
 	
 	private GameObject[] LineData;
 	private Image[] LineImage;
@@ -53,19 +54,21 @@ public class UIBalanceGraph : MonoBehaviour
 			minData = Mathf.Min(minData, (float)v);
 			data.Add((float)v);
 		}
-		// データが2つ以上ない場合は直線が引けないため、処理を行わない
-		if (data.Count < 2){
-			TxtMaxVal.text = string.Empty;
-			TxtMinVal.text = string.Empty;
-			return;
-		}
-		// データ表示範囲を決める
+		// データ表示範囲を決める(最小限の幅制限がある)
 		maxData = Mathf.Ceil (maxData / RangeBase) * RangeBase;
 		minData = Mathf.Floor(minData / RangeBase) * RangeBase;
 		float valRange = maxData - minData;
+		if (valRange < RangeLeast){
+			maxData =  RangeLeast / 2f;
+			minData = -RangeLeast / 2f;
+			valRange = RangeLeast;
+		}
 		TxtMaxVal.text = maxData.ToString("+#;-#;0");
 		TxtMinVal.text = minData.ToString("+#;-#;0");
 		LineOriginPos.localPosition = new Vector3(LineOriginPos.localPosition.x, DefOriginY + CalcPos(0f, valRange, minData), 0f);
+		
+		// データが2つ以上ない場合は直線が引けないため、描画処理を行わない
+		if (data.Count < 2) return;
 		
 		// 描画を行う
 		float lastPosY = CalcPos(data[0], valRange, minData);

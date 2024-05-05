@@ -580,6 +580,8 @@ public class SCJudgeAndPayout : ISlotControllerBase {
 		slotData.basicData.ModeReset(mainROM.CastCommonData, mainROM.RTCommonData, mainROM.RTMoveData, timer, mPayoutNum < 0 ? 0 : mPayoutNum, slotData.historyManager);
 		// gameModeを更新した後に全停止時のリーチ目コレクション処理を行う(モード変化時にはマスクをかける)
 		slotData.collectionManager.JudgeCollection(subROM.Collection, slotData.reelData, mainROM.ReelArray, slotData.valManager, basicData, lastMode != basicData.gameMode);
+		// 1G内の達成状況をリセットする
+		slotData.collectionManager.EndGame();
 		
 		// フリーズ抽選
 		slotData.freezeManager.SetFreezeMode(mainROM.FreezeControlData, mainROM.FreezeTimeData, lastMode, basicData.gameMode);
