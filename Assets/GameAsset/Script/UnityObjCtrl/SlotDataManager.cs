@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class SlotDataManager : MonoBehaviour
 {
@@ -25,6 +26,10 @@ public class SlotDataManager : MonoBehaviour
 	private Canvas MainMenuCanvas;
 	private GraphicRaycaster MainMenuTouch;
 	private MainMenuManager MainMenuScr;
+	
+	private bool[] GetKeyDownJoin;
+	private bool[] GetKeyJoin;
+	[SerializeField] private GraphicRaycaster TouchPanel;
 	
 	void Awake()
 	{
@@ -56,6 +61,11 @@ public class SlotDataManager : MonoBehaviour
 		MenuShown = false;
 		MainMenuCanvas.enabled = MenuShown;
 		MainMenuTouch.enabled = MenuShown;
+		
+		// タッチ入力関連初期化
+		GetKeyDownJoin = new bool[(int)EGameButtonID.eButtonMax];
+		GetKeyJoin     = new bool[(int)EGameButtonID.eButtonMax];
+		ResetTouchStatus();
 	}
 
 	// Update is called once per frame
@@ -76,20 +86,26 @@ public class SlotDataManager : MonoBehaviour
 			if(Input.GetKeyDown(KeyCode.RightArrow)) MainMenuScr.OnGetKeyDown(EMenuButtonID.eScrRight);
 		} else {
 			// ゲーム本体の制御
-			if(Input.GetKeyDown("1")) controller.OnGetKeyDown(EGameButtonID.e1Bet);
-			if(Input.GetKey    ("1")) controller.OnGetKey    (EGameButtonID.e1Bet);
-			if(Input.GetKeyDown("3")) controller.OnGetKeyDown(EGameButtonID.eMaxBet);
-			if(Input.GetKey    ("3")) controller.OnGetKey    (EGameButtonID.eMaxBet);
-			if(Input.GetKeyDown(KeyCode.UpArrow   )) controller.OnGetKeyDown(EGameButtonID.eMaxBetAndStart);
-			if(Input.GetKey    (KeyCode.UpArrow   )) controller.OnGetKey    (EGameButtonID.eMaxBetAndStart);
-			if(Input.GetKeyDown(KeyCode.LeftArrow )) controller.OnGetKeyDown(EGameButtonID.e1Reel);
-			if(Input.GetKey    (KeyCode.LeftArrow )) controller.OnGetKey    (EGameButtonID.e1Reel);
-			if(Input.GetKeyDown(KeyCode.DownArrow )) controller.OnGetKeyDown(EGameButtonID.e2Reel);
-			if(Input.GetKey    (KeyCode.DownArrow )) controller.OnGetKey    (EGameButtonID.e2Reel);
-			if(Input.GetKeyDown(KeyCode.RightArrow)) controller.OnGetKeyDown(EGameButtonID.e3Reel);
-			if(Input.GetKey    (KeyCode.RightArrow)) controller.OnGetKey    (EGameButtonID.e3Reel);
+			if(Input.GetKeyDown("1")) OnScreenTouch(EGameButtonID.e1Bet);
+			if(Input.GetKey    ("1")) OnScreenHover(EGameButtonID.e1Bet);
+			if(Input.GetKeyDown("3")) OnScreenTouch(EGameButtonID.eMaxBet);
+			if(Input.GetKey    ("3")) OnScreenHover(EGameButtonID.eMaxBet);
+			if(Input.GetKeyDown(KeyCode.UpArrow   )) OnScreenTouch(EGameButtonID.eMaxBetAndStart);
+			if(Input.GetKey    (KeyCode.UpArrow   )) OnScreenHover(EGameButtonID.eMaxBetAndStart);
+			if(Input.GetKeyDown(KeyCode.LeftArrow )) OnScreenTouch(EGameButtonID.e1Reel);
+			if(Input.GetKey    (KeyCode.LeftArrow )) OnScreenHover(EGameButtonID.e1Reel);
+			if(Input.GetKeyDown(KeyCode.DownArrow )) OnScreenTouch(EGameButtonID.e2Reel);
+			if(Input.GetKey    (KeyCode.DownArrow )) OnScreenHover(EGameButtonID.e2Reel);
+			if(Input.GetKeyDown(KeyCode.RightArrow)) OnScreenTouch(EGameButtonID.e3Reel);
+			if(Input.GetKey    (KeyCode.RightArrow)) OnScreenHover(EGameButtonID.e3Reel);
+			// キー制御
+			for(int i=0; i<(int)EGameButtonID.eButtonMax; ++i){
+				if (GetKeyDownJoin[i]) controller.OnGetKeyDown((EGameButtonID)i);
+				if (GetKeyJoin    [i]) controller.OnGetKey    ((EGameButtonID)i);
+			}
 		}
 		
+		ResetTouchStatus();
 		// キー入力後プロセス
 		controller = controller.ProcessAfterInput();
 		// システム変数更新
@@ -99,6 +115,7 @@ public class SlotDataManager : MonoBehaviour
 	private void SetMenuShown(){
 		MainMenuCanvas.enabled = MenuShown;
 		MainMenuTouch.enabled = MenuShown;
+		TouchPanel.enabled = !MenuShown;
 		MainMenuScr.OnMenuShownChange(MenuShown);
 	}
 	
@@ -110,5 +127,21 @@ public class SlotDataManager : MonoBehaviour
 	public void MenuHide(){
 		MenuShown = false;
 		SetMenuShown();
+	}
+	
+	public void OnScreenTouch(EGameButtonID pID){
+		GetKeyDownJoin[(int)pID] = true;
+	}
+	
+	public void OnScreenHover(EGameButtonID pID){
+		GetKeyJoin    [(int)pID] = true;
+	}
+	
+	// タッチ初期化
+	private void ResetTouchStatus(){
+		for(int i=0; i<(int)EGameButtonID.eButtonMax; ++i){
+			GetKeyDownJoin[i] = false;
+			GetKeyJoin    [i] = false;
+		}
 	}
 }
