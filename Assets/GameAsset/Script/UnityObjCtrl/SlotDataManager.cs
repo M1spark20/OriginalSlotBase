@@ -66,6 +66,9 @@ public class SlotDataManager : MonoBehaviour
 		GetKeyDownJoin = new bool[(int)EGameButtonID.eButtonMax];
 		GetKeyJoin     = new bool[(int)EGameButtonID.eButtonMax];
 		ResetTouchStatus();
+		
+		// 各端末で60fpsにする
+		Application.targetFrameRate = 60;
 	}
 
 	// Update is called once per frame

@@ -324,9 +324,7 @@ public class SCReelOperation : ISlotControllerBase {
 	}
 	public void OnGetKey(EGameButtonID pKeyID){
 		// ねじり処理を行う
-		isAllReleased &= !(pKeyID == EGameButtonID.e1Reel);
-		isAllReleased &= !(pKeyID == EGameButtonID.e2Reel);
-		isAllReleased &= !(pKeyID == EGameButtonID.e3Reel);
+		isAllReleased = false;
 	}
 	public ISlotControllerBase ProcessAfterInput(){
 		// 各リールの処理を行い、停止済みか判定を行う

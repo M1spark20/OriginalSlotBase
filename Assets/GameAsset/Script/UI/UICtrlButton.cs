@@ -6,6 +6,7 @@ public class UICtrlButton : MonoBehaviour
 {
 	[SerializeField] private EGameButtonID   Function;
 	[SerializeField] private SlotDataManager DataManager;
+	[SerializeField] private bool Slidable;
 	
 	bool buttonDownFlag;
 	
@@ -17,6 +18,7 @@ public class UICtrlButton : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+    	if (Slidable) buttonDownFlag &= Input.GetMouseButton(0);
         if (buttonDownFlag) DataManager?.OnScreenHover(Function);
     }
     
@@ -30,5 +32,14 @@ public class UICtrlButton : MonoBehaviour
     }
     public void OnPointerExit(){
     	buttonDownFlag = false;
+    }
+    
+    // スライドストップ機能: タップorクリック中にEnterされた場合にbuttonDownをtrueにする。Slidable=trueでのみ機能
+    public void OnPointerEnter(){
+    	if (!Slidable) return;
+    	if (!Input.GetMouseButton(0)) return;
+		if (buttonDownFlag) return;
+		DataManager?.OnScreenTouch(Function);	// 初回のみ
+    	buttonDownFlag = true;
     }
 }
