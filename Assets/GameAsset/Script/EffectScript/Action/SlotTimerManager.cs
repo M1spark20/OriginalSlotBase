@@ -1,15 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 
 namespace SlotEffectMaker2023.Action
 {
 	public class SlotTimer
-	{	// タイマ制御データ(Sav)
+	{	// タイマ制御データ(Sav) このクラスは保存対象としない
 		public string timerName { get; private set; }   // タイマーの名前、呼び出し時の識別子になる
 		public float? elapsedTime { get; private set; } // 経過時間、Time.deltaTimeの積算で表現する。無効時:null
 		public float? lastElapsed { get; private set; } // 前回経過時間。無効時:null
 		public bool isActivate { get; private set; }    // このタイマーが有効か
-		public bool isPaused { get; private set; }  // このタイマーを一時停止しているか
+		public bool isPaused { get; private set; }		// このタイマーを一時停止しているか
+		public float resumeTime { get; private set; }	// このタイマーの再開時間
 
 		private bool isStoreFlag;   // このタイマーの作動状況を保存するか
 
@@ -24,6 +26,7 @@ namespace SlotEffectMaker2023.Action
 			isActivate = false;
 			isPaused = false;
 			isStoreFlag = pStoreActivate;
+			resumeTime = 0f;
 		}
 		// 処理系関数
 		// タイマを有効にしてカウントを開始する。有効化済みの場合は何もしない
@@ -82,14 +85,23 @@ namespace SlotEffectMaker2023.Action
 		{
 			return isStoreFlag && isActivate;
 		}
+
+		// タイマ保存時の再開時間を決定する
+		public void SetResumeTimeOnReload(float pResumeTime)
+        {
+			resumeTime = pResumeTime;
+        }
 	}
 
-	public class SlotTimerManager
+	public class SlotTimerManager : SlotMaker2022.ILocalDataInterface
 	{	// タイマ管理クラス(Sav)
 		// タイマ一覧データ
 		Data.TimerList timerList;
 		// ゲーム上タイマデータ
 		public List<SlotTimer> timerData { get; set; }
+		// Resume時再起動データ
+		private List<string> resTimerName;
+		private List<float>  resTimerOffset;
 
 		/// <summary>
 		/// インスタンスの初期化を行います。
@@ -98,8 +110,10 @@ namespace SlotEffectMaker2023.Action
 		public SlotTimerManager()
 		{
 			timerData = new List<SlotTimer>();
+			resTimerName = new List<string>();
+			resTimerOffset = new List<float>();
 		}
-		// タイマの初期化を行う
+		// タイマの初期化を行い、ReadDataで読み取ったデータを有効化する
 		public void Init(Data.TimerList pList)
         {	// リストをインポートしてタイマを作成する
 			timerList = pList;
@@ -113,12 +127,47 @@ namespace SlotEffectMaker2023.Action
 				CreateTimer(item.GetShotTimerName(), false);
 				CreateTimer(item.GetLoopTimerName(), true);
 			}
+			// タイマのResumeを行う
+			int dataNum = resTimerName.Count;
+			for (int i=0; i<dataNum; ++i)
+				GetTimer(resTimerName[i])?.Activate(resTimerOffset[i]);
 			// generalのみ無条件でActivateする
 			GetTimer("general")?.Activate();
 		}
-		// 前回終了時に有効だったタイマをActivateする(セーブデータ)
-		public bool ReadData()
+
+		// 有効なタイマを記録する
+		public bool StoreData(ref BinaryWriter fs, int version)
+        {
+			resTimerName.Clear();
+			resTimerOffset.Clear();
+			// 保存するデータを選別する
+			foreach (var item in timerData)
+            {
+				if (!item.GetStoreFlag()) continue;
+				resTimerName.Add(item.timerName);
+				resTimerOffset.Add(item.resumeTime);
+            }
+			// データを保存する
+			int dataNum = resTimerName.Count;
+			fs.Write(dataNum);
+			for (int i=0; i<dataNum; ++i)
+            {
+				fs.Write(resTimerName[i]);
+				fs.Write(resTimerOffset[i]);
+            }
+			return true;
+        }
+		// 前回終了時に有効だったタイマを読み込む(セーブデータ) 有効化はInitで行う
+		public bool ReadData(ref BinaryReader fs, int version)
 		{
+			resTimerName.Clear();
+			resTimerOffset.Clear();
+			int dataNum = fs.ReadInt32();
+			for (int i = 0; i < dataNum; ++i)
+			{
+				resTimerName.Add(fs.ReadString());
+				resTimerOffset.Add(fs.ReadSingle());
+			}
 			return true;
 		}
 

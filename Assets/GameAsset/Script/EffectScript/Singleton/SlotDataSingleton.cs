@@ -3,7 +3,10 @@ using System.Collections.Generic;
 
 namespace SlotEffectMaker2023.Singleton {
 	public sealed class SlotDataSingleton
-	{	// スロット上で動くデータを定義する
+	{   // スロット上で動くデータを定義する
+		// ファイルバージョン
+		const int FILE_VERSION = 0;
+
 		public List<Action.ReelBasicData>	reelData  { get; set; }
 		public Action.SlotBasicData			basicData { get; set; }
 		public Action.SlotTimerManager		timerData { get; set; }
@@ -53,24 +56,68 @@ namespace SlotEffectMaker2023.Singleton {
 		/// </summary>
 		public static SlotDataSingleton GetInstance() { return ins; }
 	
-		public bool ReadData(ref Data.TimerList timerList){
-			// 読み込み処理
-			// reelData
-			// basicData
-			valManager.ReadData();
-		
+		public bool ReadData(string pPath)
+		{   // Unity用
+			var rd = new SlotMaker2022.ProgressRead();
+			bool ans = true;
+
+			if (rd.OpenFile(pPath))
+			{
+				if (!ReadAction(rd)) return false;
+				rd.Close();
+			}
+			else 
+			{
+				ans = false;
+			}
+
 			// データが読み込めなかった場合にリール情報を新規生成する
 			if (reelData.Count == 0){
-				for (int i=0; i<SlotMaker2022.LocalDataSet.REEL_MAX; ++i){
+				for (int i=0; i<SlotMaker2022.LocalDataSet.REEL_MAX; ++i)
 					reelData.Add(new Action.ReelBasicData(12));
-				}
 			}
-		
-			// soundData
-		
+			return ans;
+		}
+
+		// データ読込本体
+		private bool ReadAction(SlotMaker2022.ProgressRead rd)
+        {
+			if (!rd.ReadData(timerData)) return false;
+			if (!rd.ReadData(reelData)) return false;
+			if (!rd.ReadData(basicData)) return false;
+			if (!rd.ReadData(valManager)) return false;
+			if (!rd.ReadData(soundData)) return false;
+			if (!rd.ReadData(colorMapData)) return false;
+			if (!rd.ReadData(freezeManager)) return false;
+			if (!rd.ReadData(historyManager)) return false;
+			if (!rd.ReadData(collectionManager)) return false;
 			return true;
 		}
-	
+		public bool SaveData(string pPath)
+		{
+			var sw = new SlotMaker2022.ProgressWrite();
+			if (sw.OpenFile(pPath, FILE_VERSION))
+			{
+				WriteOut(sw);
+				sw.Flush();
+				sw.Close();
+			}
+			return true;
+		}
+		private bool WriteOut(SlotMaker2022.ProgressWrite sw)
+        {
+			sw.WriteData(timerData);
+			sw.WriteData(reelData);
+			sw.WriteData(basicData);
+			sw.WriteData(valManager);
+			sw.WriteData(soundData);
+			sw.WriteData(colorMapData);
+			sw.WriteData(freezeManager);
+			sw.WriteData(historyManager);
+			sw.WriteData(collectionManager);
+			return true;
+		}
+
 		/// <summary>
 		/// システム変数を更新します。
 		/// </summary>

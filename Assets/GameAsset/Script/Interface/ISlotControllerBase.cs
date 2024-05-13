@@ -15,7 +15,7 @@ public interface ISlotControllerBase
 	void OnGetKey(EGameButtonID pKeyID);
 	// 定常処理、キー入力を受け付けた後に実施する
 	// 戻値：次フレームの処理に使用するインスタンス(変更なしの場合this)
-	ISlotControllerBase ProcessAfterInput();
+	ISlotControllerBase ProcessAfterInput(Action pSaveCallBack);
 }
 
 // BET入力を待つ状態
@@ -108,7 +108,7 @@ public class SCWaitBet : ISlotControllerBase {
 	
 	public void OnGetKey(EGameButtonID pKeyID){ /* None */ }
 	
-	public ISlotControllerBase ProcessAfterInput(){
+	public ISlotControllerBase ProcessAfterInput(Action pSaveCallBack){
 		// reelActivateが有効ならリールを始動させる
 		if (reelActivate){
 			// タイマ関係の停止処理
@@ -189,7 +189,7 @@ public class SCWaitBeforeReelStart : ISlotControllerBase {
 	
 	public void OnGetKeyDown(EGameButtonID pKeyID){ /* None */ }
 	public void OnGetKey(EGameButtonID pKeyID){ /* None */ }
-	public ISlotControllerBase ProcessAfterInput(){
+	public ISlotControllerBase ProcessAfterInput(Action pSaveCallBack){
 		// Wait終了判定を行う(waitEndが無効か、最大wait時間以上経過しているとき)
 		bool waitEnd = !timer.GetTimer("waitEnd").isActivate;
 		if(!waitEnd) waitEnd = timer.GetTimer("waitEnd").elapsedTime > (float)waitTime / 1000f;
@@ -326,7 +326,7 @@ public class SCReelOperation : ISlotControllerBase {
 		// ねじり処理を行う
 		isAllReleased = false;
 	}
-	public ISlotControllerBase ProcessAfterInput(){
+	public ISlotControllerBase ProcessAfterInput(Action pSaveCallBack){
 		// 各リールの処理を行い、停止済みか判定を行う
 		bool isAllStopped = true;
 		for(int i=0; i<reelNum; ++i){
@@ -499,7 +499,7 @@ public class SCJudgeAndPayout : ISlotControllerBase {
 	
 	public void OnGetKeyDown(EGameButtonID pKeyID){ /* None */ }
 	public void OnGetKey(EGameButtonID pKeyID){ /* None */ }
-	public ISlotControllerBase ProcessAfterInput(){
+	public ISlotControllerBase ProcessAfterInput(Action pSaveCallBack){
 		const float divMS = 1000f;
 		
 		// beforeフリーズ消化判定
@@ -534,21 +534,13 @@ public class SCJudgeAndPayout : ISlotControllerBase {
 			// afterフリーズがある場合は作動させる
 			if (mFreezeAfter > 0) timer.GetTimer("afterPayFreeze").Activate();
 			// なければモード移行する
-			else {
-				// 移行前にグラフを記録する
-				slotData.historyManager.OnPayoutEnd(slotData.basicData);
-				return new SCWaitBet();
-			}
+			else return ModeChange(pSaveCallBack);
 		}
 		
 		// afterフリーズ消化判定
 		if (timer.GetTimer("afterPayFreeze").isActivate && !timer.GetTimer("beforePayFreeze").isActivate){
 			// 時間の消化が完了したらモード移行する
-			if (timer.GetTimer("afterPayFreeze").elapsedTime > (float)mFreezeAfter / divMS){
-				// 移行前にグラフを記録する
-				slotData.historyManager.OnPayoutEnd(slotData.basicData);
-				return new SCWaitBet();
-			}
+			if (timer.GetTimer("afterPayFreeze").elapsedTime > (float)mFreezeAfter / divMS) return ModeChange(pSaveCallBack);
 		}
 		
 		return this;
@@ -590,5 +582,15 @@ public class SCJudgeAndPayout : ISlotControllerBase {
 		if (slotData.basicData.isReplay) mFreezeBefore += afterWait;
 		else mFreezeAfter = afterWait;
 		// Debug.Log("b: " + mFreezeBefore.ToString() + " / a: " + mFreezeAfter.ToString());
+	}
+	
+	// モード移行時処理
+	private ISlotControllerBase ModeChange(Action pSaveCallBack){
+		// 移行前にグラフを記録する
+		slotData.historyManager.OnPayoutEnd(slotData.basicData);
+		// データをセーブする
+		pSaveCallBack();
+		// BETに処理を移す
+		return new SCWaitBet();
 	}
 }

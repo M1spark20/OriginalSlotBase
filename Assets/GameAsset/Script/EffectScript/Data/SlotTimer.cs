@@ -53,7 +53,7 @@ namespace SlotEffectMaker2023.Data
 			CreateSysTimer("betShot", true);   // 1BET処理からの経過時間
 			CreateSysTimer("leverAvailable", true);    // レバー有効化からの経過時間
 			CreateSysTimer("waitStart", true); // wait開始からの経過時間
-			CreateSysTimer("waitEnd", true);   // wait終了からの経過時間(次Gのwait算出に使用)
+			CreateSysTimer("waitEnd", false);   // wait終了からの経過時間(次Gのwait算出に使用)
 			CreateSysTimer("reelStart", true); // リール始動からの経過時間
 			CreateSysTimer("anyReelPush", true);   // いずれかの停止ボタン押下からの経過時間
 			CreateSysTimer("anyReelStop", true);   // いずれかのリール停止からの経過時間

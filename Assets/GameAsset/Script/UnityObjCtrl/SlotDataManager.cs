@@ -31,6 +31,9 @@ public class SlotDataManager : MonoBehaviour
 	private bool[] GetKeyJoin;
 	[SerializeField] private GraphicRaycaster TouchPanel;
 	
+	// セーブデータ元パス
+	private string SavePath;
+	
 	void Awake()
 	{
 		mainROM    = SlotMaker2022.MainROMDataManagerSingleton.GetInstance();
@@ -39,6 +42,8 @@ public class SlotDataManager : MonoBehaviour
 		timer      = slotData.timerData;
 		chipData   = ReelChipHolder.GetInstance();
 		chipData.Init(ReelChip, ReelChipMini);
+		SavePath   = Application.persistentDataPath + "/SaveData.bytes";
+		Debug.Log(SavePath);
 		
 		// タイマ作成用データ生成
 		var tList = new SlotEffectMaker2023.Data.TimerList();
@@ -46,13 +51,15 @@ public class SlotDataManager : MonoBehaviour
 		// ファイルからデータを読み込む
 		if (!mainROM   .ReadData(MainROM))    Debug.Log("mainROM Read: Error");    else Debug.Log("mainROM Read: Done");
 		if (!effectData.ReadData(EffectData)) Debug.Log("effectData Read: Error"); else Debug.Log("effectData Read: Done");
-		if (!slotData  .ReadData(ref tList))  Debug.Log("slotData Read: Error");   else Debug.Log("slotData Read: Done");
+		if (!slotData  .ReadData(SavePath))   Debug.Log("slotData Read: Error");   else Debug.Log("slotData Read: Done");
 		
 		// Singleton初期化
 		slotData.Init(effectData.SoundPlayList, effectData.TimerList, effectData.VarList, effectData.ColorMap.shifter, effectData.Collection);
 		
 		// コントローラー初期インスタンス生成
 		controller = new SCWaitBet();
+		// システム変数更新(初期化)
+		slotData.Process();
 		
 		// メニュー非表示からスタート
 		MainMenuScr = MainMenuObj.GetComponent<MainMenuManager>();
@@ -110,7 +117,7 @@ public class SlotDataManager : MonoBehaviour
 		
 		ResetTouchStatus();
 		// キー入力後プロセス
-		controller = controller.ProcessAfterInput();
+		controller = controller.ProcessAfterInput(DataSaveAct);
 		// システム変数更新
 		slotData.Process();
 	}
@@ -146,5 +153,10 @@ public class SlotDataManager : MonoBehaviour
 			GetKeyDownJoin[i] = false;
 			GetKeyJoin    [i] = false;
 		}
+	}
+	
+	// セーブ時コールバック
+	public void DataSaveAct(){
+		slotData.SaveData(SavePath);
 	}
 }
