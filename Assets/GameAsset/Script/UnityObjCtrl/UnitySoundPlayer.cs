@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UnitySoundPlayer : MonoBehaviour
 {
@@ -8,6 +9,10 @@ public class UnitySoundPlayer : MonoBehaviour
 	[SerializeField] private GameObject PrehabSoundPlayer;
 	// 使用する音源一覧をSerializableで登録する
 	[SerializeField] AudioClip[] SoundData;
+	// 音量調整用データ
+	[SerializeField] Slider VolMaster;
+	[SerializeField] Slider VolBGM;
+	[SerializeField] Slider VolSE;
 	
 	List<SoundPlayerData>	player;
 	SlotEffectMaker2023.Action.DataShifterManager<SlotEffectMaker2023.Data.SoundPlayData>	SndManager;		// 音制御データ
@@ -43,6 +48,8 @@ public class UnitySoundPlayer : MonoBehaviour
     		var data = player[i];
     		// 音源の更新を行う
     		if (data.LastSoundID != SndManager.ExportElemName(SoundPlayData[i].ShifterName)) SetClip(i);
+    		// 音量調整を行う
+    		data.SetVolume(VolMaster.value, VolSE.value, VolBGM.value);
     		// 音の制御を行う
     		data.Process();
     	}

@@ -133,4 +133,12 @@ public class SoundPlayerData {
 		// 前回タイマ値更新
 		LastCondTime = ConditionTimer.elapsedTime;
 	}
+	
+	// 音量を調整する
+	public void SetVolume(float volMaster, float volSE, float volBGM) {
+		float volSet = PlayData.ShifterName.Contains("BGM") ? volBGM : volSE;
+		volSet *= volMaster;
+		SManagerShot.volume = volSet;
+		SManagerLoop.volume = volSet;
+	}
 }
