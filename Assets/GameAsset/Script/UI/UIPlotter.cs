@@ -14,18 +14,19 @@ public class UIPlotter : MonoBehaviour
 	private RectTransform rect;
 	
 	// 表示位置設定
-	[SerializeField] float[] posYList;
+	[SerializeField] bool[] visible;
+	[SerializeField] float[] anchorY;
 	private int posID;
 	
 	void Start() {
 		rect = GetComponent<RectTransform>();
-		posID = 1;
+		posID = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-    	if (posID >= posYList.Length || posYList[posID] < -5000f) return;
+    	if (posID >= anchorY.Length || posID >= visible.Length || !visible[posID]) return;
 		// 拡大後の自身の幅を計算
 		float UIext = Screen.width / TargetWidth;
 		float myWidth = rect.sizeDelta.x * UIext;
@@ -35,6 +36,7 @@ public class UIPlotter : MonoBehaviour
 		// 移動幅を計算、移動量はUIに関係するためUIextで割る
 		float ansX = Mathf.Max(0f, (bgWidth - myWidth) / UIext);
 		if (!IsLeftPanel) ansX *= -1f;
-		rect.anchoredPosition = new Vector2(ansX, posYList[posID]);
+		rect.pivot = new Vector2(rect.pivot.x, anchorY[posID]);
+		rect.anchoredPosition = new Vector2(ansX, 0);
     }
 }

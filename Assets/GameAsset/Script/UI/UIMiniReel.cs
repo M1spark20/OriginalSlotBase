@@ -7,6 +7,7 @@ public class UIMiniReel : MonoBehaviour
 {
 	[SerializeField] private GameObject ComaBase;
 	[SerializeField] private GameObject PosBase;
+	[SerializeField] float DiffX;
 	
 	private GameObject[,] Coma;
 	private GameObject[,] Pos;
@@ -39,14 +40,14 @@ public class UIMiniReel : MonoBehaviour
         		Coma[reelC, comaC] = (reelC == 0 && comaC == 0) ? ComaBase : Instantiate(ComaBase, ComaBase.transform.parent.transform);
         		Coma[reelC, comaC].GetComponent<Image>().sprite = comaData.ReelChipDataMini.Extract(ra[reelC][comaC].Coma);
         		var pos = Coma[reelC, comaC].GetComponent<RectTransform>().anchoredPosition;
-        		pos += new Vector2(reelC * comaSize.x, -comaC * comaSize.y);
+        		pos += new Vector2(reelC * DiffX, -comaC * comaSize.y);
         		Coma[reelC, comaC].GetComponent<RectTransform>().anchoredPosition = pos;
         	}
         	for (int posC = 0; posC < PosShowNum; ++posC){
         		Pos[reelC, posC] = (reelC == 0 && posC == 0) ? PosBase : Instantiate(PosBase, PosBase.transform.parent.transform);
         		PosCtrl[reelC, posC] = Pos[reelC, posC].GetComponent<RectTransform>();
         		var pos = PosCtrl[reelC, posC].anchoredPosition;
-        		pos += new Vector2(reelC * comaSize.x, -posC * comaNum * comaSize.y);
+        		pos += new Vector2(reelC * DiffX, -posC * comaNum * comaSize.y);
         		PosCtrl[reelC, posC].anchoredPosition = pos;
         	}
         }
