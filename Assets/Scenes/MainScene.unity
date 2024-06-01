@@ -342,7 +342,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1303971330}
   m_Direction: 0
   m_Value: 0
-  m_Size: 0.9999999
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3905,9 +3905,9 @@ Camera:
   m_FocalLength: 50
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.14868423
+    x: 0.12916666
     y: 0
-    width: 0.70263153
+    width: 0.7416667
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
@@ -6877,7 +6877,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000027724998}
+  m_AnchoredPosition: {x: 0, y: 0.00002110968}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1001 &901355766
@@ -9491,6 +9491,7 @@ GameObject:
   - component: {fileID: 1415927117}
   - component: {fileID: 1415927116}
   - component: {fileID: 1415927115}
+  - component: {fileID: 1415927118}
   m_Layer: 5
   m_Name: ShareButton
   m_TagString: Untagged
@@ -9563,7 +9564,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1415927116}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1415927118}
+        m_TargetAssemblyTypeName: PostXButton, Assembly-CSharp
+        m_MethodName: StartTweet
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1415927116
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9602,6 +9615,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1415927113}
   m_CullTransparentMesh: 1
+--- !u!114 &1415927118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1415927113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8b585175ada00448b62b6b6c4ec085d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _imgurClientId: 5f659e2cfa90471
 --- !u!1001 &1421386055
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10140,7 +10166,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 971362149}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.99996144
+  m_Size: 0.9985876
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -10698,7 +10724,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1644657024}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.99996144
+  m_Size: 0.9985876
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -13002,6 +13028,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1841845986}
   - component: {fileID: 1841845987}
+  - component: {fileID: 1841845988}
   m_Layer: 0
   m_Name: ScrSlotDataManager
   m_TagString: Untagged
@@ -13042,6 +13069,21 @@ MonoBehaviour:
   EffectData: {fileID: 4900000, guid: 69efabb59f6284245bfbcef16ddb9f5b, type: 3}
   MainMenuObj: {fileID: 1684383505}
   TouchPanel: {fileID: 153352466}
+--- !u!114 &1841845988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1841845985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19f75461f15a54ca68f6a1c7a03ff532, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hashTags:
+  - unity
+  clientID: 5f659e2cfa90471
 --- !u!1001 &1868431452
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13509,7 +13551,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000027724998}
+  m_AnchoredPosition: {x: 0, y: 0.00002110968}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1987865358
@@ -14934,7 +14976,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1221596329}
   m_Direction: 0
   m_Value: 0
-  m_Size: 0.9999999
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
