@@ -68,6 +68,7 @@ namespace SlotEffectMaker2023.Data
 			CreateSysTimer("reelPushFreeze", true);   // リール回転中フリーズ時間
 			CreateSysTimer("beforePayFreeze", true);  // 払い出し前フリーズ時間
 			CreateSysTimer("afterPayFreeze", true);   // 払い出し後フリーズ時間(リプレイより前)
+			CreateSysTimer("AssistSound", false);   // 目押しアシスト音
 
 			for (int i = 0; i < SlotMaker2022.LocalDataSet.REEL_MAX; ++i)
 			{
