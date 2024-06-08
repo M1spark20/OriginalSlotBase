@@ -68,7 +68,7 @@ namespace TweetWithScreenShot
 
             yield return www.SendWebRequest();
 
-            if (www.isNetworkError)
+            if (www.result == UnityWebRequest.Result.ConnectionError)
             {
                 Debug.Log(www.error);
             }
