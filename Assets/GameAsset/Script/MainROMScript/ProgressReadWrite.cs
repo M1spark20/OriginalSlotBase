@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.IO.Compression;
 
 namespace SlotMaker2022
 {
@@ -53,6 +54,57 @@ namespace SlotMaker2022
             FileVersion = fs.ReadInt32();
             return true;
         }
+        // ファイルから圧縮データを開く
+        public bool OpenCompressedFile(string filePath)
+        {
+            try
+            {
+                using (var fsBefComp = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+                {
+                    var dec = new DeflateStream(fsBefComp, CompressionMode.Decompress, true);
+                    var mem = new MemoryStream();
+                    dec.CopyTo(mem);
+                    fs = new BinaryReader(mem);
+                }
+            }
+            catch (Exception)
+            {
+                fs = null;
+                return false;
+            }
+
+            // checksumの検証を行う
+            if (!VerifyCheckSum()) return false;
+            // ファイルバージョンを取得する
+            FileVersion = fs.ReadInt32();
+            return true;
+        }
+        // byte[]からデータを開く(Unity読込用)
+        public bool OpenCompressedFile(byte[] data)
+        {
+            try
+            {
+                using (var fsBefComp = new MemoryStream(data))
+                {
+                    var dec = new DeflateStream(fsBefComp, CompressionMode.Decompress);
+                    var mem = new MemoryStream();
+                    dec.CopyTo(mem);
+                    fs = new BinaryReader(mem);
+                }
+            }
+            catch (Exception)
+            {
+                fs = null;
+                return false;
+            }
+
+            // checksumの検証を行う
+            if (!VerifyCheckSum()) return false;
+            // ファイルバージョンを取得する
+            FileVersion = fs.ReadInt32();
+            return true;
+        }
+
 
         // ILocalInterfaceを実装したクラスのデータを読み込む
         public bool ReadData(ILocalDataInterface data)
@@ -197,6 +249,36 @@ namespace SlotMaker2022
 
             // hashを加えてファイルへ書き出す
             swFile.Write(hash);
+            fs.Flush();
+        }
+        // 圧縮されたデータを書き出す
+        public void FlushCompressed()
+        {
+            // 各データからbwに入れたデータをmsへ流す。stream位置を先頭に戻す
+            bw.Flush();
+            ms.Seek(0, SeekOrigin.Begin);
+            // ハッシュ値を計算しつつ、msから圧縮用ストリームcmpへデータを転送する
+            byte hash = 0x0;
+            MemoryStream cmp = new MemoryStream();
+            BinaryWriter swFile = new BinaryWriter(cmp);
+            BinaryReader msRead = new BinaryReader(ms);
+            while(msRead.BaseStream.Position != msRead.BaseStream.Length)
+            {
+                byte readData = msRead.ReadByte();
+                hash ^= readData;
+                swFile.Write(readData);
+            }
+            // hashを加える
+            swFile.Write(hash);
+            swFile.Flush();
+            cmp.Seek(0, SeekOrigin.Begin);
+
+            // 圧縮をかける
+            var cmpStream = new DeflateStream(fs, CompressionMode.Compress, true);
+            var cmpData = cmp.ToArray();
+            cmpStream.Write(cmpData, 0, cmpData.Length);
+            cmpStream.Close();
+            // ファイルへ書き出す
             fs.Flush();
         }
         public void Close()

@@ -44,7 +44,7 @@ namespace SlotEffectMaker2023.Singleton
         {
            // ファイルから読み込み処理を行う(Unityでは処理内容を変更する)
             var rd = new SlotMaker2022.ProgressRead();
-            if (!rd.OpenFile("Effect.bytes")) return false;
+            if (!rd.OpenCompressedFile("Effect.bytes")) return false;
             if (!ReadAction(rd)) return false;
             rd.Close();
 
@@ -54,7 +54,7 @@ namespace SlotEffectMaker2023.Singleton
         public bool ReadData(UnityEngine.TextAsset data)
         {   // Unity用
             var rd = new SlotMaker2022.ProgressRead();
-            if (!rd.OpenFile(data.bytes)) return false;
+            if (!rd.OpenCompressedFile(data.bytes)) return false;
             if (!ReadAction(rd)) return false;
             rd.Close();
             return true;
@@ -77,7 +77,7 @@ namespace SlotEffectMaker2023.Singleton
             if (sw.OpenFile("Effect.bytes", FILE_VERSION))
             {
                 WriteOut(sw);
-                sw.Flush();
+                sw.FlushCompressed();
                 sw.Close();
             }
             return true;
