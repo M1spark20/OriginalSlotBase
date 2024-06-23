@@ -1,0 +1,165 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: GeneralText Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: GeneralText
+  m_TableCollectionNameGuidString: 9736c6f56f75fb545b14abc755004d96
+  m_Entries:
+  - m_Id: 116746227712
+    m_Key: MainScene/UICanvas/UIPanel/PGameMainLeft/GameTotal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 162896154624
+    m_Key: MainScene/UICanvas/UIPanel/PGameMainLeft/Bonus_History/Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 441188225024
+    m_Key: MainScene/UICanvas/UIPanel/PMiniReel/MiniReel/Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 604346650624
+    m_Key: MainScene/UICanvas/UIPanel/PGameMainRight/Balance
+    m_Metadata:
+      m_Items: []
+  - m_Id: 650265890816
+    m_Key: MainScene/UICanvas/UIPanel/PGameMainRight/BR_Inverval
+    m_Metadata:
+      m_Items: []
+  - m_Id: 742184062976
+    m_Key: MainScene/UICanvas/UIPanel/PGameMainRight/BB_Interval
+    m_Metadata:
+      m_Items: []
+  - m_Id: 799503421440
+    m_Key: MainScene/UICanvas/UIPanel/PGameMainRight/PayoutRate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1248633688064
+    m_Key: MainScene/UICanvas/UIPanel/PGameMainRightAll/GameTotal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1302002012160
+    m_Key: MainScene/UICanvas/UIPanel/PGameMainRightAll/Bonus_History/Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1353159938048
+    m_Key: MainScene/UICanvas/UIPanel/PGameMainRightAll/Balance
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1377621118976
+    m_Key: MainScene/UICanvas/UIPanel/PGameMainRightAll/BR_Inverval
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1402560450560
+    m_Key: MainScene/UICanvas/UIPanel/PGameMainRightAll/BB_Interval
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1429303332864
+    m_Key: MainScene/UICanvas/UIPanel/PGameMainRightAll/PayoutRate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1777103409152
+    m_Key: MainScene/UICanvas/UIPanel/MenuPanel/OpenMenu/Text (TMP)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2551036383232
+    m_Key: MainScene/UICanvas/UIPanel/MainMenu/Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4008691240960
+    m_Key: MainScene/UICanvas/UIPanel/MainMenu/Direction
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5896572637184
+    m_Key: MainScene/UICanvas/UIPanel/MainMenu/Bonus Log
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6133068468224
+    m_Key: MainScene/UICanvas/UIPanel/MainMenu/Bonus Log/HistoryPanel/GameLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6241667387392
+    m_Key: MainScene/UICanvas/UIPanel/MainMenu/Bonus Log/HistoryPanel/TypeLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6422286700544
+    m_Key: MainScene/UICanvas/UIPanel/MainMenu/Bonus Log/HistoryPanel/GetLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6564213559296
+    m_Key: MainScene/UICanvas/UIPanel/MainMenu/Bonus Log/PatternPanel/BonusInPattern
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8093867839488
+    m_Key: MainScene/UICanvas/UIPanel/MainMenu/Pattern Log
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9779688640512
+    m_Key: MainScene/UICanvas/UIPanel/MainMenu/Reach Colle./RecentText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9865323745280
+    m_Key: MainScene/UICanvas/UIPanel/MainMenu/Reach Colle./Attention
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10228865044480
+    m_Key: MainScene/UICanvas/UIPanel/MainMenu/Reach Colle.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10750133145600
+    m_Key: MainScene/UICanvas/UIPanel/MainMenu/Settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11337893548032
+    m_Key: MainScene/UICanvas/UIPanel/MainMenu/Settings/ScrollView/Viewport/Content/VolCtrl/Sound
+      Vol.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11519322361856
+    m_Key: MainScene/UICanvas/UIPanel/MainMenu/Settings/ScrollView/Viewport/Content/VolCtrl/Master_Slider/Label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11784700170240
+    m_Key: VolSlider/Canvas (Environment)/VolSlider/Button/Text (TMP)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12207301464064
+    m_Key: MainScene/UICanvas/UIPanel/MainMenu/Settings/ScrollView/Viewport/Content/UISelect/Info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12320954519552
+    m_Key: MainScene/UICanvas/UIPanel/MainMenu/Settings/ScrollView/Viewport/Content/UISelect/MiniOff
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12379326648320
+    m_Key: MainScene/UICanvas/UIPanel/MainMenu/Settings/ScrollView/Viewport/Content/UISelect/MiniOn
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16263168266240
+    m_Key: BonusInLossGame
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48487561302016
+    m_Key: MainScene/UICanvas/UIPanel/MainMenu/Bonus Log 3
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 1629259060649394200
+  references:
+    version: 2
+    RefIds:
+    - rid: 1629259060649394200
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1719141517890

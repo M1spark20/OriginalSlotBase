@@ -1,0 +1,173 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: GeneralText_en
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 9736c6f56f75fb545b14abc755004d96, type: 2}
+  m_Metadata:
+    m_Items:
+    - rid: 1629259062054223874
+  m_TableData:
+  - m_Id: 116746227712
+    m_Localized: Total Game
+    m_Metadata:
+      m_Items: []
+  - m_Id: 162896154624
+    m_Localized: Bonus Log
+    m_Metadata:
+      m_Items: []
+  - m_Id: 441188225024
+    m_Localized: Mini Reel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 604346650624
+    m_Localized: Balance
+    m_Metadata:
+      m_Items: []
+  - m_Id: 650265890816
+    m_Localized: BRint.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 742184062976
+    m_Localized: BBint.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 799503421440
+    m_Localized: Payout
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1248633688064
+    m_Localized: Total Game
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1302002012160
+    m_Localized: Bonus Log
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1353159938048
+    m_Localized: Balance
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1377621118976
+    m_Localized: BRint.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1402560450560
+    m_Localized: BBint.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1429303332864
+    m_Localized: Payout
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1777103409152
+    m_Localized: 'Open Menu
+
+      [M]key / Tap'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2551036383232
+    m_Localized: --- Menu ---
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4008691240960
+    m_Localized: 'Select: [Left] & [Right]  /  Close: [M] key'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5896572637184
+    m_Localized: Bonus Log
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6133068468224
+    m_Localized: 'Game
+
+'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6241667387392
+    m_Localized: Type
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6422286700544
+    m_Localized: GET
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6564213559296
+    m_Localized: Bonus-in Pattern
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8093867839488
+    m_Localized: Pattern Log
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9779688640512
+    m_Localized: <Recent new-completed>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9865323745280
+    m_Localized: 'Note: Left-1st only'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10228865044480
+    m_Localized: Lucky Ptns.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10750133145600
+    m_Localized: Settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11337893548032
+    m_Localized: 'Sound
+
+      Volume'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11519322361856
+    m_Localized: Master
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11784700170240
+    m_Localized: Reset
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12207301464064
+    m_Localized: 'Info
+
+      Position'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12320954519552
+    m_Localized: 'Mini Reel: OFF'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12379326648320
+    m_Localized: 'Mini Reel: ON'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16263168266240
+    m_Localized: 'Loss game: {0}'
+    m_Metadata:
+      m_Items:
+      - rid: 1629259062054223874
+  - m_Id: 48487561302016
+    m_Localized: Bonus Log
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 1629259062054223874
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 00105e90ca0e0000

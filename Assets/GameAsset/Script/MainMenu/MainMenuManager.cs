@@ -45,11 +45,11 @@ public class MainMenuManager : MonoBehaviour
         	}
         	SelImage[i] = Selector[i].GetComponent<Image>();
         	SelName[i] = Selector[i].transform.Find("name").GetComponent<TextMeshProUGUI>();
-        	SelName[i].text = Panels[i].name;
         	var prm = i;	// 変数に入れないとデルタがうまく動かないらしい…
         	Selector[i].onClick.AddListener(() => OnClickButton(prm));
         	// スクリプト登録
         	PanelScr[i] = Panels[i].GetComponent<MainMenuElemBase>();
+        	SelName[i].text = PanelScr[i].GetElemName();
         }
         // 表示初期化(Menuが表示されていない前提)
         RefreshActivate(0);
@@ -62,6 +62,7 @@ public class MainMenuManager : MonoBehaviour
         // タブの描画(後から追加)
         for (int i=0; i<Selector.Length; ++i) {
         	SelImage[i].color = SelectedID == i ? Color.yellow : new Color(0.88f, 0.88f, 0.88f);
+        	SelName[i].text = PanelScr[i].GetElemName();
         	SelName[i].color = SelectedID == i ? Color.yellow : Color.white;
         }
     }

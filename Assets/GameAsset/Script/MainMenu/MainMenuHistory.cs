@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.Localization;
 
 public class MainMenuHistory : MainMenuElemBase
 {
@@ -10,11 +11,14 @@ public class MainMenuHistory : MainMenuElemBase
 	[SerializeField] private GameObject HistoryViewer;
 	[SerializeField] private GameObject Date;
 	[SerializeField] private UIBalanceGraph GraphScript;
+	[SerializeField] private UnityEngine.Localization.LocalizedStringTable LocalizeTable;
+	[SerializeField] private string LocalizeID;
 	
 	private SlotEffectMaker2023.Action.HistoryManager hm;
 	private ReelPatternBuilder builder;
 	private UISmartScroller scroller;
 	private TextMeshProUGUI dateShow;
+	private UnityEngine.Localization.Tables.StringTable lc;
 	
 	private int lastShow;
 	
@@ -27,6 +31,8 @@ public class MainMenuHistory : MainMenuElemBase
     	scroller = HistoryViewer?.GetComponent<UISmartScroller>() ?? null;
     	dateShow = Date?.GetComponent<TextMeshProUGUI>() ?? null;
     	lastShow = int.MinValue;
+    	lc = null;
+    	if (LocalizeTable.IsEmpty) Debug.Log("a");
     }
     
     // Update is called once per frame
@@ -63,7 +69,8 @@ public class MainMenuHistory : MainMenuElemBase
     	if (size - offset == 0) builder.SetData(null, "NO DATA"); // 1回目の当たりは入賞までここでマスクされる
     	else if (nowShow < 0 || nowShow >= hm.BonusHist.Count) builder.SetData(null, "Select Bonus Data");
     	else {
-    		builder.SetData(hm.BonusHist[nowShow].InPattern, "Loss game: " + hm.BonusHist[nowShow].LossGame.ToString());
+    		if (lc == null) lc = LocalizeTable.GetTable();
+    		builder.SetData(hm.BonusHist[nowShow].InPattern, string.Format(lc[LocalizeID].Value, hm.BonusHist[nowShow].LossGame.ToString()));
     		dateShow.text = hm.BonusHist[nowShow].InDate;
     	}
     }

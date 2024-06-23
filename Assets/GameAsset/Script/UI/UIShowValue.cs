@@ -29,6 +29,7 @@ public class UIShowValue : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
+		Title.text = DataName;
 		Value.text = string.Empty;
 		Value.color = Color.white;
 		

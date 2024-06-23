@@ -4,6 +4,8 @@ using UnityEngine;
 
 public abstract class MainMenuElemBase : MonoBehaviour
 {
+	[SerializeField] private string ElemName;
+
 	virtual protected void Awake() {
 	}
 	
@@ -16,4 +18,6 @@ public abstract class MainMenuElemBase : MonoBehaviour
     abstract public void RefreshData();
     
     abstract public void OnGetKeyDown(EMenuButtonID eKeyID);
+    
+    public string GetElemName() { return ElemName; }
 }
