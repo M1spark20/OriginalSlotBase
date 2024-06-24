@@ -169,6 +169,38 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 1629259062054223874
+  - m_Id: 422594014482432
+    m_Localized: Cmpl. count
+    m_Metadata:
+      m_Items: []
+  - m_Id: 422754819903488
+    m_Localized: 'First
+
+'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 422772339511296
+    m_Localized: Recent
+    m_Metadata:
+      m_Items: []
+  - m_Id: 423324989394944
+    m_Localized: 'Keep
+
+      Moving'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 423377711796224
+    m_Localized: Hazure
+    m_Metadata:
+      m_Items: []
+  - m_Id: 423414256766976
+    m_Localized: 'Hazure
+
+      with
+
+      Aiming'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

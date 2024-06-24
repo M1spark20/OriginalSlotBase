@@ -156,6 +156,30 @@ MonoBehaviour:
     m_Key: PatternHistoryGame
     m_Metadata:
       m_Items: []
+  - m_Id: 422594014482432
+    m_Key: CollectionElem/Canvas (Environment)/CollectionElem/LabelSet/CountLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 422754819903488
+    m_Key: CollectionElem/Canvas (Environment)/CollectionElem/LabelSet/LabelF
+    m_Metadata:
+      m_Items: []
+  - m_Id: 422772339511296
+    m_Key: CollectionElem/Canvas (Environment)/CollectionElem/LabelSet/LabelR
+    m_Metadata:
+      m_Items: []
+  - m_Id: 423324989394944
+    m_Key: ColleRotating
+    m_Metadata:
+      m_Items: []
+  - m_Id: 423377711796224
+    m_Key: ColleHazure
+    m_Metadata:
+      m_Items: []
+  - m_Id: 423414256766976
+    m_Key: ColleAiming
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

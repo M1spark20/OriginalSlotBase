@@ -12,6 +12,11 @@ public class CollectionBuilder : MonoBehaviour
 	[Header("成立時出目データ")]
 	[SerializeField] protected float ComaDX;
 	[SerializeField] protected float LvIconDX;
+	
+	[SerializeField] protected string LocalizeRotateID;
+	[SerializeField] protected string LocalizeHazureID;
+	[SerializeField] protected string LocalizeAimingID;
+	
 	private GameObject Labels;
 	private GameObject ReelInfo;
 	private GameObject NCMask;
@@ -22,6 +27,7 @@ public class CollectionBuilder : MonoBehaviour
 	private GameObject[][] BonusInComaID;
 	private GameObject[] BonusInCutLine;
 	private SlotMaker2022.LocalDataSet.ReelArray[][] ra;
+	private GetDynamicLocalText lc;
 	
 	private SlotEffectMaker2023.Action.HistoryManager hm;
 	private ReelChipHolder comaData;
@@ -80,6 +86,7 @@ public class CollectionBuilder : MonoBehaviour
 		}
 		
 		hm = SlotEffectMaker2023.Singleton.SlotDataSingleton.GetInstance().historyManager;
+		lc = GetComponent<GetDynamicLocalText>();
         comaData = ReelChipHolder.GetInstance();
         Reset();
     }
@@ -99,7 +106,7 @@ public class CollectionBuilder : MonoBehaviour
     		// 共通定義
     		var ePtn = nowPtn.CollectionElem[i].Pattern;
         	BonusInCutLine[i].GetComponent<Image>().enabled = false;
-        	string[] infoStr = { "", "", "ANY", "Keep"+Environment.NewLine+"Moving", "Hazure", "Hazure"+Environment.NewLine+"with"+Environment.NewLine+"Aiming" };
+        	string[] infoStr = { "", "", "ANY", lc.GetText(LocalizeRotateID), lc.GetText(LocalizeHazureID), lc.GetText(LocalizeAimingID) };
     		BonusInStopInfo[i].GetComponent<TextMeshProUGUI>().text = infoStr[(int)ePtn];
     		for (int j=0; j<LevelIconNum; ++j) LevelIcon[j].GetComponent<Image>().color = j < nowPtn.Level ? Color.yellow : Color.gray * 0.5f;
     		
