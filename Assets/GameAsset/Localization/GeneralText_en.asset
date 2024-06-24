@@ -164,6 +164,11 @@ MonoBehaviour:
     m_Localized: Bonus Log
     m_Metadata:
       m_Items: []
+  - m_Id: 398358944288768
+    m_Localized: '{0:Last game|{} game before|{} games before}'
+    m_Metadata:
+      m_Items:
+      - rid: 1629259062054223874
   references:
     version: 2
     RefIds:
@@ -173,3 +178,4 @@ MonoBehaviour:
         m_Entries: 
         m_SharedEntries:
         - id: 16263168266240
+        - id: 398358944288768

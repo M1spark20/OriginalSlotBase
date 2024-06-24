@@ -152,6 +152,10 @@ MonoBehaviour:
     m_Key: MainScene/UICanvas/UIPanel/MainMenu/Bonus Log 3
     m_Metadata:
       m_Items: []
+  - m_Id: 398358944288768
+    m_Key: PatternHistoryGame
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

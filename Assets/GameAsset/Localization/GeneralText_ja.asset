@@ -156,6 +156,11 @@ MonoBehaviour:
     m_Localized: "\u30DC\u30FC\u30CA\u30B9\u5C65\u6B74"
     m_Metadata:
       m_Items: []
+  - m_Id: 398358944288768
+    m_Localized: "{0}\u30B2\u30FC\u30E0\u524D"
+    m_Metadata:
+      m_Items:
+      - rid: 1629259062054223876
   references:
     version: 2
     RefIds:
@@ -165,3 +170,4 @@ MonoBehaviour:
         m_Entries: 
         m_SharedEntries:
         - id: 16263168266240
+        - id: 398358944288768

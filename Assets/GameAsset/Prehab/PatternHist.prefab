@@ -35,7 +35,6 @@ RectTransform:
   - {fileID: 5501619791244628597}
   - {fileID: 3572823997134167037}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
@@ -92,6 +91,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b3db14978e39ef498e0b49584547a44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LocalizeStringTable: GeneralText
+  LocalizeStringID: PatternHistoryGame
 --- !u!223 &7365508521851913085
 Canvas:
   m_ObjectHideFlags: 0
@@ -109,7 +110,9 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 0
+  m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -118,6 +121,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 5336366567018601691}
     m_Modifications:
     - target: {fileID: 5336366567018601690, guid: 4a6980bd12fe8024a8e7145dd1d6dfa6, type: 3}
@@ -217,6 +221,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4a6980bd12fe8024a8e7145dd1d6dfa6, type: 3}
 --- !u!224 &5501619791244628597 stripped
 RectTransform:
@@ -228,6 +235,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 5336366567018601691}
     m_Modifications:
     - target: {fileID: 5336366567018601690, guid: 4a6980bd12fe8024a8e7145dd1d6dfa6, type: 3}
@@ -327,6 +335,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4a6980bd12fe8024a8e7145dd1d6dfa6, type: 3}
 --- !u!224 &3572823997134167037 stripped
 RectTransform:

@@ -2,10 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Localization;
 using TMPro;
 
 public class UIShowPatternScr : ScrollPrehabBase
 {
+	[SerializeField] private string LocalizeStringTable;
+	[SerializeField] private string LocalizeStringID;
+
 	private SlotEffectMaker2023.Data.HistoryConfig hc;
 	private SlotEffectMaker2023.Action.HistoryManager hm;
 	private ReelChipHolder comaData;
@@ -44,7 +48,10 @@ public class UIShowPatternScr : ScrollPrehabBase
 				refCanvas[i].enabled = false;
 			} else {
 				refCanvas[i].enabled = true;
-				refScr[i].SetData(hm.PatternHist[refID], refID.ToString() + " Game(s) before");
+				// ローカライズ対応
+				var localizedString = new LocalizedString(LocalizeStringTable, LocalizeStringID);
+				localizedString.Arguments = new object[] { new Dictionary<string, int>() { { "0", refID } } };
+				refScr[i].SetData(hm.PatternHist[refID], localizedString.GetLocalizedString());
 			}
 		}
 		Debug.Log("test");
