@@ -30,9 +30,7 @@ public class UILanguageChanger : MonoBehaviour
     void Update()
     {
     	string nowLocale = LocalizationSettings.SelectedLocale.Identifier.Code;
-    	Debug.Log(nowLocale);
     	for(int i=0; i<ChangerUI.Length; ++i){
-    		Debug.Log(ChangerUI[i].name);
     		Color itemCol = ChangerUI[i].name == nowLocale ? Color.yellow : Color.white;
     		im[i].color = itemCol;
     		Text[i].color = itemCol;
