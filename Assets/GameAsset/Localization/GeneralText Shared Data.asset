@@ -180,6 +180,10 @@ MonoBehaviour:
     m_Key: ColleAiming
     m_Metadata:
       m_Items: []
+  - m_Id: 767840996954112
+    m_Key: MainScene/UICanvas/UIPanel/MainMenu/HowToPlay
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -201,6 +201,10 @@ MonoBehaviour:
       Aiming'
     m_Metadata:
       m_Items: []
+  - m_Id: 767840996954112
+    m_Localized: How to play
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
