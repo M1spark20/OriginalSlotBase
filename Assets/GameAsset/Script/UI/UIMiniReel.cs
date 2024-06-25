@@ -111,8 +111,17 @@ public class UIMiniReel : MonoBehaviour
         		PosCtrl[reelC, posC].anchoredPosition = pos;
         	}
         }
+    	// リール停止状態かつtargetComaで停止している場合に設定を解除する。
+    	if (targetReel >= 0){
+	    	var comaData = ReelData[targetReel];
+	    	if (!comaData.isRotate && comaData.stopPos == targetComa){
+		        targetReel = -1;
+		        targetComa = -1;
+		    }
+    	}
         // アシスト窓位置変更
         for (int posC = 0; posC < PosShowNum; ++posC){
+        	// 窓位置を設定する
 	        TargetImg[posC].enabled = (targetReel >= 0 && targetComa >= 0);
 	        TargetCtrl[posC].anchoredPosition = new Vector2(targetReel * DiffX, (targetComa - posC * comaNum) * comaSize.y) + PosCtrlOffset;
         }
