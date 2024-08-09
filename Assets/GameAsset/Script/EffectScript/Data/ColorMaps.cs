@@ -235,7 +235,10 @@ namespace SlotEffectMaker2023.Data
             {   // 初期・中間データの処理: 時間によって参照位置を変える
 				// 選択カードの色を取り出す(fadeなしの場合)
 				uint card = (uint)mCardIDFloat;
-				ans = elemData[mRefDataIdx].GetMapData(card, getY, getX);
+				// (20240720)cardが時間上限に達し範囲外を参照してしまった場合には次のマップを読み込む
+				// ※指数関数を使用した時に時間上限付近でcardが上にまとめられてしまう場合に発生
+				ans = card < elemData[mRefDataIdx].cardNum  * elemData[mRefDataIdx].loopCount ?
+					elemData[mRefDataIdx].GetMapData(card, getY, getX) : elemData[mRefDataIdx + 1].GetMapData(0, getY, getX);
 
 				if (elemData[mRefDataIdx].fadeFlag)
                 {	// フェードありの処理を行う
@@ -245,6 +248,7 @@ namespace SlotEffectMaker2023.Data
 						nextC = elemData[mRefDataIdx].GetMapData(card + 1, getY, getX);
 					ans = GetMediumColor(ans, nextC, mCardIDFloat % 1f);
 				}
+
 			}
 
 			return ans;
