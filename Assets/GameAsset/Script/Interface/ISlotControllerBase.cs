@@ -15,7 +15,7 @@ public interface ISlotControllerBase
 	void OnGetKey(EGameButtonID pKeyID);
 	// 定常処理、キー入力を受け付けた後に実施する
 	// 戻値：次フレームの処理に使用するインスタンス(変更なしの場合this)
-	ISlotControllerBase ProcessAfterInput(Action pSaveCallBack);
+	ISlotControllerBase ProcessAfterInput(Action pSaveCallBack, Action pSteamAPICallBack);
 }
 
 // BET入力を待つ状態
@@ -108,7 +108,7 @@ public class SCWaitBet : ISlotControllerBase {
 	
 	public void OnGetKey(EGameButtonID pKeyID){ /* None */ }
 	
-	public ISlotControllerBase ProcessAfterInput(Action pSaveCallBack){
+	public ISlotControllerBase ProcessAfterInput(Action pSaveCallBack, Action pSteamAPICallBack){
 		// reelActivateが有効ならリールを始動させる
 		if (reelActivate){
 			// タイマ関係の停止処理
@@ -189,7 +189,7 @@ public class SCWaitBeforeReelStart : ISlotControllerBase {
 	
 	public void OnGetKeyDown(EGameButtonID pKeyID){ /* None */ }
 	public void OnGetKey(EGameButtonID pKeyID){ /* None */ }
-	public ISlotControllerBase ProcessAfterInput(Action pSaveCallBack){
+	public ISlotControllerBase ProcessAfterInput(Action pSaveCallBack, Action pSteamAPICallBack){
 		// Wait終了判定を行う(waitEndが無効か、最大wait時間以上経過しているとき)
 		bool waitEnd = !timer.GetTimer("waitEnd").isActivate;
 		if(!waitEnd) waitEnd = timer.GetTimer("waitEnd").elapsedTime > (float)waitTime / 1000f;
@@ -326,7 +326,7 @@ public class SCReelOperation : ISlotControllerBase {
 		// ねじり処理を行う
 		isAllReleased = false;
 	}
-	public ISlotControllerBase ProcessAfterInput(Action pSaveCallBack){
+	public ISlotControllerBase ProcessAfterInput(Action pSaveCallBack, Action pSteamAPICallBack){
 		// 各リールの処理を行い、停止済みか判定を行う
 		bool isAllStopped = true;
 		for(int i=0; i<reelNum; ++i){
@@ -359,8 +359,8 @@ public class SCReelOperation : ISlotControllerBase {
 			timer.GetTimer("allReelStop").Activate();
 			timer.GetTimer("reelStart").SetDisabled();
 			ResetPushStopTimer();
-			// 移行先: SCJudgeAndPayout
-			return new SCJudgeAndPayout();
+			// 移行先: SCJudgeAndPayout(20240816ADD:引数追加)
+			return new SCJudgeAndPayout(pSteamAPICallBack);
 		}
 		
 		// フリーズタイマ処理
@@ -458,8 +458,8 @@ public class SCJudgeAndPayout : ISlotControllerBase {
 	SlotEffectMaker2023.Singleton.SlotDataSingleton slotData;
 	SlotEffectMaker2023.Singleton.EffectDataManagerSingleton subROM;
 
-	// SC移行時処理
-	public SCJudgeAndPayout(){
+	// SC移行時処理(20240816ADD: Steam実績確認)
+	public SCJudgeAndPayout(Action pSteamAPICallBack){
 		// 変数初期化
 		mPayoutNum   = 0;
 		mNextPayTime = 0;
@@ -495,11 +495,17 @@ public class SCJudgeAndPayout : ISlotControllerBase {
 			timer.GetTimer("Pay-Bet").Activate();
 			timer.GetTimer("Pay-Lever").Activate();
 		}
+		
+		// 実績確認
+		if (pSteamAPICallBack != null) pSteamAPICallBack();
 	}
+	
+	// SC移行時処理(Steam実績確認なし)
+	public SCJudgeAndPayout() : this(null) { /* None */ }
 	
 	public void OnGetKeyDown(EGameButtonID pKeyID){ /* None */ }
 	public void OnGetKey(EGameButtonID pKeyID){ /* None */ }
-	public ISlotControllerBase ProcessAfterInput(Action pSaveCallBack){
+	public ISlotControllerBase ProcessAfterInput(Action pSaveCallBack, Action pSteamAPICallBack){
 		const float divMS = 1000f;
 		
 		// beforeフリーズ消化判定

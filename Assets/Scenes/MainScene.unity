@@ -4817,7 +4817,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.0000333786}
+  m_AnchoredPosition: {x: 0, y: -0.000017831553}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &512259275
@@ -8882,7 +8882,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000043968295}
+  m_AnchoredPosition: {x: 0, y: 0.000086152126}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1001 &901355766
@@ -14244,7 +14244,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 645678965}
   m_HandleRect: {fileID: 645678964}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -14320,7 +14320,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.00005244847}
+  m_AnchoredPosition: {x: 0, y: 0.00009080769}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1534532079
@@ -17249,6 +17249,7 @@ MonoBehaviour:
   EffectData: {fileID: 4900000, guid: 69efabb59f6284245bfbcef16ddb9f5b, type: 3}
   MainMenuObj: {fileID: 1684383505}
   TouchPanel: {fileID: 153352466}
+  SteamAPI: {fileID: 1292301410}
 --- !u!114 &1841845988
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17891,7 +17892,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.00006390875}
+  m_AnchoredPosition: {x: 0, y: 0.000043589756}
   m_SizeDelta: {x: 0, y: 400}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1987865358

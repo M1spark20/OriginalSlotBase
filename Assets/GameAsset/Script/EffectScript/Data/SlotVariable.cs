@@ -89,6 +89,7 @@ namespace SlotEffectMaker2023.Data
 				new SlotVariable("_bonusID", 0),
 				new SlotVariable("_castBonusID", 0),
 				new SlotVariable("_payLine", 0),
+				new SlotVariable("_unlockColleNum", 0),
             };
 			// リール関係システムデータ
 			for (int i=0; i<SlotMaker2022.LocalDataSet.REEL_MAX; ++i)
@@ -97,6 +98,9 @@ namespace SlotEffectMaker2023.Data
 				VData.Add(new SlotVariable("_reelStopPos[" + i + "]", -1));
 				VData.Add(new SlotVariable("_reelStopOrder[" + i + "]", -1));
             }
+			// 出目コレ達成数データ(ID:0-4, Lv:1-5)
+			for (int i=0; i<CollectionDataElem.COLLECTION_LEVEL_MAX; ++i)
+				VData.Add(new SlotVariable("_unlockColleNumLv[" + i + "]", 0));
         }
 		public bool StoreData(ref BinaryWriter fs, int version)
 		{

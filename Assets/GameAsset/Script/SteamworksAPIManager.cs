@@ -17,6 +17,10 @@ public class SteamworksAPIManager : MonoBehaviour {
 	protected Callback<UserStatsReceived_t> m_UserStatsReceived;
 	protected Callback<UserStatsStored_t> m_UserStatsStored;
 	protected Callback<UserAchievementStored_t> m_UserAchievementStored;
+	
+	// A-Rabbit's Singleton
+	SlotEffectMaker2023.Singleton.SlotDataSingleton slotData;
+	SlotEffectMaker2023.Singleton.EffectDataManagerSingleton subROM;
 		
     void Start() {
         if(SteamManager.Initialized) {
@@ -28,6 +32,10 @@ public class SteamworksAPIManager : MonoBehaviour {
 	void OnEnable() {
 		if (!SteamManager.Initialized) return;
 
+		// Get Singleton Instance
+		slotData = SlotEffectMaker2023.Singleton.SlotDataSingleton.GetInstance();
+		subROM   = SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.GetInstance();
+		
 		// Cache the GameID for use in the Callbacks
 		m_GameID = new CGameID(SteamUtils.GetAppID());
 
@@ -50,6 +58,8 @@ public class SteamworksAPIManager : MonoBehaviour {
 				return;
 			}
 			
+			// (debug)呼び出し前にリセットをかける
+			SteamUserStats.ResetAllStats(true);
 			// If yes, request our stats (この返答としてコールバックが呼ばれる?)
 			bool bSuccess = SteamUserStats.RequestCurrentStats();
 
@@ -60,15 +70,8 @@ public class SteamworksAPIManager : MonoBehaviour {
 
 		if (!m_bStatsValid) return;
 
-		// Get info from sources
-		// Evaluate achievements
-		
-
-		//Store stats in the Steam database if necessary
+		//Store stats in the Steam database if necessary (Modified by OnGameStateChange())
 		if (m_bStoreStats) {
-			// already set any achievements in UnlockAchievement in "Evaluate achievements"
-			// set stats
-
 			// Send to steam
 			bool bSuccess = SteamUserStats.StoreStats();
 			// If this failed, we never sent anything to the server, try
@@ -77,6 +80,21 @@ public class SteamworksAPIManager : MonoBehaviour {
 		}
 	}
 
+	//-----------------------------------------------------------------------------
+	// Purpose: Unlock this achievement
+	//-----------------------------------------------------------------------------
+	private void UnlockAchievement(SlotEffectMaker2023.Data.GameAchievement ac) {
+		ac.IsAchieved = true;
+
+		// the icon may change once it's unlocked
+		//achievement.m_iIconImage = 0;
+
+		// mark it down
+		SteamUserStats.SetAchievement(ac.DataID);
+
+		// Store stats end of/next frame
+		m_bStoreStats = true;
+	}
 
 	//-----------------------------------------------------------------------------
 	// Purpose: Game state has changed
@@ -85,11 +103,28 @@ public class SteamworksAPIManager : MonoBehaviour {
 		if (!m_bStatsValid) return;
 
 		// Update Action
+		var vm = slotData.valManager;
+		var bs = slotData.basicData;
+		
+		foreach (var item in subROM.GameAchieve.elemData) {
+			if (bs.gameMode == 0 && item.UpdateOnlyBonusIn) continue;
+			if (item.Type == SlotEffectMaker2023.Data.AchieveDataType.Flag){
+				if (item.IsAchieved) continue;
+				// 変数条件比較: 新規達成OKなら実績通知
+				var cond = subROM.Timeline.GetCondFromName(item.RefData);
+				if (!cond.Evaluate()) continue;
+				// 実績解除
+				UnlockAchievement(item);
+			}
+			if (item.Type == SlotEffectMaker2023.Data.AchieveDataType.Num){
+				var valData = vm.GetVariable(item.RefData);
+				if (valData != null) SteamUserStats.SetStat(item.DataID, valData.val);
+			}
+		}
 
 		// We want to update stats the next frame.
 		m_bStoreStats = true;
 	}
-	
 	
 	//-----------------------------------------------------------------------------
 	// Purpose: We have stats data from Steam. It is authoritative, so update
@@ -106,8 +141,22 @@ public class SteamworksAPIManager : MonoBehaviour {
 
 				m_bStatsValid = true;
 
-				// load achievements / stats
-				
+				// load achievements / stats (Flagのみ)
+				foreach (var item in subROM.GameAchieve.elemData) {
+					if (item.Type != SlotEffectMaker2023.Data.AchieveDataType.Flag) continue;
+					// データを読み込む
+					bool isAchieved;	// 当該実績が達成済みか
+					bool ret = SteamUserStats.GetAchievement(item.DataID, out isAchieved);
+					if (ret) {
+						string Name = SteamUserStats.GetAchievementDisplayAttribute(item.DataID, "name");
+						string Desc = SteamUserStats.GetAchievementDisplayAttribute(item.DataID, "desc");
+						item.SetDetail(isAchieved, Name, Desc);
+						Debug.Log("Stat Read: ID=" + item.DataID + ", Name=" + item.Title + ", Desc=" + item.Desc + ", Flag=" + item.IsAchieved.ToString());
+					}
+					else {
+						Debug.LogWarning("SteamUserStats.GetAchievement failed for Achievement " + item.DataID + "\nIs it registered in the Steam Partner site?");
+					}
+				}
 			}
 			else {
 				Debug.Log("RequestStats - failed, " + pCallback.m_eResult);

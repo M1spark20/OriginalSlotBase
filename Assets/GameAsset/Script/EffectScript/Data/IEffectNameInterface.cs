@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SlotEffectMaker2023.Data
 {
-    public enum EChangeNameType { Var, Timer, SoundID, SoundPlayer, Timeline, ColorMap, MapPlayer, Collection, Info, None }
+    public enum EChangeNameType { Var, Timer, SoundID, SoundPlayer, Timeline, ColorMap, MapPlayer, Collection, Info, GameAchievement, None }
 
     interface IEffectNameInterface : SlotMaker2022.ILocalDataInterface
     {

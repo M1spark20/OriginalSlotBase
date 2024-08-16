@@ -61,6 +61,8 @@ namespace SlotEffectMaker2023.Data
 
     public class CollectionDataElem : IEffectNameInterface
     {   // データをリール数分まとめたもの
+        public const int COLLECTION_LEVEL_MAX = 5;
+
         public List<CollectionReelElem> CollectionElem { get; set; }
         public byte Level { get; set; }
 

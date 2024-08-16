@@ -173,6 +173,13 @@ namespace SlotEffectMaker2023.Action
             foreach (var item in Achievements) if (item.CompTimes > 0) ++ans;
             return ans;
         }
+        public int GetAchievedCount(Data.CollectionData cd, int pLevel)
+        {   // レベル別にカウント
+            int ans = 0;
+            for (int i = 0; i < cd.Collections.Count; ++i)
+                if (cd.Collections[i].Level == pLevel && Achievements[i].CompTimes > 0) ++ans;
+            return ans;
+        }
 
         private bool CheckSymbol(Data.CollectionReelElem cd, ReelBasicData rd, LocalDataSet.ReelArray[] ra)
         {   // リールのシンボルチェックを行う

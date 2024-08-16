@@ -159,5 +159,18 @@ namespace SlotEffectMaker2023.Data
         {
 			return GetActionFromName(name) != null;
         }
+
+		// (20240810)外部から条件だけ取れるように関数追加
+		public string[] GetAllCondName()
+        {
+			List<string> vs = new List<string>();
+			foreach (var item in condData) vs.Add(item.dataName);
+			return vs.ToArray();
+        }
+		public EfActValCond GetCondFromName(string name)
+        {
+			foreach (var item in condData) if (item.dataName.Equals(name)) return item;
+			return null;
+		}
 	}
 }

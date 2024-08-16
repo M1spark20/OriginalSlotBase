@@ -207,20 +207,7 @@ namespace SlotEffectMaker2023.Data
         }
         public override void Action()
         {
-            var varList = Singleton.SlotDataSingleton.GetInstance().valManager;
-            bool actionFlag = true;
-            foreach(var itemAnd in conds)
-            {
-                bool actionOR = false;
-                foreach (var itemOr in itemAnd)
-                {
-                    SlotVariable data = varList.GetVariable(itemOr.valName);
-                    if (data == null) continue;
-                    actionOR = data.CheckRange(itemOr.min, itemOr.max, true) ^ itemOr.invFlag;
-                    if (actionOR) break;
-                }
-                if (!actionOR) { actionFlag = false; break; }
-            }
+            bool actionFlag = Evaluate();
             // 処理の実行
             foreach (var item in actionList)
             {
@@ -275,6 +262,25 @@ namespace SlotEffectMaker2023.Data
                 foreach (var condOr in condAnd) condOr.Rename(type, src, dst);
             }
             foreach (var act in actionList) act.Rename(type, src, dst);
+        }
+
+        // キャスト時 or クラス型直接指定時のみ外部からも使用可能
+        public bool Evaluate()
+        {
+            var varList = Singleton.SlotDataSingleton.GetInstance().valManager;
+            foreach (var itemAnd in conds)
+            {
+                bool actionOR = false;
+                foreach (var itemOr in itemAnd)
+                {
+                    SlotVariable data = varList.GetVariable(itemOr.valName);
+                    if (data == null) continue;
+                    actionOR = data.CheckRange(itemOr.min, itemOr.max, true) ^ itemOr.invFlag;
+                    if (actionOR) break;
+                }
+                if (!actionOR) { return false; }
+            }
+            return true;
         }
     }
     public class EfActTimerCond : IEfAct

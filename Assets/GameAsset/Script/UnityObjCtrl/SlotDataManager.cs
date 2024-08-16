@@ -30,6 +30,7 @@ public class SlotDataManager : MonoBehaviour
 	private bool[] GetKeyDownJoin;
 	private bool[] GetKeyJoin;
 	[SerializeField] private GraphicRaycaster TouchPanel;
+	[SerializeField] private SteamworksAPIManager SteamAPI;
 	
 	// セーブデータ元パス
 	private string SavePath;
@@ -117,7 +118,7 @@ public class SlotDataManager : MonoBehaviour
 		
 		ResetTouchStatus();
 		// キー入力後プロセス
-		controller = controller.ProcessAfterInput(DataSaveAct);
+		controller = controller.ProcessAfterInput(DataSaveAct, CheckAchievementAct);
 		// システム変数更新
 		slotData.Process();
 	}
@@ -153,6 +154,11 @@ public class SlotDataManager : MonoBehaviour
 			GetKeyDownJoin[i] = false;
 			GetKeyJoin    [i] = false;
 		}
+	}
+	
+	// Steam実績確認時コールバック
+	public void CheckAchievementAct(){
+		SteamAPI.OnGameStateChange();
 	}
 	
 	// セーブ時コールバック

@@ -23,6 +23,7 @@ namespace SlotEffectMaker2023.Singleton
         public Data.ColorMapDataManager ColorMap      { get; set; } // 演出色マップ
         public Data.HistoryConfig       HistoryConf   { get; set; } // ボーナス履歴用コンフィグ
         public Data.CollectionData      Collection    { get; set; } // リーチ目コレクション
+        public Data.GameAchievementList GameAchieve   { get; set; } // Steam用実績管理
 
         private EffectDataManagerSingleton()
         {
@@ -35,6 +36,7 @@ namespace SlotEffectMaker2023.Singleton
             ColorMap      = new Data.ColorMapDataManager();
             HistoryConf   = new Data.HistoryConfig();
             Collection    = new Data.CollectionData();
+            GameAchieve   = new Data.GameAchievementList();
         }
         public static EffectDataManagerSingleton GetInstance()
         {
@@ -69,6 +71,7 @@ namespace SlotEffectMaker2023.Singleton
             if (!rd.ReadData(ColorMap)) return false;
             if (!rd.ReadData(HistoryConf)) return false;
             if (!rd.ReadData(Collection)) return false;
+            if (!rd.ReadData(GameAchieve)) return false;
             return true;
         }
         public bool SaveData()
@@ -108,6 +111,7 @@ namespace SlotEffectMaker2023.Singleton
             sw.WriteData(ColorMap);
             sw.WriteData(HistoryConf);
             sw.WriteData(Collection);
+            sw.WriteData(GameAchieve);
             return true;
         }
 
@@ -122,6 +126,7 @@ namespace SlotEffectMaker2023.Singleton
             ColorMap.Rename(type, src, dst);
             HistoryConf.Rename(type, src, dst);
             Collection.Rename(type, src, dst);
+            GameAchieve.Rename(type, src, dst);
         }
 
         /* プログラム内共通機能(全体での共有事項をここで定義) */
