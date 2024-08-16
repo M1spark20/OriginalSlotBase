@@ -213,6 +213,50 @@ MonoBehaviour:
     m_Localized: Grape
     m_Metadata:
       m_Items: []
+  - m_Id: 19650293169786880
+    m_Localized: 'Start Sound
+
+
+      Board Turn-off
+
+
+      Reel Flash'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19650846402678784
+    m_Localized: 'Brought by:'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19651168063852544
+    m_Localized: <Effects on bonus-in>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19652540242989056
+    m_Localized: Alone,Replay,Bell,Bell,Grape,Cherry,SP-E,SP-F,SP-A,SP-B,SP-C,SP-D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19652989935292416
+    m_Localized: Default,None,None|Default,1st,None|Default,1st & 2nd,None|Default,ALL,Rabbit's
+      H|Default,ALL,Rabbit's H-S|Default,ALL,Rabbit's H-S-J|Chance,None,None|Chance,1st,None|Chance,1st
+      & 2nd,None|Chance,ALL,Rabbit's H|Chance,ALL,Rabbit's H-S|Chance,ALL,Rabbit's
+      H-S-J|Default,None,Calm wind|Default,1st,Calm wind|Default,1st & 2nd,Calm wind|Default,None,Bird's
+      flap|Default,1st,Bird's flap|Default,1st & 2nd,Rolling flash|Default,ALL,Rolling
+      flash|Chance,None,Rolling flash|Chance,1st,Rolling flash|Special,Left,None|Special,Center,None|Special,Right,None|Special,Left
+      & Center,None|Special,Left & Right,None|Special,Center & Right,None|Double
+      start,None,None|Double start,ALL,Rolling flash|Double start,ALL,Rabbit's H-S-J|None,None,Rolling
+      flash|Chance,None,Calm wind
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19666220338778112
+    m_Localized: '---
+
+
+      ---
+
+
+      ---'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

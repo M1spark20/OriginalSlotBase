@@ -192,6 +192,30 @@ MonoBehaviour:
     m_Key: MainScene/UICanvas/UIPanel/MainMenu/Bonus Log/DataArea/ProbabilityShow-S/FlagName
     m_Metadata:
       m_Items: []
+  - m_Id: 19650293169786880
+    m_Key: MainScene/UICanvas/UIPanel/MainMenu/Bonus Log/PatternPanel/EffectHead
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19650846402678784
+    m_Key: MainScene/UICanvas/UIPanel/MainMenu/Bonus Log/PatternPanel/BrLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19651168063852544
+    m_Key: MainScene/UICanvas/UIPanel/MainMenu/Bonus Log/PatternPanel/EfLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19652540242989056
+    m_Key: BroughtFlag
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19652989935292416
+    m_Key: EffectName
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19666220338778112
+    m_Key: MainScene/UICanvas/UIPanel/MainMenu/Bonus Log/PatternPanel/Effect
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

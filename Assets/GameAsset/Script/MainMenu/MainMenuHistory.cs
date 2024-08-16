@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.Localization;
+using System;
 
 public class MainMenuHistory : MainMenuElemBase
 {
@@ -12,6 +13,10 @@ public class MainMenuHistory : MainMenuElemBase
 	[SerializeField] private GameObject Date;
 	[SerializeField] private UIBalanceGraph GraphScript;
 	[SerializeField] private string LocalizeTableID;
+	[SerializeField] private string LocalizeBroughtID;
+	[SerializeField] private string LocalizeEffectID;
+	[SerializeField] private TextMeshProUGUI BroughtText;
+	[SerializeField] private TextMeshProUGUI EffectText;
 	
 	private SlotEffectMaker2023.Action.HistoryManager hm;
 	private ReelPatternBuilder builder;
@@ -69,6 +74,13 @@ public class MainMenuHistory : MainMenuElemBase
     		Debug.Log(LocalizeTableID);
     		builder.SetData(hm.BonusHist[nowShow].InPattern, string.Format(LocalizeGet.GetText(LocalizeTableID), hm.BonusHist[nowShow].LossGame.ToString()));
     		dateShow.text = hm.BonusHist[nowShow].InDate;
+    		// 契機表示
+    		string[] checkText = LocalizeGet.GetText(LocalizeBroughtID).Split(",");
+    		Debug.Log(checkText.Length);
+    		BroughtText.text = checkText[hm.BonusHist[nowShow].InPattern.FlagID];
+    		// 演出表示
+    		checkText = LocalizeGet.GetText(LocalizeEffectID).Split("|");
+    		EffectText.text = checkText[hm.BonusHist[nowShow].InPattern.InEffect].Replace(",", Environment.NewLine + Environment.NewLine);
     	}
     }
     
