@@ -158,6 +158,8 @@ public class SlotDataManager : MonoBehaviour
 	
 	// Steam実績確認時コールバック
 	public void CheckAchievementAct(){
+		// システム変数のみ更新してから評価する
+		slotData.UpdateSysVar();
 		SteamAPI.OnGameStateChange();
 	}
 	

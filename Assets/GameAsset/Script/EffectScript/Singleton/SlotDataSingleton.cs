@@ -122,6 +122,15 @@ namespace SlotEffectMaker2023.Singleton {
 		/// システム変数を更新します。
 		/// </summary>
 		public void Process(){
+			UpdateSysVar();
+
+			// タイムラインを運用する
+			var timeline = EffectDataManagerSingleton.GetInstance().Timeline.timerData;
+			foreach (var item in timeline) item.Action();
+		}
+
+		public void UpdateSysVar()
+        {
 			valManager.GetVariable("_slotSetting")		.val = basicData.slotSetting;
 			valManager.GetVariable("_inCount")			.val = (int)basicData.inCount;
 			valManager.GetVariable("_outCount")			.val = (int)basicData.outCount;
@@ -155,10 +164,6 @@ namespace SlotEffectMaker2023.Singleton {
 
 			// ボーナス回数を更新する
 			historyManager.Process(valManager);
-
-			// タイムラインを運用する
-			var timeline = EffectDataManagerSingleton.GetInstance().Timeline.timerData;
-			foreach (var item in timeline) item.Action();
-		}
+        }
 	}
 }
