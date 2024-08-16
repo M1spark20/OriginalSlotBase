@@ -212,7 +212,7 @@ public class SCWaitBeforeReelStart : ISlotControllerBase {
 		
 		// Singleton取得, 変数初期化
 		var basicData = slotData.basicData;
-		var randList  = SlotMaker2022.MainROMDataManagerSingleton.GetInstance().FlagRandData;
+		var randList  = mainROM.FlagRandData;
 		byte castFlag  = 0;
 		byte bonusFlag = 0;
 		
@@ -498,6 +498,19 @@ public class SCJudgeAndPayout : ISlotControllerBase {
 		
 		// 実績確認
 		if (pSteamAPICallBack != null) pSteamAPICallBack();
+		
+		// フラグカウントを行う
+		var FlagCounterCond = subROM.CounterCond;
+		var EfCond = subROM.Timeline.GetCondFromName(FlagCounterCond.CountCond);
+		if (EfCond.Evaluate()){
+			var vm = slotData.valManager;
+			var basicData = slotData.basicData;
+			foreach (var item in FlagCounterCond.elemData) {
+				if (!(basicData.castFlag >= item.FlagMin && basicData.castFlag <= item.FlagMax)) continue;
+				var addFor = vm.GetVariable(item.OutVar);
+				addFor.val += 1;
+			}
+		}
 	}
 	
 	// SC移行時処理(Steam実績確認なし)

@@ -24,6 +24,7 @@ namespace SlotEffectMaker2023.Singleton
         public Data.HistoryConfig       HistoryConf   { get; set; } // ボーナス履歴用コンフィグ
         public Data.CollectionData      Collection    { get; set; } // リーチ目コレクション
         public Data.GameAchievementList GameAchieve   { get; set; } // Steam用実績管理
+        public Data.FlagCounterSet      CounterCond   { get; set; } // フラグカウント条件
 
         private EffectDataManagerSingleton()
         {
@@ -37,6 +38,7 @@ namespace SlotEffectMaker2023.Singleton
             HistoryConf   = new Data.HistoryConfig();
             Collection    = new Data.CollectionData();
             GameAchieve   = new Data.GameAchievementList();
+            CounterCond   = new Data.FlagCounterSet();
         }
         public static EffectDataManagerSingleton GetInstance()
         {
@@ -72,6 +74,7 @@ namespace SlotEffectMaker2023.Singleton
             if (!rd.ReadData(HistoryConf)) return false;
             if (!rd.ReadData(Collection)) return false;
             if (!rd.ReadData(GameAchieve)) return false;
+            if (!rd.ReadData(CounterCond)) return false;
             return true;
         }
         public bool SaveData()
@@ -112,6 +115,7 @@ namespace SlotEffectMaker2023.Singleton
             sw.WriteData(HistoryConf);
             sw.WriteData(Collection);
             sw.WriteData(GameAchieve);
+            sw.WriteData(CounterCond);
             return true;
         }
 
@@ -127,6 +131,7 @@ namespace SlotEffectMaker2023.Singleton
             HistoryConf.Rename(type, src, dst);
             Collection.Rename(type, src, dst);
             GameAchieve.Rename(type, src, dst);
+            CounterCond.Rename(type, src, dst);
         }
 
         /* プログラム内共通機能(全体での共有事項をここで定義) */
