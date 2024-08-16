@@ -159,7 +159,7 @@ namespace SlotEffectMaker2023.Singleton {
 				valManager.GetVariable("_reelStopOrder[" + i + "]").val = reelData[i].stopOrder;
             }
 			var colleData = EffectDataManagerSingleton.GetInstance().Collection;
-			for (int i = 0; i < SlotMaker2022.LocalDataSet.REEL_MAX; ++i)
+			for (int i = 0; i < Data.CollectionDataElem.COLLECTION_LEVEL_MAX; ++i)
 				valManager.GetVariable("_unlockColleNumLv[" + i + "]").val = collectionManager.GetAchievedCount(colleData, i+1);
 
 			// ボーナス回数を更新する
