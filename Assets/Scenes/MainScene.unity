@@ -378,7 +378,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1303971330}
   m_Direction: 0
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.9999999
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -5145,9 +5145,9 @@ Camera:
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.1160641
+    x: 0.08281252
     y: 0
-    width: 0.7678718
+    width: 0.83437496
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
@@ -8882,7 +8882,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000015567459}
+  m_AnchoredPosition: {x: 0, y: -0.000043968295}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1001 &901355766
@@ -11930,6 +11930,50 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1292301409
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1292301411}
+  - component: {fileID: 1292301410}
+  m_Layer: 0
+  m_Name: SteamAPI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1292301410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1292301409}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 790a1ed40f414794c8c959d833363241, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1292301411
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1292301409}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 632.10846, y: 322.20004, z: -4.0600033}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &1303902019 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5539189886326880970, guid: 3b6e4ca2813b3dd46abda37406ffc3dc, type: 3}
@@ -13408,7 +13452,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 971362149}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9999973
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -14038,7 +14082,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1644657025}
   m_HandleRect: {fileID: 1644657024}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -19024,7 +19068,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 759682381}
   m_HandleRect: {fileID: 759682380}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -19478,7 +19522,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1221596329}
   m_Direction: 0
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.9999999
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -19707,6 +19751,7 @@ SceneRoots:
   - {fileID: 519420032}
   - {fileID: 1077779356}
   - {fileID: 1841845986}
+  - {fileID: 1292301411}
   - {fileID: 1808854784}
   - {fileID: 1209918601}
   - {fileID: 1469474430}
