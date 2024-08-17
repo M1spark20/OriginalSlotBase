@@ -13,6 +13,7 @@ public class UIPlotter : MonoBehaviour
     
 	private RectTransform rect;
 	private Canvas myCanvas;
+	private SlotEffectMaker2023.Action.SystemData sys;
 	
 	// 表示位置設定
 	[SerializeField] bool[] visible;
@@ -22,12 +23,14 @@ public class UIPlotter : MonoBehaviour
 	void Start() {
 		rect = GetComponent<RectTransform>();
 		myCanvas = GetComponent<Canvas>();
-		posID = 16;
+		
+		sys = SlotEffectMaker2023.Singleton.SlotDataSingleton.GetInstance().sysData;
     }
 
     // Update is called once per frame
     void Update()
     {
+		int posID = sys.InfoPos;
     	if (posID >= anchorY.Length || posID >= visible.Length) return;
     	myCanvas.enabled = visible[posID];
 		// 拡大後の自身の幅を計算

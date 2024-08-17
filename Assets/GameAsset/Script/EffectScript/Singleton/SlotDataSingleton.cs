@@ -6,6 +6,7 @@ namespace SlotEffectMaker2023.Singleton {
 	{   // スロット上で動くデータを定義する
 		// ファイルバージョン
 		const int FILE_VERSION = 0;
+		const int FILE_VERSION_SYS = 0;
 
 		public List<Action.ReelBasicData>	reelData  { get; set; }
 		public Action.SlotBasicData			basicData { get; set; }
@@ -21,6 +22,8 @@ namespace SlotEffectMaker2023.Singleton {
 		// 履歴関連データ
 		public Action.HistoryManager		historyManager { get; set; }
 		public Action.CollectionLogger		collectionManager { get; set; }
+		// システムデータ
+		public Action.SystemData			sysData { get; set; }
 	
 		// Singletonインスタンス
 		private static SlotDataSingleton ins = new SlotDataSingleton();
@@ -39,6 +42,7 @@ namespace SlotEffectMaker2023.Singleton {
 			freezeManager = new Action.FreezeManager();
 			historyManager = new Action.HistoryManager();
 			collectionManager = new Action.CollectionLogger();
+			sysData = new Action.SystemData();
 		}
 
 		public void Init(List<Data.SoundPlayData> pSoundPlayData, Data.TimerList pTimer, Data.VarList pVar, List<Data.ColorMapShifter> pMapPlayData, Data.CollectionData pColle)
@@ -165,5 +169,35 @@ namespace SlotEffectMaker2023.Singleton {
 			// ボーナス回数を更新する
 			historyManager.Process(valManager);
         }
+
+		// ゲームデータと独立してシステムデータを読み書きする
+		public bool ReadSysData(string pPath)
+		{   // Unity用
+			var rd = new SlotMaker2022.ProgressRead();
+			bool ans = true;
+
+			if (rd.OpenFile(pPath))
+			{
+				if (!rd.ReadData(sysData)) return false;
+				rd.Close();
+			}
+			else
+			{
+				ans = false;
+			}
+
+			return ans;
+		}
+		public bool SaveSysData(string pPath)
+		{
+			var sw = new SlotMaker2022.ProgressWrite();
+			if (sw.OpenFile(pPath, FILE_VERSION_SYS))
+			{
+				sw.WriteData(sysData);
+				sw.Flush();
+				sw.Close();
+			}
+			return true;
+		}
 	}
 }

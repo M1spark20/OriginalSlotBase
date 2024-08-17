@@ -10,16 +10,16 @@ public class UnitySoundPlayer : MonoBehaviour
 	// 使用する音源一覧をSerializableで登録する
 	[SerializeField] AudioClip[] SoundData;
 	// 音量調整用データ
-	[SerializeField] Slider VolMaster;
-	[SerializeField] Slider VolBGM;
-	[SerializeField] Slider VolSE;
+	[SerializeField] UIVolSlider VolMaster;
+	[SerializeField] UIVolSlider VolBGM;
+	[SerializeField] UIVolSlider VolSE;
 	
 	List<SoundPlayerData>	player;
 	SlotEffectMaker2023.Action.DataShifterManager<SlotEffectMaker2023.Data.SoundPlayData>	SndManager;		// 音制御データ
 	List<SlotEffectMaker2023.Data.SoundPlayData>											SoundPlayData;	// 音再生データ
 	
 	SlotEffectMaker2023.Singleton.EffectDataManagerSingleton effectData;
-	
+	SlotEffectMaker2023.Action.SystemData sys;
 	
     // Start is called before the first frame update
     void Start()
@@ -38,18 +38,29 @@ public class UnitySoundPlayer : MonoBehaviour
         }
         // 初期音源を設定する
         for(int i=0; i<player.Count; ++i) SetClip(i);
+        
+        // 初期音量を設定する
+        sys = SlotEffectMaker2023.Singleton.SlotDataSingleton.GetInstance().sysData;
+        VolMaster.SetVolume(sys.MasterVol);
+        VolBGM.SetVolume(sys.BGMVol);
+        VolSE.SetVolume(sys.SEVol);
     }
 
     // Update is called once per frame
     void Update()
     {
+    	// 音量を記録する
+    	sys.MasterVol = VolMaster.Volume;
+    	sys.BGMVol = VolBGM.Volume;
+    	sys.SEVol = VolSE.Volume;
+    	
     	// すべての音源データに対して処理を行う
     	for(int i=0; i<player.Count; ++i){
     		var data = player[i];
     		// 音源の更新を行う
     		if (data.LastSoundID != SndManager.ExportElemName(SoundPlayData[i].ShifterName)) SetClip(i);
     		// 音量調整を行う
-    		data.SetVolume(VolMaster.value, VolSE.value, VolBGM.value);
+    		data.SetVolume(VolMaster.Volume, VolSE.Volume, VolBGM.Volume);
     		// 音の制御を行う
     		data.Process();
     	}

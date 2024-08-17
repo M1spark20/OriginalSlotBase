@@ -32,14 +32,15 @@ public class SlotDataManager : MonoBehaviour
 	private bool[] GetKeyJoin;
 	[SerializeField] private GraphicRaycaster TouchPanel;
 	[SerializeField] private SteamworksAPIManager SteamAPI;
+	[SerializeField] private UILanguageChanger LangChanger;
 	
 	// メニューグラデーション
 	private const float GR_TIME = 0.1f;
 	private float grStartTime;
-	private bool  grDirection;	// True: 0->1, False: 1->0
 	
 	// セーブデータ元パス
 	private string SavePath;
+	private string SaveSysPath;
 	
 	void Awake()
 	{
@@ -54,12 +55,15 @@ public class SlotDataManager : MonoBehaviour
 		chipData   = ReelChipHolder.GetInstance();
 		chipData.Init(ReelChip, ReelChipMini);
 		SavePath   = Application.persistentDataPath + "/SaveData.bytes";
-		Debug.Log(SavePath);
+		SaveSysPath= Application.persistentDataPath + "/System.bytes";
+		//Debug.Log(SavePath);
 		
 		// タイマ作成用データ生成
 		var tList = new SlotEffectMaker2023.Data.TimerList();
 		
 		// ファイルからデータを読み込む
+		bool sysReadFlag = slotData  .ReadSysData(SaveSysPath);
+		if (!sysReadFlag) Debug.Log("sysData Read: Error");   else Debug.Log("sysData Read: Done");
 		if (!mainROM   .ReadData(MainROM))    Debug.Log("mainROM Read: Error");    else Debug.Log("mainROM Read: Done");
 		if (!effectData.ReadData(EffectData)) Debug.Log("effectData Read: Error"); else Debug.Log("effectData Read: Done");
 		if (!slotData  .ReadData(SavePath))   Debug.Log("slotData Read: Error");   else Debug.Log("slotData Read: Done");
@@ -77,12 +81,11 @@ public class SlotDataManager : MonoBehaviour
 		MainMenuCanvas = MainMenuObj.GetComponent<Canvas>();
 		MainMenuCanvasGroup = MainMenuObj.GetComponent<CanvasGroup>();
 		MainMenuTouch = MainMenuObj.GetComponent<GraphicRaycaster>();
-		MenuShown = false;
+		MenuShown = !sysReadFlag; // SystemDataの読み込みに失敗した場合に、初期起動としてメニューを自動表示する
 		MainMenuCanvas.enabled = true;
 		MainMenuCanvasGroup.alpha = 0f;
 		MainMenuTouch.enabled = MenuShown;
 		grStartTime = -GR_TIME;
-		grDirection = false;
 		
 		// タッチ入力関連初期化
 		GetKeyDownJoin = new bool[(int)EGameButtonID.eButtonMax];
@@ -146,7 +149,6 @@ public class SlotDataManager : MonoBehaviour
 	private float CalcDT() { return Time.time - grStartTime; }
 	
 	private void SetMenuShown(){
-		grDirection = MenuShown;
 		grStartTime = Time.time;
 		MainMenuTouch.enabled = MenuShown;
 		TouchPanel.enabled = !MenuShown;
@@ -191,5 +193,9 @@ public class SlotDataManager : MonoBehaviour
 	// セーブ時コールバック
 	public void DataSaveAct(){
 		slotData.SaveData(SavePath);
+	}
+	// Object無効化時にデータを保存する
+	private void OnDisable(){
+		slotData.SaveSysData(SaveSysPath);
 	}
 }

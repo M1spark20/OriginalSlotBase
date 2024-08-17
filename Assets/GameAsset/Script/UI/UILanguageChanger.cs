@@ -5,7 +5,6 @@ using UnityEngine.UI;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 using TMPro;
-using System.Threading.Tasks;
 
 public class UILanguageChanger : MonoBehaviour
 {
@@ -35,16 +34,5 @@ public class UILanguageChanger : MonoBehaviour
     		im[i].color = itemCol;
     		Text[i].color = itemCol;
     	}
-    }
-    
-    public void OnLocaleChange(string localeStr)
-    {
-		var _ = ChangeSelectedLocale(localeStr);
-    }
-
-    private async Task ChangeSelectedLocale(string locale)
-    {
-        LocalizationSettings.SelectedLocale = Locale.CreateLocale(locale);
-        await LocalizationSettings.InitializationOperation.Task;
     }
 }
