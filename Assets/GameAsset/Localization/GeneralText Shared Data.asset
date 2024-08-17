@@ -220,6 +220,10 @@ MonoBehaviour:
     m_Key: MainScene/UICanvas/UIPanel/MainMenu/Settings/ScrollView/Viewport/Content/SlotSet/Info
     m_Metadata:
       m_Items: []
+  - m_Id: 19946470910070784
+    m_Key: MainScene/UICanvas/UIPanel/MainMenu/Settings/ScrollView/Viewport/Content/QuitButton/Text
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

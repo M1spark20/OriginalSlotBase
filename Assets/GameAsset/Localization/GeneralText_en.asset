@@ -261,6 +261,10 @@ MonoBehaviour:
     m_Localized: Slot Setting
     m_Metadata:
       m_Items: []
+  - m_Id: 19946470910070784
+    m_Localized: Quit Game
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
