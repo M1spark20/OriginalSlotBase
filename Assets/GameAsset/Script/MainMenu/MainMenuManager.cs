@@ -16,7 +16,7 @@ public class MainMenuManager : MonoBehaviour
 	
 	// 各パネルからキー入力情報を取得するための記録機能
 	private MainMenuElemBase[] PanelScr;
-	private Canvas[] PanelsCanvas;
+	private CanvasGroup[] PanelsCanvasGroup;
 	private GraphicRaycaster[] PanelsTouch;
 	
     // Start is called before the first frame update
@@ -24,7 +24,7 @@ public class MainMenuManager : MonoBehaviour
     {
         SelectedID = -1;
         PanelScr = new MainMenuElemBase[Panels.Length];
-        PanelsCanvas = new Canvas[Panels.Length];
+        PanelsCanvasGroup = new CanvasGroup[Panels.Length];
         PanelsTouch = new GraphicRaycaster[Panels.Length];
         
         Selector = new Button[Panels.Length];
@@ -35,9 +35,10 @@ public class MainMenuManager : MonoBehaviour
         
         for(int i=0; i<Panels.Length; ++i) {
 	        // 選択用ボタン配置
-        	PanelsCanvas[i] = Panels[i].GetComponent<Canvas>();
+        	PanelsCanvasGroup[i] = Panels[i].GetComponent<CanvasGroup>();
         	PanelsTouch[i] = Panels[i].GetComponent<GraphicRaycaster>();
-        	PanelsCanvas[i].enabled = false;
+        	Panels[i].GetComponent<Canvas>().enabled = true;
+        	PanelsCanvasGroup[i].alpha = 0f;
         	PanelsTouch[i].enabled = false;
         	if (i > 0) {
         		Selector[i] = Instantiate(SelectorBase, this.transform);
@@ -82,12 +83,12 @@ public class MainMenuManager : MonoBehaviour
     private void RefreshActivate(int activeID){
     	if (activeID != SelectedID){
     		if (SelectedID >= 0){
-    			PanelsCanvas[SelectedID].enabled = false;
+    			PanelsCanvasGroup[SelectedID].alpha = 0f;
     			PanelsTouch[SelectedID].enabled = false;
     		}
     		if (activeID >= 0){
     			PanelScr[activeID].RefreshData();
-    			PanelsCanvas[activeID].enabled = true;
+    			PanelsCanvasGroup[activeID].alpha = 1f;
     			PanelsTouch[activeID].enabled = true;
     		}
     		SelectedID = activeID;

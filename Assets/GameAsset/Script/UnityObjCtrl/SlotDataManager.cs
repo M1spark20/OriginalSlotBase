@@ -24,6 +24,7 @@ public class SlotDataManager : MonoBehaviour
 	
 	[SerializeField] private GameObject MainMenuObj;
 	private Canvas MainMenuCanvas;
+	private CanvasGroup MainMenuCanvasGroup;
 	private GraphicRaycaster MainMenuTouch;
 	private MainMenuManager MainMenuScr;
 	
@@ -37,6 +38,10 @@ public class SlotDataManager : MonoBehaviour
 	
 	void Awake()
 	{
+		// Android環境でのカクつき防止のため、現在時刻を冒頭に1回取得しておく(初回取得が非常に重い様子)
+		var dummyT = DateTime.Now;
+		
+		// データの初期化を開始する
 		mainROM    = SlotMaker2022.MainROMDataManagerSingleton.GetInstance();
 		effectData = SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.GetInstance();
 		slotData   = SlotEffectMaker2023.Singleton.SlotDataSingleton.GetInstance();
@@ -65,9 +70,11 @@ public class SlotDataManager : MonoBehaviour
 		// メニュー非表示からスタート
 		MainMenuScr = MainMenuObj.GetComponent<MainMenuManager>();
 		MainMenuCanvas = MainMenuObj.GetComponent<Canvas>();
+		MainMenuCanvasGroup = MainMenuObj.GetComponent<CanvasGroup>();
 		MainMenuTouch = MainMenuObj.GetComponent<GraphicRaycaster>();
 		MenuShown = false;
-		MainMenuCanvas.enabled = MenuShown;
+		MainMenuCanvas.enabled = true;
+		MainMenuCanvasGroup.alpha = 0f;
 		MainMenuTouch.enabled = MenuShown;
 		
 		// タッチ入力関連初期化
@@ -124,7 +131,8 @@ public class SlotDataManager : MonoBehaviour
 	}
 	
 	private void SetMenuShown(){
-		MainMenuCanvas.enabled = MenuShown;
+		//MainMenuCanvas.enabled = MenuShown;
+		MainMenuCanvasGroup.alpha = MenuShown ? 1f : 0f;
 		MainMenuTouch.enabled = MenuShown;
 		TouchPanel.enabled = !MenuShown;
 		MainMenuScr.OnMenuShownChange(MenuShown);
