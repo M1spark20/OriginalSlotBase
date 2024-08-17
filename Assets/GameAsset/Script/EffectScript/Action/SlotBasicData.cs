@@ -252,6 +252,12 @@ namespace SlotEffectMaker2023.Action
 				// Debug.Log("RTChk: RT=" + RTMode + " Game=" + RTGameCount);
 			}
 		}
+		// 設定変更
+		public void ChangeSlotSetting(byte val)
+        {
+			if (val >= LocalDataSet.SETTING_MAX) return;
+			slotSetting = val;
+        }
 		// 内部mode移行処理
 		private void SetMode(byte ModeDest, byte payIndex, byte gameIndex, LocalDataSet.CastCommonData cc, LocalDataSet.RTCommonData rtc, List<LocalDataSet.RTMoveData> rmList, SlotTimerManager tm)
 		{

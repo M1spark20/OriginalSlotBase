@@ -257,6 +257,10 @@ MonoBehaviour:
       ---'
     m_Metadata:
       m_Items: []
+  - m_Id: 19943892998557696
+    m_Localized: Slot Setting
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
