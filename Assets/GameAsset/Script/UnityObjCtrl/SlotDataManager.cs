@@ -33,6 +33,11 @@ public class SlotDataManager : MonoBehaviour
 	[SerializeField] private GraphicRaycaster TouchPanel;
 	[SerializeField] private SteamworksAPIManager SteamAPI;
 	
+	// メニューグラデーション
+	private const float GR_TIME = 0.1f;
+	private float grStartTime;
+	private bool  grDirection;	// True: 0->1, False: 1->0
+	
 	// セーブデータ元パス
 	private string SavePath;
 	
@@ -76,6 +81,8 @@ public class SlotDataManager : MonoBehaviour
 		MainMenuCanvas.enabled = true;
 		MainMenuCanvasGroup.alpha = 0f;
 		MainMenuTouch.enabled = MenuShown;
+		grStartTime = -GR_TIME;
+		grDirection = false;
 		
 		// タッチ入力関連初期化
 		GetKeyDownJoin = new bool[(int)EGameButtonID.eButtonMax];
@@ -123,6 +130,11 @@ public class SlotDataManager : MonoBehaviour
 			}
 		}
 		
+		// Menuグラデーション
+		float dt = CalcDT();
+		if (dt > GR_TIME) MainMenuCanvasGroup.alpha = MenuShown ? 1f : 0f;
+		else MainMenuCanvasGroup.alpha = MenuShown ? dt / GR_TIME : 1f - (dt / GR_TIME);
+		
 		ResetTouchStatus();
 		// キー入力後プロセス
 		controller = controller.ProcessAfterInput(DataSaveAct, CheckAchievementAct);
@@ -130,20 +142,25 @@ public class SlotDataManager : MonoBehaviour
 		slotData.Process();
 	}
 	
+	// グラデーション時間取得
+	private float CalcDT() { return Time.time - grStartTime; }
+	
 	private void SetMenuShown(){
-		//MainMenuCanvas.enabled = MenuShown;
-		MainMenuCanvasGroup.alpha = MenuShown ? 1f : 0f;
+		grDirection = MenuShown;
+		grStartTime = Time.time;
 		MainMenuTouch.enabled = MenuShown;
 		TouchPanel.enabled = !MenuShown;
 		MainMenuScr.OnMenuShownChange(MenuShown);
 	}
 	
 	public void MenuShowToggle(){
+		if (CalcDT() < GR_TIME) return;
 		MenuShown ^= true;
 		SetMenuShown();
 	}
 	
 	public void MenuHide(){
+		if (!MenuShown || CalcDT() < GR_TIME) return;
 		MenuShown = false;
 		SetMenuShown();
 	}
