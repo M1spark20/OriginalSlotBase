@@ -193,6 +193,7 @@ public class SlotDataManager : MonoBehaviour
 	// セーブ時コールバック
 	public void DataSaveAct(){
 		slotData.SaveData(SavePath);
+		slotData.SaveSysData(SaveSysPath);
 	}
 	// Object無効化時にデータを保存する
 	private void OnDisable(){

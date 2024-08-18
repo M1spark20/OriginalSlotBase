@@ -64,8 +64,8 @@ public class SteamworksAPIManager : MonoBehaviour {
 				return;
 			}
 			
-			// (debug)呼び出し前にリセットをかける
-			SteamUserStats.ResetAllStats(true);
+			// (Editorのみ)呼び出し前にリセットをかける
+			AchieveReset();
 			// If yes, request our stats (この返答としてコールバックが呼ばれる?)
 			bool bSuccess = SteamUserStats.RequestCurrentStats();
 
@@ -210,4 +210,11 @@ public class SteamworksAPIManager : MonoBehaviour {
 		}
 	}
 #endif
+// Reset Achievement only on editor
+	private void AchieveReset(){
+#if UNITY_EDITOR
+		SteamUserStats.ResetAllStats(true);
+#endif
+	}
+
 }

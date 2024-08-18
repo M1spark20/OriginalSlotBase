@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class PostXButton : MonoBehaviour
 {
     [SerializeField] private string _imgurClientId;
+    [SerializeField,Multiline] private string DefaultText;
     
     // 透明度関連
     private Button bt;
@@ -16,8 +17,7 @@ public class PostXButton : MonoBehaviour
     }
     
     public void StartTweet() {
-    	string postStr = "投稿テスト";
-		StartCoroutine(TweetWithScreenShot.TweetManager.TweetWithScreenShot(postStr));
+		StartCoroutine(TweetWithScreenShot.TweetManager.TweetWithScreenShot(DefaultText));
 		Debug.Log("Tweet Done");
     }
 }

@@ -265,6 +265,13 @@ MonoBehaviour:
     m_Localized: Quit Game
     m_Metadata:
       m_Items: []
+  - m_Id: 20155382418509824
+    m_Localized: 'Find out BONUS by patterns, effects and navigation like puzzle
+      games!
+
+      Get "A-Rabbit" on Steam and Android!'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

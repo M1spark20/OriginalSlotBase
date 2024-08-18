@@ -224,6 +224,10 @@ MonoBehaviour:
     m_Key: MainScene/UICanvas/UIPanel/MainMenu/Settings/ScrollView/Viewport/Content/QuitButton/Text
     m_Metadata:
       m_Items: []
+  - m_Id: 20155382418509824
+    m_Key: MainScene/UICanvas/UIPanel/MenuPanel/ShareButton
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
