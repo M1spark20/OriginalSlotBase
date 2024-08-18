@@ -272,6 +272,10 @@ MonoBehaviour:
       Get "A-Rabbit" on Steam and Android!'
     m_Metadata:
       m_Items: []
+  - m_Id: 20237054761635840
+    m_Localized: Wait Cut
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

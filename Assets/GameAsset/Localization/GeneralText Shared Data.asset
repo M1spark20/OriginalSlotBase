@@ -228,6 +228,10 @@ MonoBehaviour:
     m_Key: MainScene/UICanvas/UIPanel/MenuPanel/ShareButton
     m_Metadata:
       m_Items: []
+  - m_Id: 20237054761635840
+    m_Key: MainScene/UICanvas/UIPanel/MainMenu/Settings/ScrollView/Viewport/Content/WaitCut/Info
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

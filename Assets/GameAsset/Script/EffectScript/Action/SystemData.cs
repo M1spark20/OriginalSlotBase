@@ -11,6 +11,7 @@ namespace SlotEffectMaker2023.Action
         public float SEVol { get; set; }
         public int InfoPos { get; set; }
         public LangLocale Locale { get; set; }
+        public bool WaitCut { get; set; }
 
         public SystemData()
         {
@@ -19,6 +20,7 @@ namespace SlotEffectMaker2023.Action
             SEVol = .5f;
             InfoPos = 16;
             Locale = LangLocale.ja;
+            WaitCut = false;
         }
         public bool StoreData(ref BinaryWriter fs, int version)
         {
@@ -27,6 +29,7 @@ namespace SlotEffectMaker2023.Action
             fs.Write(SEVol);
             fs.Write(InfoPos);
             fs.Write((int)Locale);
+            if (version >= 1) fs.Write(WaitCut);
             return true;
         }
         public bool ReadData(ref BinaryReader fs, int version)
@@ -36,6 +39,7 @@ namespace SlotEffectMaker2023.Action
             SEVol = fs.ReadSingle();
             InfoPos = fs.ReadInt32();
             Locale = (LangLocale)fs.ReadInt32();
+            if (version >= 1) WaitCut = fs.ReadBoolean();
             return true;
         }
     }

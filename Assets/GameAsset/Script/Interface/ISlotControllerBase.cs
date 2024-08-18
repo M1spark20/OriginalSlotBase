@@ -175,8 +175,11 @@ public class SCWaitBeforeReelStart : ISlotControllerBase {
 		timer    = slotData.timerData;
 		
 		// タイマ処理
+		var sys = SlotEffectMaker2023.Singleton.SlotDataSingleton.GetInstance().sysData;
+		const int WAITCUT_TIME = 10;
+
 		timer.GetTimer("waitStart").Activate();
-		waitTime = WAIT_MAX;
+		waitTime = sys.WaitCut ? WAITCUT_TIME : WAIT_MAX;
 		
 		// BET消化処理
 		slotData.basicData.LatchBet();
