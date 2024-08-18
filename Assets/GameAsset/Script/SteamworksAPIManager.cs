@@ -1,8 +1,14 @@
 using UnityEngine;
 using System.Collections;
+#if UNITY_ANDROID
+#else
 using Steamworks;
+#endif
 
 public class SteamworksAPIManager : MonoBehaviour {
+#if UNITY_ANDROID
+	public void OnGameStateChange() {}
+#else
 	// Our GameID
 	private CGameID m_GameID;
 	
@@ -203,4 +209,5 @@ public class SteamworksAPIManager : MonoBehaviour {
 			}
 		}
 	}
+#endif
 }
