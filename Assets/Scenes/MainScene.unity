@@ -5177,7 +5177,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0006758019}
+  m_AnchoredPosition: {x: 0, y: -0.000026110614}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &512259275
@@ -9780,7 +9780,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00070631946}
+  m_AnchoredPosition: {x: 0, y: -0.000011090161}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &877322074 stripped
@@ -13337,6 +13337,7 @@ MonoBehaviour:
   - ReelBGFlashPay
   - ReelBGFlashRep
   - ReelBGFlashBonus
+  - ReelBGBEnd
 --- !u!1 &1217212484 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 870917786013217747, guid: 6b1da0b0529ac7d49ad2116ff0ce462a, type: 3}
@@ -15711,7 +15712,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 971362149}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.9985258
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -15877,6 +15878,7 @@ MonoBehaviour:
   - BoardDownLP
   - BoardDownCP
   - BoardDownRP
+  - BoardDownRTPanel
   - BoardDownPay
   - BoardDownRep
   - BoardDownBonus
@@ -16342,7 +16344,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1644657024}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.9973957
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -16504,7 +16506,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 645678964}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.997715
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -20779,7 +20781,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00093163806}
+  m_AnchoredPosition: {x: 0, y: 0.000011087378}
   m_SizeDelta: {x: 0, y: 530}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1984000479
