@@ -213,7 +213,7 @@ public class SteamworksAPIManager : MonoBehaviour {
 // Reset Achievement only on editor
 	private void AchieveReset(){
 #if UNITY_EDITOR
-		SteamUserStats.ResetAllStats(true);
+		//SteamUserStats.ResetAllStats(true);
 #endif
 	}
 
