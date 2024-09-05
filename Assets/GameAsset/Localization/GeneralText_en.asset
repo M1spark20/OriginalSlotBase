@@ -276,6 +276,22 @@ MonoBehaviour:
     m_Localized: Wait Cut
     m_Metadata:
       m_Items: []
+  - m_Id: 26522252818124800
+    m_Localized: '[What''s New on V1.01 released on 5th September 2024]
+
+      How
+      to is extended regarding effect rules and RT.
+
+      Add "Show slip count"
+      settings.
+
+'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524314935103488
+    m_Localized: Show slip count
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

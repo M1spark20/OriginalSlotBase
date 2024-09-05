@@ -5,8 +5,8 @@ namespace SlotEffectMaker2023.Singleton {
 	public sealed class SlotDataSingleton
 	{   // スロット上で動くデータを定義する
 		// ファイルバージョン
-		const int FILE_VERSION = 0;
-		const int FILE_VERSION_SYS = 1;
+		public const int FILE_VERSION = 0;
+		public const int FILE_VERSION_SYS = 2;
 
 		public List<Action.ReelBasicData>	reelData  { get; set; }
 		public Action.SlotBasicData			basicData { get; set; }

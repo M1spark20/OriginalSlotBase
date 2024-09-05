@@ -81,10 +81,13 @@ public class SlotDataManager : MonoBehaviour
 		MainMenuCanvas = MainMenuObj.GetComponent<Canvas>();
 		MainMenuCanvasGroup = MainMenuObj.GetComponent<CanvasGroup>();
 		MainMenuTouch = MainMenuObj.GetComponent<GraphicRaycaster>();
-		MenuShown = !sysReadFlag; // SystemDataの読み込みに失敗した場合に、初期起動としてメニューを自動表示する
+		
+		// SystemDataの読み込みに失敗した場合、または読み込んだデータのバージョンが最新でない場合に初期起動としてメニューを自動表示する
+		const int LatestSysVersion = SlotEffectMaker2023.Singleton.SlotDataSingleton.FILE_VERSION_SYS;
+		MenuShown = !sysReadFlag || slotData.sysData.ReadVersion != LatestSysVersion;
 		MainMenuCanvas.enabled = true;
 		MainMenuCanvasGroup.alpha = 0f;
-		MainMenuTouch.enabled = MenuShown;
+		SetMenuShown();
 		grStartTime = -GR_TIME;
 		
 		// タッチ入力関連初期化

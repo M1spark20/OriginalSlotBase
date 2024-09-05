@@ -20,7 +20,7 @@ public class MainMenuManager : MonoBehaviour
 	private GraphicRaycaster[] PanelsTouch;
 	
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         SelectedID = -1;
         PanelScr = new MainMenuElemBase[Panels.Length];

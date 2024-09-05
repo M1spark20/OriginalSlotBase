@@ -232,6 +232,14 @@ MonoBehaviour:
     m_Key: MainScene/UICanvas/UIPanel/MainMenu/Settings/ScrollView/Viewport/Content/WaitCut/Info
     m_Metadata:
       m_Items: []
+  - m_Id: 26522252818124800
+    m_Key: MainScene/UICanvas/UIPanel/MainMenu/HowTo/ScrollView/Viewport/Content/WhatsNew
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26524314935103488
+    m_Key: MainScene/UICanvas/UIPanel/MainMenu/Settings/ScrollView/Viewport/Content/ShowSlip/Info
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
