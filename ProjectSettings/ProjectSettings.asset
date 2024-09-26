@@ -162,7 +162,7 @@ PlayerSettings:
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
     Android: com.m1slot20.arabbit
-    Standalone: com.DefaultCompany.2DProject
+    Standalone: com.m1slot20.arabbit
   buildNumber:
     Standalone: 0
     VisionOS: 0
