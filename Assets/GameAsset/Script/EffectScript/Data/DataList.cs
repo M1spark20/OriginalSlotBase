@@ -282,6 +282,29 @@ namespace SlotEffectMaker2023.Data
             }
             return true;
         }
+        // 20241018追加：offsetつき判定 > キャスト時 or クラス型直接指定時のみ外部からも使用可能
+        // Tuple = (valName, offset)
+        public bool Evaluate(List<Tuple<string, int>> ov)
+        {
+            var varList = Singleton.SlotDataSingleton.GetInstance().valManager;
+            foreach (var itemAnd in conds)
+            {
+                bool actionOR = false;
+                foreach (var itemOr in itemAnd)
+                {
+                    SlotVariable data = varList.GetVariable(itemOr.valName);
+                    if (data == null) continue;
+                    int offset = 0;
+                    foreach (var ovItem in ov)
+                        if (ovItem.Item1 == itemOr.valName) { offset = ovItem.Item2; break; }
+                    actionOR = data.CheckRange(itemOr.min, itemOr.max, true, offset) ^ itemOr.invFlag;
+                    if (actionOR) break;
+                }
+                if (!actionOR) { return false; }
+            }
+            return true;
+        }
+
     }
     public class EfActTimerCond : IEfAct
     {   // タイマによる条件分岐を行う

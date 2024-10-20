@@ -6,7 +6,7 @@ namespace SlotEffectMaker2023.Singleton {
 	{   // スロット上で動くデータを定義する
 		// ファイルバージョン
 		public const int FILE_VERSION = 0;
-		public const int FILE_VERSION_SYS = 2;
+		public const int FILE_VERSION_SYS = 3;	// v3:20241014
 
 		public List<Action.ReelBasicData>	reelData  { get; set; }
 		public Action.SlotBasicData			basicData { get; set; }
@@ -47,6 +47,11 @@ namespace SlotEffectMaker2023.Singleton {
 
 		public void Init(List<Data.SoundPlayData> pSoundPlayData, Data.TimerList pTimer, Data.VarList pVar, List<Data.ColorMapShifter> pMapPlayData, Data.CollectionData pColle)
         {   // 各データへの初期値設定を行う
+			// データが読み込めなかった場合にリール情報を新規生成する
+			if (reelData.Count == 0){
+				for (int i=0; i<SlotMaker2022.LocalDataSet.REEL_MAX; ++i)
+					reelData.Add(new Action.ReelBasicData(12));
+			}
 			timerData.Init(pTimer);
 			valManager.Init(pVar);
 			soundData.Init(pSoundPlayData);
@@ -75,11 +80,6 @@ namespace SlotEffectMaker2023.Singleton {
 				ans = false;
 			}
 
-			// データが読み込めなかった場合にリール情報を新規生成する
-			if (reelData.Count == 0){
-				for (int i=0; i<SlotMaker2022.LocalDataSet.REEL_MAX; ++i)
-					reelData.Add(new Action.ReelBasicData(12));
-			}
 			return ans;
 		}
 
@@ -121,6 +121,24 @@ namespace SlotEffectMaker2023.Singleton {
 			sw.WriteData(collectionManager);
 			return true;
 		}
+		// データをリセットする。Initの前に呼び出すこと。(20241014実装)
+		public void ResetData(string pBackupPath)
+        {
+			// 削除条件確認
+			if (!sysData.ResetFlag) return;
+			// collectionManager, sysData以外を初期化
+			timerData = new Action.SlotTimerManager();
+			reelData = new List<Action.ReelBasicData>();
+			basicData = new Action.SlotBasicData();
+			valManager = new Action.SlotValManager();
+			soundData = new Action.DataShifterManager<Data.SoundPlayData>();
+			colorMapData = new Action.DataShifterManager<Data.ColorMapShifter>();
+			freezeManager = new Action.FreezeManager();
+			historyManager = new Action.HistoryManager();
+			// resetFlagを倒す
+			sysData.ResetFlag = false;
+		}
+
 
 		/// <summary>
 		/// システム変数を更新します。

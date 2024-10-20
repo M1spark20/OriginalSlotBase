@@ -15,6 +15,8 @@ namespace SlotEffectMaker2023.Data
         public bool IsAchieved { get; set; }        // <保存対象外>ゲーム内で実績達成済みか(リモート取得)
         public string Title { get; private set; }   // <保存対象外>実績タイトル(リモート取得)
         public string Desc { get; private set; }    // <保存対象外>実績の説明(リモート取得)
+        public int StartVal { get; set; }   // <保存対象外>ゲーム開始時の値
+        public int Offset { get; set; }     // <保存対象外>データ転送時オフセット
 
         public GameAchievement()
         {
@@ -24,6 +26,8 @@ namespace SlotEffectMaker2023.Data
             IsAchieved = false;
             Title = string.Empty;
             Desc = string.Empty;
+            StartVal = 0;
+            Offset = 0;
         }
 
         public bool StoreData(ref BinaryWriter fs, int version)

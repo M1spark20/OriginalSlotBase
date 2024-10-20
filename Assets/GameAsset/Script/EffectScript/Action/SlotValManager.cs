@@ -69,7 +69,7 @@ namespace SlotEffectMaker2023.Action
 			{
 				if (valData[i].name.Equals(sv.name)) return false;
 			}
-			valData.Add(sv);
+			valData.Add(new SlotVariable(sv));
 			return true;
 		}
 		// 名前に一致した変数を取得する

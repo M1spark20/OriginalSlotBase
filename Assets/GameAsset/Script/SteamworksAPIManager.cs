@@ -1,5 +1,7 @@
 using UnityEngine;
+using System;
 using System.Collections;
+using System.Collections.Generic;
 #if UNITY_ANDROID
 #else
 using Steamworks;
@@ -27,8 +29,12 @@ public class SteamworksAPIManager : MonoBehaviour {
 	// A-Rabbit's Singleton
 	SlotEffectMaker2023.Singleton.SlotDataSingleton slotData;
 	SlotEffectMaker2023.Singleton.EffectDataManagerSingleton subROM;
+	
+	// Variable offset for Achievements(20241019 Add)
+	List<Tuple<string, int>> OffsetOverrides;
 		
     void Start() {
+    	OffsetOverrides = new List<Tuple<string, int>>();
         if(SteamManager.Initialized) {
             string name = SteamFriends.GetPersonaName();
             Debug.Log(name);
@@ -118,13 +124,15 @@ public class SteamworksAPIManager : MonoBehaviour {
 				if (item.IsAchieved) continue;
 				// 変数条件比較: 新規達成OKなら実績通知
 				var cond = subROM.Timeline.GetCondFromName(item.RefData);
-				if (!cond.Evaluate()) continue;
+				if (!cond.Evaluate(OffsetOverrides)) continue;
 				// 実績解除
 				UnlockAchievement(item);
 			}
 			if (item.Type == SlotEffectMaker2023.Data.AchieveDataType.Num){
+				// 20241019Mod: item.Offset追加
 				var valData = vm.GetVariable(item.RefData);
-				if (valData != null) SteamUserStats.SetStat(item.DataID, valData.val);
+				if (valData != null) SteamUserStats.SetStat(item.DataID, valData.val + item.Offset);
+				Debug.Log("SendData: " + item.RefData + " - " + (valData.val + item.Offset).ToString());
 			}
 		}
 
@@ -145,22 +153,37 @@ public class SteamworksAPIManager : MonoBehaviour {
 			if (EResult.k_EResultOK == pCallback.m_eResult) {
 				Debug.Log("Received stats and achievements from Steam\n");
 
+				var vm = slotData.valManager;
 				m_bStatsValid = true;
 
 				// load achievements / stats (Flagのみ)
 				foreach (var item in subROM.GameAchieve.elemData) {
-					if (item.Type != SlotEffectMaker2023.Data.AchieveDataType.Flag) continue;
-					// データを読み込む
-					bool isAchieved;	// 当該実績が達成済みか
-					bool ret = SteamUserStats.GetAchievement(item.DataID, out isAchieved);
-					if (ret) {
-						string Name = SteamUserStats.GetAchievementDisplayAttribute(item.DataID, "name");
-						string Desc = SteamUserStats.GetAchievementDisplayAttribute(item.DataID, "desc");
-						item.SetDetail(isAchieved, Name, Desc);
-						Debug.Log("Stat Read: ID=" + item.DataID + ", Name=" + item.Title + ", Desc=" + item.Desc + ", Flag=" + item.IsAchieved.ToString());
-					}
-					else {
-						Debug.LogWarning("SteamUserStats.GetAchievement failed for Achievement " + item.DataID + "\nIs it registered in the Steam Partner site?");
+					if (item.Type == SlotEffectMaker2023.Data.AchieveDataType.Flag) {
+						// 実績フラグデータを読み込む
+						bool isAchieved;	// 当該実績が達成済みか
+						bool ret = SteamUserStats.GetAchievement(item.DataID, out isAchieved);
+						if (ret) {
+							string Name = SteamUserStats.GetAchievementDisplayAttribute(item.DataID, "name");
+							string Desc = SteamUserStats.GetAchievementDisplayAttribute(item.DataID, "desc");
+							item.SetDetail(isAchieved, Name, Desc);
+							Debug.Log("Stat Read: ID=" + item.DataID + ", Name=" + item.Title + ", Desc=" + item.Desc + ", Flag=" + item.IsAchieved.ToString());
+						}
+						else {
+							Debug.LogWarning("SteamUserStats.GetAchievement failed for Achievement " + item.DataID + "\nIs it registered in the Steam Partner site?");
+						}
+					} else if (item.Type == SlotEffectMaker2023.Data.AchieveDataType.Num) {
+						// 変数データの初期値を取得する、併せて変数送信時のoffsetを計算する
+						int st;
+						SteamUserStats.GetStat(item.DataID, out st);
+						item.StartVal = st;
+						var valData = vm.GetVariable(item.RefData);
+						// Offsetを計算して内部変数に追加する
+						if (valData != null) {
+							var tup = new Tuple<string, int>(item.RefData, item.StartVal - valData.val);
+							Debug.Log("Stat Read: ID=" + item.DataID + ", Val=" + item.StartVal.ToString() + ", Offset=" + tup.Item2);
+							OffsetOverrides.Add(tup);
+							item.Offset = tup.Item2;
+						}
 					}
 				}
 			}

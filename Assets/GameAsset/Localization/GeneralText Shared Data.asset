@@ -240,6 +240,26 @@ MonoBehaviour:
     m_Key: MainScene/UICanvas/UIPanel/MainMenu/Settings/ScrollView/Viewport/Content/ShowSlip/Info
     m_Metadata:
       m_Items: []
+  - m_Id: 43091034046861312
+    m_Key: MainScene/UICanvas/UIPanel/MainMenu/Settings/ScrollView/Viewport/Content/DataReset/FileInfo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43091147288875008
+    m_Key: MainScene/UICanvas/UIPanel/MainMenu/Settings/ScrollView/Viewport/Content/DataReset/FileExp
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43091319817375744
+    m_Key: MainScene/UICanvas/UIPanel/MainMenu/Settings/ScrollView/Viewport/Content/DataReset/ResetInfo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43091438751059968
+    m_Key: MainScene/UICanvas/UIPanel/MainMenu/Settings/ScrollView/Viewport/Content/DataReset/ResetON/IDText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43091476030033920
+    m_Key: MainScene/UICanvas/UIPanel/MainMenu/Settings/ScrollView/Viewport/Content/DataReset/ResetExp
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

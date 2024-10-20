@@ -32,6 +32,14 @@ namespace SlotEffectMaker2023.Data
 			val = pInitVal;
 			usage = string.Empty;
 		}
+		// 20241020追加：コピーコンストラクタ
+		public SlotVariable(SlotVariable ins)
+        {
+			name = ins.name;
+			val = ins.val;
+			usage = ins.usage;
+        }
+
 		public bool StoreData(ref BinaryWriter fs, int version)
 		{
 			fs.Write(name);
@@ -57,6 +65,13 @@ namespace SlotEffectMaker2023.Data
 		{
 			if (inclBorder && (val == min || val == max)) return true;
 			return val > min && val < max;
+		}
+		// 20241018追加：offsetつき判定
+		public bool CheckRange(int min, int max, bool inclBorder, int offset)
+		{
+			int ev = val + offset;
+			if (inclBorder && (ev == min || ev == max)) return true;
+			return ev > min && ev < max;
 		}
 	}
 

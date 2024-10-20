@@ -292,6 +292,26 @@ MonoBehaviour:
     m_Localized: Show slip count
     m_Metadata:
       m_Items: []
+  - m_Id: 43091034046861312
+    m_Localized: Save data file ID
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43091147288875008
+    m_Localized: Quit Game to Change.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43091319817375744
+    m_Localized: Data Reset
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43091438751059968
+    m_Localized: READY
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43091476030033920
+    m_Localized: Quit Game to Execute.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

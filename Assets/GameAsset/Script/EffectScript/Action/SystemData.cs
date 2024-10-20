@@ -14,6 +14,8 @@ namespace SlotEffectMaker2023.Action
         public LangLocale Locale { get; set; }
         public bool WaitCut { get; set; }
         public bool ShowSlipCount { get; set; }
+        public byte UseSaveDataID { get; set; }
+        public bool ResetFlag { get; set; }
 
         public SystemData()
         {
@@ -25,6 +27,8 @@ namespace SlotEffectMaker2023.Action
             Locale = LangLocale.ja;
             WaitCut = false;
             ShowSlipCount = false;
+            UseSaveDataID = 0;
+            ResetFlag = false;
         }
         public bool StoreData(ref BinaryWriter fs, int version)
         {
@@ -35,6 +39,11 @@ namespace SlotEffectMaker2023.Action
             fs.Write((int)Locale);
             if (version >= 1) fs.Write(WaitCut);
             if (version >= 2) fs.Write(ShowSlipCount);
+            if (version >= 3)
+            {
+                fs.Write(UseSaveDataID);
+                fs.Write(ResetFlag);
+            }
             return true;
         }
         public bool ReadData(ref BinaryReader fs, int version)
@@ -47,6 +56,11 @@ namespace SlotEffectMaker2023.Action
             Locale = (LangLocale)fs.ReadInt32();
             if (version >= 1) WaitCut = fs.ReadBoolean();
             if (version >= 2) ShowSlipCount = fs.ReadBoolean();
+            if (version >= 3)
+            {
+                UseSaveDataID = fs.ReadByte();
+                ResetFlag = fs.ReadBoolean();
+            }
             return true;
         }
     }
