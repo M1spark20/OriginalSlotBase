@@ -264,6 +264,18 @@ MonoBehaviour:
     m_Key: MainScene/UICanvas/UIPanel/MainMenu/Settings/ScrollView/Viewport/Content/SlotSet/RandAns/IDText
     m_Metadata:
       m_Items: []
+  - m_Id: 43173952106663936
+    m_Key: MainScene/UICanvas/UIPanel/DataResetCaution/Window/Info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43174327215853568
+    m_Key: MainScene/UICanvas/UIPanel/DataResetCaution/Window/Go/IDText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43174428634124288
+    m_Key: MainScene/UICanvas/UIPanel/DataResetCaution/Window/Reboot/IDText
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

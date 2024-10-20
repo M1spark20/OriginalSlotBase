@@ -316,6 +316,21 @@ MonoBehaviour:
     m_Localized: Check Answer
     m_Metadata:
       m_Items: []
+  - m_Id: 43173952106663936
+    m_Localized: 'Game data has reset by the last configuration.
+
+      You can restore
+      the data by rebooting app now. Would you like to?'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43174327215853568
+    m_Localized: Accepting Reset
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43174428634124288
+    m_Localized: Reboot and Restore
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
