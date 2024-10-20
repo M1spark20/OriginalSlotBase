@@ -260,6 +260,10 @@ MonoBehaviour:
     m_Key: MainScene/UICanvas/UIPanel/MainMenu/Settings/ScrollView/Viewport/Content/DataReset/ResetExp
     m_Metadata:
       m_Items: []
+  - m_Id: 43164937112915968
+    m_Key: MainScene/UICanvas/UIPanel/MainMenu/Settings/ScrollView/Viewport/Content/SlotSet/RandAns/IDText
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

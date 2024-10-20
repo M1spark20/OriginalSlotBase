@@ -13,6 +13,7 @@ namespace SlotEffectMaker2023.Action
 		public const byte CREDIT_MAX = 50;
 
 		public byte slotSetting { get; private set; }   // 設定
+		public bool setRandom { get; private set; }     // 設定ランダムを適用しているか(20241020ADD)
 
 		public uint inCount { get; private set; }       // IN枚数
 		public uint outCount { get; private set; }      // OUT枚数
@@ -41,6 +42,7 @@ namespace SlotEffectMaker2023.Action
 		public SlotBasicData()
 		{
 			slotSetting = 5;
+			setRandom = false;
 			inCount = 0;
 			outCount = 0;
 			betCount = 0;
@@ -86,6 +88,11 @@ namespace SlotEffectMaker2023.Action
 			fs.Write(castFlag);
 			fs.Write(decimal.ToByte(castLines.Export()));
 			fs.Write(castBonusID);
+			if (version >= 1)
+			{
+				fs.Write(slotSetting);
+				fs.Write(setRandom);
+			}
 			return true;
 		}
 		public bool ReadData(ref BinaryReader fs, int version)
@@ -108,6 +115,11 @@ namespace SlotEffectMaker2023.Action
 			castFlag = fs.ReadByte();
 			castLines.Import(fs.ReadByte());
 			castBonusID = fs.ReadInt32();
+			if (version >= 1)
+			{
+				slotSetting = fs.ReadByte();
+				setRandom = fs.ReadBoolean();
+			}
 			return true;
 		}
 
@@ -253,10 +265,11 @@ namespace SlotEffectMaker2023.Action
 			}
 		}
 		// 設定変更
-		public void ChangeSlotSetting(byte val)
+		public void ChangeSlotSetting(byte val, bool isRandom)
         {
 			if (val >= LocalDataSet.SETTING_MAX) return;
 			slotSetting = val;
+			setRandom = isRandom;
         }
 		// 内部mode移行処理
 		private void SetMode(byte ModeDest, byte payIndex, byte gameIndex, LocalDataSet.CastCommonData cc, LocalDataSet.RTCommonData rtc, List<LocalDataSet.RTMoveData> rmList, SlotTimerManager tm)
