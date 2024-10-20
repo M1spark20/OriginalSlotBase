@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using System.IO;
 
 public class SlotDataManager : MonoBehaviour
 {
@@ -224,7 +225,7 @@ public class SlotDataManager : MonoBehaviour
 	}
 	// Object無効化時にデータを保存する (20241020Add)データリセット時はバックアップを保存する
 	private void OnDisable(){
-		if (slotData.sysData.ResetFlag) slotData.SaveData(BackupPath);
+		if (slotData.sysData.ResetFlag) File.Copy(SavePath, BackupPath, true);
 		slotData.SaveSysData(SaveSysPath);
 	}
 	
