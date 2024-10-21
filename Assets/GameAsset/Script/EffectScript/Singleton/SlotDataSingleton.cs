@@ -94,7 +94,19 @@ namespace SlotEffectMaker2023.Singleton {
 			if (!rd.ReadData(colorMapData)) return false;
 			if (!rd.ReadData(freezeManager)) return false;
 			if (!rd.ReadData(historyManager)) return false;
-			if (!rd.ReadData(collectionManager)) return false;
+			if (rd.FileVersion == 0)
+            {
+				// SysDataで実績がある場合は二重読込を行わない
+				if (collectionManager.Achievements.Count == 0)
+                {
+					if (!rd.ReadData(collectionManager)) return false;
+                }
+				else
+                {   // ダミーにデータを流してバッファを進める
+					var dum = new Action.CollectionLogger();
+					if (!rd.ReadData(dum)) return false;
+                }
+            }
 			return true;
 		}
 		public bool SaveData(string pPath)
@@ -118,7 +130,7 @@ namespace SlotEffectMaker2023.Singleton {
 			sw.WriteData(colorMapData);
 			sw.WriteData(freezeManager);
 			sw.WriteData(historyManager);
-			sw.WriteData(collectionManager);
+			//sw.WriteData(collectionManager);
 			return true;
 		}
 		// データをリセットする。Initの前に呼び出すこと。(20241014実装)
@@ -197,6 +209,10 @@ namespace SlotEffectMaker2023.Singleton {
 			if (rd.OpenFile(pPath))
 			{
 				if (!rd.ReadData(sysData)) return false;
+				if (rd.FileVersion >= 3)
+                {
+					if (!rd.ReadData(collectionManager)) return false;
+				}
 				rd.Close();
 			}
 			else
@@ -212,6 +228,7 @@ namespace SlotEffectMaker2023.Singleton {
 			if (sw.OpenFile(pPath, FILE_VERSION_SYS))
 			{
 				sw.WriteData(sysData);
+				if (FILE_VERSION_SYS >= 3) sw.WriteData(collectionManager);
 				sw.Flush();
 				sw.Close();
 			}
