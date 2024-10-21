@@ -277,15 +277,13 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 26522252818124800
-    m_Localized: '[What''s New on V1.01 released on 5th September 2024]
+    m_Localized: '[What''s New on V1.10 released on 21st October 2024]
 
-      How
-      to is extended regarding effect rules and RT.
+      Extended
+      save data file number of 10. Add resetting function.
 
-      Add "Show slip count"
-      settings.
-
-'
+      Add slot setting
+      "?" which will select from 1-6 at random.'
     m_Metadata:
       m_Items: []
   - m_Id: 26524314935103488
