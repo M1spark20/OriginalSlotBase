@@ -11,7 +11,7 @@ using System.Reflection;
 
 public class SceneHierarchyExporter : EditorWindow
 {
-    private string outputFile = "Assets/SceneHierarchy.md";
+    private string outputFile = "SceneHierarchy.md";
 
     [MenuItem("Tools/Export Scene Hierarchy")]
     public static void ShowWindow()
