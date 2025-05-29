@@ -3,7 +3,9 @@ using System.IO;
 
 namespace SlotEffectMaker2023.Action
 {
-    public enum LangLocale { en, ja }
+    /// <summary>
+    /// システム設定（音量、表示位置、ロケールなど）を管理し、セーブ/ロードを提供するクラス。
+    /// </summary>
     public class SystemData : ILocalDataInterface
     {   // 音量や情報表示位置などのシステムデータを管理する
         public int ReadVersion { get; set; }
@@ -17,12 +19,15 @@ namespace SlotEffectMaker2023.Action
         public byte UseSaveDataID { get; set; }
         public bool ResetFlag { get; set; }
 
+        /// <summary>
+        /// コンストラクタ。システムデータの初期値を設定します。
+        /// </summary>
         public SystemData()
         {
             ReadVersion = 0;
-            MasterVol = .5f;
-            BGMVol = .5f;
-            SEVol = .5f;
+            MasterVol = 0.5f;
+            BGMVol = 0.5f;
+            SEVol = 0.5f;
             InfoPos = 16;
             Locale = LangLocale.ja;
             WaitCut = false;
@@ -30,6 +35,13 @@ namespace SlotEffectMaker2023.Action
             UseSaveDataID = 0;
             ResetFlag = false;
         }
+
+        /// <summary>
+        /// システムデータをバイナリ形式で保存します。
+        /// </summary>
+        /// <param name="fs">BinaryWriter の参照</param>
+        /// <param name="version">保存バージョン</param>
+        /// <returns>保存処理が成功したか（常に true）</returns>
         public bool StoreData(ref BinaryWriter fs, int version)
         {
             fs.Write(MasterVol);
@@ -46,6 +58,13 @@ namespace SlotEffectMaker2023.Action
             }
             return true;
         }
+
+        /// <summary>
+        /// バイナリ形式からシステムデータを読み込みます。
+        /// </summary>
+        /// <param name="fs">BinaryReader の参照</param>
+        /// <param name="version">保存バージョン</param>
+        /// <returns>読み込み処理が成功したか（常に true）</returns>
         public bool ReadData(ref BinaryReader fs, int version)
         {
             ReadVersion = version;
@@ -63,5 +82,14 @@ namespace SlotEffectMaker2023.Action
             }
             return true;
         }
+    }
+
+    /// <summary>
+    /// 表示用ロケールを定義する列挙型。
+    /// </summary>
+    public enum LangLocale
+    {
+        en,
+        ja
     }
 }

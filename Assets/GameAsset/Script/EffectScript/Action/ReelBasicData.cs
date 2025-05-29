@@ -1,27 +1,34 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System;
 using System.IO;
 
 namespace SlotEffectMaker2023.Action
 {
+	/// <summary>
+	/// ゲーム中のリールの状態を管理するクラス。
+	/// 位置、速度、停止位置、押下位置、停止順、すべりコマ数などを保持します。
+	/// </summary>
 	public class ReelBasicData : SlotMaker2022.ILocalDataInterface
-	{	// ゲーム中のリール状態を定義する(Sav)
+	{   // ゲーム中のリール状態を定義する(Sav)
 		// 定数定義
 		public const byte REEL_NPOS = byte.MaxValue;
-		const float acc = 160.0f;   // リール加速度[rpm]
-		const float maxSpeed = 79.5f;   // リール最高速度[rpm]
+		const float acc = 160.0f;            // リール加速度[rpm]
+		const float maxSpeed = 79.5f;        // リール最高速度[rpm]
 
 		// 定義変数
-		public float reelPos { get; private set; }  // 現在のリール座標[0, COMA_MAX)
-		public float reelSpeed { get; private set; }    // 現在のリール速度[rpm](+:下向き)
-		public byte stopPos { get; private set; }   // 停止目標
-		public byte pushPos { get; private set; }   // リール押下位置
+		public float reelPos { get; private set; }    // 現在のリール座標[0, COMA_MAX)
+		public float reelSpeed { get; private set; }  // 現在のリール速度[rpm](+:下向き)
+		public byte stopPos { get; private set; }     // 停止目標
+		public byte pushPos { get; private set; }     // リール押下位置
 		public byte stopOrder { get; private set; }   // リールを停止させた順番
-		public byte slipCount { get; private set; } // 停止時すべりコマ数
-		public bool isRotate { get; private set; }  // リールが回転中か
-		public bool accEnd { get; private set; }    // リールが加速を終えたか
+		public byte slipCount { get; private set; }   // 停止時すべりコマ数
+		public bool isRotate { get; private set; }    // リールが回転中か
+		public bool accEnd { get; private set; }      // リールが加速を終えたか
 
+		/// <summary>
+		/// デフォルトコンストラクタ。全ての状態を初期化します。
+		/// </summary>
 		public ReelBasicData()
 		{
 			reelPos = 0.0f;
@@ -33,9 +40,14 @@ namespace SlotEffectMaker2023.Action
 			isRotate = false;
 			accEnd = false;
 		}
+
+		/// <summary>
+		/// 初期停止位置を指定してコンストラクタを呼び出します。
+		/// </summary>
+		/// <param name="defaultPos">初期停止位置</param>
 		public ReelBasicData(byte defaultPos)
 		{
-			reelPos = (float)defaultPos;
+			reelPos = defaultPos;
 			reelSpeed = 0.0f;
 			stopPos = defaultPos;
 			pushPos = defaultPos;
@@ -44,6 +56,13 @@ namespace SlotEffectMaker2023.Action
 			isRotate = false;
 			accEnd = false;
 		}
+
+		/// <summary>
+		/// 現在のリール状態をバイナリ形式で保存します。
+		/// </summary>
+		/// <param name="fs">BinaryWriter の参照</param>
+		/// <param name="version">保存バージョン</param>
+		/// <returns>保存に成功したか（常に true）</returns>
 		public bool StoreData(ref BinaryWriter fs, int version)
 		{
 			fs.Write(reelPos);
@@ -56,6 +75,13 @@ namespace SlotEffectMaker2023.Action
 			fs.Write(accEnd);
 			return true;
 		}
+
+		/// <summary>
+		/// バイナリ形式からリール状態を読み込みます。
+		/// </summary>
+		/// <param name="fs">BinaryReader の参照</param>
+		/// <param name="version">保存バージョン</param>
+		/// <returns>読み込みに成功したか（常に true）</returns>
 		public bool ReadData(ref BinaryReader fs, int version)
 		{
 			reelPos = fs.ReadSingle();
@@ -71,9 +97,11 @@ namespace SlotEffectMaker2023.Action
 
 		// 制御系変数 //
 
-		// リールを始動させる
+		/// <summary>
+		/// リールの回転を開始します。
+		/// </summary>
 		public void Start()
-		{
+		{   // リールを始動させる
 			isRotate = true;
 			accEnd = false;
 			stopPos = REEL_NPOS;
@@ -81,78 +109,97 @@ namespace SlotEffectMaker2023.Action
 			stopOrder = REEL_NPOS;
 			slipCount = REEL_NPOS;
 		}
-		// リールが参照するコマを取得する(位置補正なし: リール回転用)
+
+		/// <summary>
+		/// リールが参照するコマIDを取得します（位置補正なし、回転用）。
+		/// </summary>
+		/// <returns>コマID</returns>
 		public byte GetReelComaID()
 		{
 			return reelSpeed >= 0 ? (byte)Math.Ceiling(reelPos) : (byte)Math.Floor(reelPos);
 		}
-		// リールが参照するコマを取得する(位置補正あり: リール制御用)
+
+		/// <summary>
+		/// リールが参照するコマIDを取得します（位置補正あり、制御用）。
+		/// </summary>
+		/// <returns>補正後のコマID</returns>
 		public byte GetReelComaIDFixed()
 		{
 			int ans = GetReelComaID();
-
 			const int comaNum = SlotMaker2022.LocalDataSet.COMA_MAX;
 			while (ans >= comaNum) ans -= comaNum;
 			while (ans < 0) ans += comaNum;
 			return (byte)ans;
 		}
 
-		// リールが停止処理可能か返す
-		// リール回転中 and 速度一定 and 停止制御未実施なら、停止処理可能
-		public bool CanStop() { return (isRotate && accEnd && pushPos == REEL_NPOS); }
+		/// <summary>
+		/// リールが停止可能かを判定します。
+		/// </summary>
+		/// <returns>停止可能なら true</returns>
+		public bool CanStop()
+		{
+			// リール回転中 and 速度一定 and 停止制御未実施なら、停止処理可能
+			return isRotate && accEnd && pushPos == REEL_NPOS;
+		}
 
-		// リールの停目を設定し、停止制御を行う
+		/// <summary>
+		/// 停止制御を行い、停目およびすべりコマ数を設定します。
+		/// </summary>
+		/// <param name="pSlipCount">すべりコマ数</param>
+		/// <param name="pStopOrder">停止順（0始まり）</param>
 		public void SetStopPos(int pSlipCount, int pStopOrder)
 		{
 			// リールが回転していない or 速度が一定でない or 停止制御済みの場合、処理を行わない
 			if (!CanStop()) return;
-
 			const int comaNum = SlotMaker2022.LocalDataSet.COMA_MAX;
 			slipCount = (byte)pSlipCount;
 			pushPos = GetReelComaIDFixed();
 			stopPos = (byte)((pushPos + slipCount) % comaNum);
 			stopOrder = (byte)(pStopOrder + 1);
 		}
-		// リールの回転処理を行う
+
+		/// <summary>
+		/// リールの回転処理を1フレーム分実行します。
+		/// </summary>
+		/// <param name="dt">前フレームからの経過時間（秒）</param>
 		public void Process(float dt)
 		{
-			if (!isRotate) return;  // 回転していない場合は処理を行わない
+			// リールが回転中でない場合は処理を行わない
+			if (!isRotate) return;
 			const int comaNum = SlotMaker2022.LocalDataSet.COMA_MAX;
 
-			// 前回フレームからの経過時間と座標更新前の位置を取得する
-			float y0 = reelPos; // 座標更新前のリール位置
+			float y0 = reelPos;   // 座標更新前のリール位置
 
 			/* リール速度から座標を変化させる */
 			{
-				// 等加速度運動成分を計算する
-				float accTime = 0.0f;   // 等加速度運動時間
-				float v0 = reelSpeed;   // 等加速度運動における初速度[rpm]
+				float accTime = 0.0f;             // 等加速度運動時間
+				float v0 = reelSpeed;             // 初速度
 				if (Math.Abs(reelSpeed) < Math.Abs(maxSpeed))
 				{
-					// 最高速度到達までの時間を計算し、等加速度運動の時間を計算する
 					float accDuration = (maxSpeed - reelSpeed) / acc;
 					if (accDuration < dt) { accTime = accDuration; reelSpeed = maxSpeed; }
 					else { accTime = dt; reelSpeed += acc * accTime; }
-					//Debug.Log(reelSpeed.ToString());
 				}
 				// 位置の増分を計算(rpmから換算して計算)
-				const float speedBase = (float)comaNum / 60.0f; // rpm換算式
+				const float speedBase = comaNum / 60.0f;
 				reelPos += (v0 * speedBase * accTime + acc * speedBase * accTime * accTime / 2.0f);
 
 				// 等速直線運動成分を計算(rpmから換算)
-				float slipTime = dt - accTime;  // 等速直線運動時間
+				float slipTime = dt - accTime;
 				reelPos += slipTime * reelSpeed * speedBase;
 				// 等速直線運動要素があった場合、accEndをtrueにする
 				accEnd = slipTime > 0f;
 			}
 
-			// リール停止制御がある場合、停止判定を行う
+			// リール停止制御判定
 			if (stopPos != REEL_NPOS)
 			{
 				float targetPos = (float)stopPos;
 				// 前回リール位置y0に対し、targetPosをリール回転方向の前方にあるように補正する
-				while (reelSpeed > 0 && targetPos < y0) targetPos += (float)comaNum;    // 速度が正で、targetPosが負の方向にある場合
-				while (reelSpeed < 0 && targetPos > y0) targetPos -= (float)comaNum;    // 速度が負で、targetPosが正の方向にある場合
+				// 速度が正で、targetPosが負の方向にある場合
+				while (reelSpeed > 0 && targetPos < y0) targetPos += (float)comaNum;
+				// 速度が負で、targetPosが正の方向にある場合
+				while (reelSpeed < 0 && targetPos > y0) targetPos -= (float)comaNum;
 
 				// 「現在速度によるリール移動距離」が「前回リール位置から停目までの距離」を上回った場合にリールを停止させる(absを用いて正負とも判定する)
 				if (Math.Abs(reelPos - y0) >= Math.Abs(targetPos - y0))

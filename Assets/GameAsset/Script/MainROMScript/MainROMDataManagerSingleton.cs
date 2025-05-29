@@ -6,36 +6,39 @@ namespace SlotMaker2022
 {
     // メインROMデータ管理
     // データ上に1つだけ存在させたいためSingletonパターンを採用
+    /// <summary>
+    /// メインのROMデータを管理するシングルトンです。
+    /// ファイルの読み書きおよび各種データセットへのアクセスを提供します。
+    /// </summary>
     public sealed class MainROMDataManagerSingleton
     {
-        // ファイルバージョン
-        const int FILE_VERSION = 0;
+        /// <summary>ファイルフォーマットのバージョン番号</summary>
+        private const int FILE_VERSION = 0;
 
-        // Singletonインスタンス
+        /// <summary>単一インスタンス</summary>
         private static MainROMDataManagerSingleton ins = new MainROMDataManagerSingleton();
 
         // データセット定義
-        public LocalDataSet.ReelArray[][] ReelArray { get; set; }   // ジャグ配列(配列の配列、2次要素数不一致可能) ※defineReelArrayでdataSourceに採用するため
+        public LocalDataSet.ReelArray[][] ReelArray { get; set; }   // ジャグ配列(配列の配列、2次要素数不一致可能)
         public LocalDataSet.SoftwareInformation SoftInfo { get; set; }
         public LocalDataSet.CastCommonData CastCommonData { get; set; }
         public List<LocalDataSet.CastElemData> CastElemData { get; set; }
-
         public LocalDataSet.FlagCommonData FlagCommonData { get; set; }
         public List<LocalDataSet.FlagElemData> FlagElemData { get; set; }
         public List<LocalDataSet.FlagRandData> FlagRandData { get; set; }
-
         public LocalDataSet.RTCommonData RTCommonData { get; set; }
         public List<LocalDataSet.RTMoveData> RTMoveData { get; set; }
-
         public List<LocalDataSet.FreezeControlData> FreezeControlData { get; set; }
         public List<LocalDataSet.FreezeTimeData> FreezeTimeData { get; set; }
-
         public List<LocalDataSet.ComaCombinationData> ComaCombinationData { get; set; }
         public List<LocalDataSet.SlipBaseData> ReelSlipData { get; set; }
         public List<LocalDataSet.ReachData> ReachData { get; set; }
         public List<LocalDataSet.CombiPriorityData> CombiPriorityData { get; set; }
         public List<LocalDataSet.ReelControlData> ReelCtrlData { get; set; }
 
+        /// <summary>
+        /// コンストラクタ。初期データを生成します。
+        /// </summary>
         private MainROMDataManagerSingleton()
         {
             // データセット初期化
@@ -90,13 +93,23 @@ namespace SlotMaker2022
 
             ReelCtrlData = new List<LocalDataSet.ReelControlData>();
         }
+
+        /// <summary>
+        /// シングルトンインスタンスを取得します。
+        /// </summary>
+        /// <returns>MainROMDataManagerSingleton の単一インスタンス</returns>
         public static MainROMDataManagerSingleton GetInstance()
         {
             return ins;
         }
+
+        /// <summary>
+        /// バイナリファイルからデータを読み込みます。
+        /// </summary>
+        /// <returns>読み込みに成功したら true、それ以外は false</returns>
         public bool ReadData()
         {
-           // ファイルから読み込み処理を行う
+            // ファイルから読み込み処理を行う
             var rd = new ProgressRead();
             if (!rd.OpenFile("mainROM.bin")) return false;
             if (ReadAction(rd)) return false;
@@ -106,14 +119,26 @@ namespace SlotMaker2022
             BackupData();
             return true;
         }
+
+        /// <summary>
+        /// Unity TextAsset からデータを読み込みます。
+        /// </summary>
+        /// <param name="data">読み込むバイナリデータを持つ TextAsset</param>
+        /// <returns>読み込みに成功したら true、それ以外は false</returns>
         public bool ReadData(UnityEngine.TextAsset data)
-        {   // Unity用
+        {
             var rd = new SlotMaker2022.ProgressRead();
             if (!rd.OpenFile(data.bytes)) return false;
             if (!ReadAction(rd)) return false;
             rd.Close();
             return true;
         }
+
+        /// <summary>
+        /// 読み込み処理の共通部分を実行します。
+        /// </summary>
+        /// <param name="rd">ProgressRead オブジェクト</param>
+        /// <returns>読み込みに失敗したら true、それ以外は false</returns>
         private bool ReadAction(ProgressRead rd)
         {
             if (!rd.ReadData(SoftInfo)) return false;
@@ -150,6 +175,11 @@ namespace SlotMaker2022
             if (!rd.ReadData(ReelCtrlData)) return false;
             return true;
         }
+
+        /// <summary>
+        /// 現在のデータをファイルに保存します。
+        /// </summary>
+        /// <returns>保存処理を開始したら true</returns>
         public bool SaveData()
         {
             var sw = new ProgressWrite();
@@ -162,7 +192,10 @@ namespace SlotMaker2022
             return true;
         }
 
-        // バックアップ生成
+        /// <summary>
+        /// バックアップファイルを生成します。
+        /// </summary>
+        /// <returns>バックアップ生成を開始したら true</returns>
         public bool BackupData()
         {
             var sw = new ProgressWrite();
@@ -175,7 +208,11 @@ namespace SlotMaker2022
             return true;
         }
 
-        // データ書き出し
+        /// <summary>
+        /// データ書き出しの共通処理を行います。
+        /// </summary>
+        /// <param name="sw">ProgressWrite オブジェクト</param>
+        /// <returns>書き出しに成功したら true</returns>
         private bool WriteOut(ProgressWrite sw)
         {
             // 読み込み順はReadと揃えること
@@ -205,8 +242,10 @@ namespace SlotMaker2022
             return true;
         }
 
-        /* プログラム内共通機能 */
-        // フラグ名一覧を取得する
+        /// <summary>
+        /// フラグ名の一覧を取得します。
+        /// </summary>
+        /// <returns>先頭にハズレを含むフラグ名リスト</returns>
         public List<string> GetFlagName()
         {
             List<string> ans = new List<string>();
@@ -216,7 +255,11 @@ namespace SlotMaker2022
 
             return ans;
         }
-        // ボーナスフラグ一覧を取得する
+
+        /// <summary>
+        /// ボーナスフラグ名の一覧を取得します。
+        /// </summary>
+        /// <returns>すべてのボーナス番号と名称のリスト</returns>
         public List<string> GetBonusName()
         {
             List<string> ans = new List<string>();
