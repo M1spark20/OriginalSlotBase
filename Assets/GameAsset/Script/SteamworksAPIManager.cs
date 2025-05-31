@@ -7,47 +7,64 @@ using System.Collections.Generic;
 using Steamworks;
 #endif
 
-public class SteamworksAPIManager : MonoBehaviour {
+/// <summary>
+/// Steamと連携し、スロットゲームにおける実績および統計情報の取得・保存・更新を一括管理する。
+/// Androidでは無効化される。
+/// </summary>
+public class SteamworksAPIManager : MonoBehaviour
+{
 #if UNITY_ANDROID
-	public void OnGameStateChange() {}
+    /// <summary>
+    /// AndroidではSteam連携は無効。
+    /// </summary>
+    public void OnGameStateChange() {}
 #else
-	// Our GameID
+	// Steam Game ID
 	private CGameID m_GameID;
-	
-	// Did we get the stats from Steam?
+
+	// 統計データ取得済みかどうかのフラグ
 	private bool m_bRequestedStats;
 	private bool m_bStatsValid;
 
-	// Should we store stats this frame?
+	// 統計データを保存すべきかどうかのフラグ
 	private bool m_bStoreStats;
-	
-	// Callbacks
+
+	// Steamコールバック
 	protected Callback<UserStatsReceived_t> m_UserStatsReceived;
 	protected Callback<UserStatsStored_t> m_UserStatsStored;
 	protected Callback<UserAchievementStored_t> m_UserAchievementStored;
-	
-	// A-Rabbit's Singleton
+
+	// スロットデータ管理シングルトン
 	SlotEffectMaker2023.Singleton.SlotDataSingleton slotData;
 	SlotEffectMaker2023.Singleton.EffectDataManagerSingleton subROM;
-	
-	// Variable offset for Achievements(20241019 Add)
+
+	// 実績の送信時に利用する補正値（変数との差分など）
 	List<Tuple<string, int>> OffsetOverrides;
-		
-    void Start() {
-    	OffsetOverrides = new List<Tuple<string, int>>();
-        if(SteamManager.Initialized) {
-            string name = SteamFriends.GetPersonaName();
-            Debug.Log(name);
-        }
-    }
-    
-	void OnEnable() {
+
+	/// <summary>
+	/// 初期化処理：Steamが有効な場合はユーザー名をログ出力。
+	/// </summary>
+	void Start()
+	{
+		OffsetOverrides = new List<Tuple<string, int>>();
+		if (SteamManager.Initialized)
+		{
+			string name = SteamFriends.GetPersonaName();
+			Debug.Log(name);
+		}
+	}
+
+	/// <summary>
+	/// コンポーネントの有効化時にSteamコールバックを登録し、必要な初期化を行う。
+	/// </summary>
+	void OnEnable()
+	{
 		if (!SteamManager.Initialized) return;
 
 		// Get Singleton Instance
 		slotData = SlotEffectMaker2023.Singleton.SlotDataSingleton.GetInstance();
-		subROM   = SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.GetInstance();
-		
+		subROM = SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.GetInstance();
+
 		// Cache the GameID for use in the Callbacks
 		m_GameID = new CGameID(SteamUtils.GetAppID());
 
@@ -59,43 +76,47 @@ public class SteamworksAPIManager : MonoBehaviour {
 		m_bRequestedStats = false;
 		m_bStatsValid = false;
 	}
-	
-	private void Update() {
+
+	/// <summary>
+	/// 毎フレーム呼び出され、統計データ取得と保存処理を行う。
+	/// </summary>
+	private void Update()
+	{
 		if (!SteamManager.Initialized) return;
 
-		if (!m_bRequestedStats) {
-			// Is Steam Loaded? if no, can't get stats, done
-			if (!SteamManager.Initialized) {
+		if (!m_bRequestedStats)
+		{
+			if (!SteamManager.Initialized)
+			{
 				m_bRequestedStats = true;
 				return;
 			}
-			
+
 			// (Editorのみ)呼び出し前にリセットをかける
 			AchieveReset();
-			// If yes, request our stats (この返答としてコールバックが呼ばれる?)
+
+			// 現在の統計情報を取得
 			bool bSuccess = SteamUserStats.RequestCurrentStats();
 
-			// This function should only return false if we weren't logged in, and we already checked that.
-			// But handle it being false again anyway, just ask again later.
 			m_bRequestedStats = bSuccess;
 		}
 
 		if (!m_bStatsValid) return;
 
-		//Store stats in the Steam database if necessary (Modified by OnGameStateChange())
-		if (m_bStoreStats) {
-			// Send to steam
+		if (m_bStoreStats)
+		{
+			// 統計情報をSteamに保存
 			bool bSuccess = SteamUserStats.StoreStats();
-			// If this failed, we never sent anything to the server, try
-			// again later.
 			m_bStoreStats = !bSuccess;
 		}
 	}
 
-	//-----------------------------------------------------------------------------
-	// Purpose: Unlock this achievement
-	//-----------------------------------------------------------------------------
-	private void UnlockAchievement(SlotEffectMaker2023.Data.GameAchievement ac) {
+	/// <summary>
+	/// 実績を達成状態にし、Steamに保存要求を送る。
+	/// </summary>
+	/// <param name="ac">達成する実績データ。</param>
+	private void UnlockAchievement(SlotEffectMaker2023.Data.GameAchievement ac)
+	{
 		ac.IsAchieved = true;
 
 		// the icon may change once it's unlocked
@@ -108,19 +129,22 @@ public class SteamworksAPIManager : MonoBehaviour {
 		m_bStoreStats = true;
 	}
 
-	//-----------------------------------------------------------------------------
-	// Purpose: Game state has changed
-	//-----------------------------------------------------------------------------
-	public void OnGameStateChange() {
+	/// <summary>
+	/// ゲーム状態の変化に応じて実績や統計情報を評価・更新する。
+	/// </summary>
+	public void OnGameStateChange()
+	{
 		if (!m_bStatsValid) return;
 
-		// Update Action
 		var vm = slotData.valManager;
 		var bs = slotData.basicData;
-		
-		foreach (var item in subROM.GameAchieve.elemData) {
+
+		foreach (var item in subROM.GameAchieve.elemData)
+		{
 			if (bs.gameMode == 0 && item.UpdateOnlyBonusIn) continue;
-			if (item.Type == SlotEffectMaker2023.Data.AchieveDataType.Flag){
+
+			if (item.Type == SlotEffectMaker2023.Data.AchieveDataType.Flag)
+			{
 				if (item.IsAchieved) continue;
 				// 変数条件比較: 新規達成OKなら実績通知
 				var cond = subROM.Timeline.GetCondFromName(item.RefData);
@@ -128,57 +152,61 @@ public class SteamworksAPIManager : MonoBehaviour {
 				// 実績解除
 				UnlockAchievement(item);
 			}
-			if (item.Type == SlotEffectMaker2023.Data.AchieveDataType.Num){
-				// 20241019Mod: item.Offset追加
+
+			if (item.Type == SlotEffectMaker2023.Data.AchieveDataType.Num)
+			{
 				var valData = vm.GetVariable(item.RefData);
 				if (valData != null) SteamUserStats.SetStat(item.DataID, valData.val + item.Offset);
 				Debug.Log("SendData: " + item.RefData + " - " + (valData.val + item.Offset).ToString());
 			}
 		}
 
-		// We want to update stats the next frame.
 		m_bStoreStats = true;
 	}
-	
-	//-----------------------------------------------------------------------------
-	// Purpose: We have stats data from Steam. It is authoritative, so update
-	//			our data with those results now.
-	//-----------------------------------------------------------------------------
-	private void OnUserStatsReceived(UserStatsReceived_t pCallback) {
-		if (!SteamManager.Initialized)
-			return;
 
-		// we may get callbacks for other games' stats arriving, ignore them
-		if ((ulong)m_GameID == pCallback.m_nGameID) {
-			if (EResult.k_EResultOK == pCallback.m_eResult) {
+	/// <summary>
+	/// Steamから取得した統計情報を内部に反映し、実績データを更新する。
+	/// </summary>
+	/// <param name="pCallback">ユーザーの統計情報取得結果。</param>
+	private void OnUserStatsReceived(UserStatsReceived_t pCallback)
+	{
+		if (!SteamManager.Initialized) return;
+
+		if ((ulong)m_GameID == pCallback.m_nGameID)
+		{
+			if (EResult.k_EResultOK == pCallback.m_eResult)
+			{
 				Debug.Log("Received stats and achievements from Steam\n");
 
 				var vm = slotData.valManager;
 				m_bStatsValid = true;
 
-				// load achievements / stats (Flagのみ)
-				foreach (var item in subROM.GameAchieve.elemData) {
-					if (item.Type == SlotEffectMaker2023.Data.AchieveDataType.Flag) {
-						// 実績フラグデータを読み込む
-						bool isAchieved;	// 当該実績が達成済みか
+				foreach (var item in subROM.GameAchieve.elemData)
+				{
+					if (item.Type == SlotEffectMaker2023.Data.AchieveDataType.Flag)
+					{
+						bool isAchieved;
 						bool ret = SteamUserStats.GetAchievement(item.DataID, out isAchieved);
-						if (ret) {
+						if (ret)
+						{
 							string Name = SteamUserStats.GetAchievementDisplayAttribute(item.DataID, "name");
 							string Desc = SteamUserStats.GetAchievementDisplayAttribute(item.DataID, "desc");
 							item.SetDetail(isAchieved, Name, Desc);
 							Debug.Log("Stat Read: ID=" + item.DataID + ", Name=" + item.Title + ", Desc=" + item.Desc + ", Flag=" + item.IsAchieved.ToString());
 						}
-						else {
-							Debug.LogWarning("SteamUserStats.GetAchievement failed for Achievement " + item.DataID + "\nIs it registered in the Steam Partner site?");
+						else
+						{
+							Debug.LogWarning("SteamUserStats.GetAchievement failed for Achievement " + item.DataID);
 						}
-					} else if (item.Type == SlotEffectMaker2023.Data.AchieveDataType.Num) {
-						// 変数データの初期値を取得する、併せて変数送信時のoffsetを計算する
+					}
+					else if (item.Type == SlotEffectMaker2023.Data.AchieveDataType.Num)
+					{
 						int st;
 						SteamUserStats.GetStat(item.DataID, out st);
 						item.StartVal = st;
 						var valData = vm.GetVariable(item.RefData);
-						// Offsetを計算して内部変数に追加する
-						if (valData != null) {
+						if (valData != null)
+						{
 							var tup = new Tuple<string, int>(item.RefData, item.StartVal - valData.val);
 							Debug.Log("Stat Read: ID=" + item.DataID + ", Val=" + item.StartVal.ToString() + ", Offset=" + tup.Item2);
 							OffsetOverrides.Add(tup);
@@ -187,57 +215,66 @@ public class SteamworksAPIManager : MonoBehaviour {
 					}
 				}
 			}
-			else {
+			else
+			{
 				Debug.Log("RequestStats - failed, " + pCallback.m_eResult);
 			}
 		}
 	}
-	
-	//-----------------------------------------------------------------------------
-	// Purpose: Our stats data was stored!
-	//-----------------------------------------------------------------------------
-	private void OnUserStatsStored(UserStatsStored_t pCallback) {
-		// we may get callbacks for other games' stats arriving, ignore them
-		if ((ulong)m_GameID == pCallback.m_nGameID) {
-			if (EResult.k_EResultOK == pCallback.m_eResult) {
+
+	/// <summary>
+	/// 統計情報がSteamに保存された際に呼ばれる処理。
+	/// </summary>
+	/// <param name="pCallback">保存結果に関するコールバック。</param>
+	private void OnUserStatsStored(UserStatsStored_t pCallback)
+	{
+		if ((ulong)m_GameID == pCallback.m_nGameID)
+		{
+			if (EResult.k_EResultOK == pCallback.m_eResult)
+			{
 				Debug.Log("StoreStats - success");
 			}
-			else if (EResult.k_EResultInvalidParam == pCallback.m_eResult) {
-				// One or more stats we set broke a constraint. They've been reverted,
-				// and we should re-iterate the values now to keep in sync.
+			else if (EResult.k_EResultInvalidParam == pCallback.m_eResult)
+			{
 				Debug.Log("StoreStats - some failed to validate");
-				// Fake up a callback here so that we re-load the values.
 				UserStatsReceived_t callback = new UserStatsReceived_t();
 				callback.m_eResult = EResult.k_EResultOK;
 				callback.m_nGameID = (ulong)m_GameID;
 				OnUserStatsReceived(callback);
 			}
-			else {
+			else
+			{
 				Debug.Log("StoreStats - failed, " + pCallback.m_eResult);
 			}
 		}
 	}
 
-	//-----------------------------------------------------------------------------
-	// Purpose: An achievement was stored
-	//-----------------------------------------------------------------------------
-	private void OnAchievementStored(UserAchievementStored_t pCallback) {
-		// We may get callbacks for other games' stats arriving, ignore them
-		if ((ulong)m_GameID == pCallback.m_nGameID) {
-			if (0 == pCallback.m_nMaxProgress) {
+	/// <summary>
+	/// 実績がSteamに保存された際に呼ばれるコールバック。
+	/// </summary>
+	/// <param name="pCallback">実績保存処理に関する情報。</param>
+	private void OnAchievementStored(UserAchievementStored_t pCallback)
+	{
+		if ((ulong)m_GameID == pCallback.m_nGameID)
+		{
+			if (0 == pCallback.m_nMaxProgress)
+			{
 				Debug.Log("Achievement '" + pCallback.m_rgchAchievementName + "' unlocked!");
 			}
-			else {
+			else
+			{
 				Debug.Log("Achievement '" + pCallback.m_rgchAchievementName + "' progress callback, (" + pCallback.m_nCurProgress + "," + pCallback.m_nMaxProgress + ")");
 			}
 		}
 	}
 #endif
-// Reset Achievement only on editor
-	private void AchieveReset(){
+	/// <summary>
+	/// 開発用：エディタ上で実績情報をリセットする。
+	/// </summary>
+	private void AchieveReset()
+	{
 #if UNITY_EDITOR
-		//SteamUserStats.ResetAllStats(true);
+        //SteamUserStats.ResetAllStats(true);
 #endif
 	}
-
 }

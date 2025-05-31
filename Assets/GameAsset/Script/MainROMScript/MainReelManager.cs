@@ -4,11 +4,25 @@ using System.Text;
 
 namespace SlotMaker2022.main_function
 {
+    /// <summary>
+    /// リールの配当計算や停止制御を行うマネージャクラスの一部です。
+    /// GetCast 等の主要メソッドを含み、リールの停止位置や配当判定を実装します。
+    /// </summary>
     public partial class MainReelManager
     {
         // GetCastResultを別ファイルで定義する
         // pStopPos: index範囲外/負数で回転中を表現可能。全コマAnyで判定する。下段基準の停止位置を指定
         // 戻り値はAnyの場合を含む全停止形で止まる配当を重複ありで出力する
+
+        /// <summary>
+        /// 指定の停止位置と条件で配当を計算し、複数の配当パターンや払い出し枚数をまとめた結果を返します。
+        /// </summary>
+        /// <param name="pStopPos">各リールの停止コマ位置。負数または範囲外で回転中扱い。</param>
+        /// <param name="pBetNum">BET数（0 から BET_MAX-1）。</param>
+        /// <param name="pGameMode">ゲームモードID。</param>
+        /// <param name="pFlagID">小役成立フラグID。未使用時は -1。</param>
+        /// <param name="pBonusID">ボーナスフラグID。未使用時は -1。</param>
+        /// <returns>配当結果を格納した GetCastResult オブジェクト。条件不正時は null。</returns>
         public GetCastResult GetCast(int[] pStopPos, int pBetNum, uint pGameMode, int pFlagID, int pBonusID)
         {
             /* 【制御用データ作成メモ】
@@ -113,7 +127,8 @@ namespace SlotMaker2022.main_function
                     if (!isLaunch) return new GetCastResult();
 
                     /* closeリストにデータがない場合、回転中リールを含めた入賞可能配当組み合わせ数を計算する */
-                    if(!lineDataClose.Contains(lineDataOpen[lineC])) {
+                    if (!lineDataClose.Contains(lineDataOpen[lineC]))
+                    {
                         // 回転中リールをANYにしたマスク結果を作成
                         int reelBitDataRotating = (lineDataOpen[lineC] | nonStopMask) & castMask;
 
@@ -202,6 +217,14 @@ namespace SlotMaker2022.main_function
             res.stopAvailable = true;
             return res;
         }
+
+        /// <summary>
+        /// 指定停止位置と条件で取得した配当結果から、配当役名の連結文字列を返します。
+        /// </summary>
+        /// <param name="pStopPos">各リールの停止コマ位置。</param>
+        /// <param name="pBetNum">BET数。</param>
+        /// <param name="pGameMode">ゲームモードID。</param>
+        /// <returns>成立した配当役名を連結した文字列。条件不正時は空文字。</returns>
         public string GetCastName(int[] pStopPos, int pBetNum, uint pGameMode)
         {
             var matchData = GetCast(pStopPos, pBetNum, pGameMode, -1, -1);
@@ -212,7 +235,13 @@ namespace SlotMaker2022.main_function
             return ans;
         }
 
-        // 指定リールのコマ番号を取得(-1:回転中orエラー)
+        /// <summary>
+        /// 有効ライン上での停止位置から、内部配列参照用のコマIDを取得します。
+        /// </summary>
+        /// <param name="pReelID">リールID。</param>
+        /// <param name="pStopPos">停止コマ位置。</param>
+        /// <param name="pLineID">ラインID。</param>
+        /// <returns>参照コマID。エラー時は -1。</returns>
         private int GetComaIDFromLine(int pReelID, int pStopPos, int pLineID)
         {
             if (pReelID < 0 || pReelID >= LocalDataSet.REEL_MAX) return -1;
@@ -231,6 +260,14 @@ namespace SlotMaker2022.main_function
             // 高さを指定してコマ番号を返す
             return GetComaID(pReelID, pStopPos, checkHeight);
         }
+
+        /// <summary>
+        /// リール上の停止コマ位置と高さオフセットから図柄IDを取得します。
+        /// </summary>
+        /// <param name="pReelID">リールID。</param>
+        /// <param name="pStopPos">停止コマ位置。</param>
+        /// <param name="offset">高さオフセット（0～SHOW_MAX-1）。</param>
+        /// <returns>図柄ID。データ参照エラー時は -1。</returns>
         private int GetComaID(int pReelID, int pStopPos, int offset)
         {
             var reelData = MainROMDataManagerSingleton.GetInstance().ReelArray;
@@ -239,6 +276,13 @@ namespace SlotMaker2022.main_function
             // 図柄番号を返す
             return reelData[pReelID][comaPos].Coma;
         }
+
+        /// <summary>
+        /// 停止基準位置とオフセットから実配列インデックスを計算します。
+        /// </summary>
+        /// <param name="basePos">基準停止位置。</param>
+        /// <param name="offset">高さオフセット。</param>
+        /// <returns>実配列インデックス。</returns>
         private int GetPosFromOffset(int basePos, int offset)
         {
             // 参照リールコマ番号を取得(実配列データ型との整合を取る)
@@ -248,8 +292,13 @@ namespace SlotMaker2022.main_function
 
             return comaPos;
         }
-        
-        // 小役の取りこぼしがあるか調べる
+
+        /// <summary>
+        /// 指定リールで取りこぼしが発生しないかを判定します。
+        /// </summary>
+        /// <param name="pReelID">リールID。</param>
+        /// <param name="pCastMask">成立ビットマスク。</param>
+        /// <returns>取りこぼしなしであれば true。</returns>
         private bool CheckNoLost(int pReelID, int pCastMask)
         {
             if (pReelID < 0 || pReelID >= LocalDataSet.REEL_MAX) return false;
@@ -266,7 +315,12 @@ namespace SlotMaker2022.main_function
             return true;
         }
 
-        // 指定箇所のリーチ目レベルを判定する
+        /// <summary>
+        /// 指定リーチデータIDと停止位置からリーチレベルを取得します。
+        /// </summary>
+        /// <param name="pReachDataID">リーチデータID。</param>
+        /// <param name="pStopPos">各リールの停止コマ位置。</param>
+        /// <returns>リーチレベル（1～ReachLevelMax）。合致なしは 0。</returns>
         public int GetReachLevel(int pReachDataID, int[] pStopPos)
         {
             // 回転中を許容しない。発見した場合リーチ目として扱わない
@@ -333,15 +387,17 @@ namespace SlotMaker2022.main_function
             return 0;
         }
 
-        // 停止位置がStopPosDataに合致するかどうかを返す
-        // pCompData: 検索対象リールの比較対象データ
-        // pStopPos : 比較対象データの停止位置
+        /// <summary>
+        /// 指定の停止位置が指定 ReelPosElemData と合致するか判定します。
+        /// </summary>
+        /// <param name="pCompData">比較対象のリール位置データ。</param>
+        /// <param name="pStopPos">リールの停止位置。</param>
+        /// <param name="pStopReelID">リールID。</param>
+        /// <returns>合致する場合は true。</returns>
         private bool GetMatchStopPos(LocalDataSet.ReelPosElemData pCompData, int pStopPos, int pStopReelID)
         {
-            // JudgeComaPosが有効な高さのコマ番号を取得し、コマ番号を比較する。
-            // 判定結果はJudgeReelに格納し、判定結果を戻り値として返す
+            // JudgeReelローカル変数と混同しない
             bool JudgeReel = false;
-            var offset = LocalDataSet.SYMBOL_MAX;
             var mainData = MainROMDataManagerSingleton.GetInstance();
             int stopReel = pCompData.JudgeReel;
             if (stopReel >= LocalDataSet.REEL_MAX) stopReel = pStopReelID;
@@ -356,7 +412,7 @@ namespace SlotMaker2022.main_function
                 uint comaNo = (uint)GetComaID(stopReel, pStopPos, (int)showC);
 
                 // データ比較
-                if (pCompData.CombinationID < offset)
+                if (pCompData.CombinationID < LocalDataSet.SYMBOL_MAX)
                 {
                     // 図柄IDを直接指定する場合
                     JudgeReel |= comaNo == pCompData.CombinationID;
@@ -364,34 +420,38 @@ namespace SlotMaker2022.main_function
                 else
                 {
                     // Combinationを指定する場合
-                    var comb = mainData.ComaCombinationData[pCompData.CombinationID - offset];
+                    var comb = mainData.ComaCombinationData[pCompData.CombinationID - LocalDataSet.SYMBOL_MAX];
 
                     /* 図柄No.とCombinationの比較 */
-                    {
-                        // 参照位置の図柄Noを比較する
-                        // CombinationDataを呼び出して図柄Noと比較する
-                        JudgeReel |= comb.Combination.GetData(comaNo) > 0;
-                    }
+                    JudgeReel |= comb.Combination.GetData(comaNo) > 0;
 
                     /* ExDataと停止位置の比較 */
-                    {
-                        int offsetComa = GetPosFromOffset(pStopPos, (int)showC);
-                        var ReelData = mainData.ReelArray[stopReel][offsetComa];
-                        bool[] compData = new bool[] { ReelData.Ex10, ReelData.Ex11, ReelData.Ex12, ReelData.Ex13 };
-
-                        const uint combOffset = LocalDataSet.SYMBOL_MAX;
-                        for (uint i = 0; i < compData.Length; ++i)
-                            JudgeReel |= comb.Combination.GetData(i + combOffset) > 0 && compData[i];
-                    }
+                    int offsetComa = GetPosFromOffset(pStopPos, (int)showC);
+                    var ReelData = mainData.ReelArray[stopReel][offsetComa];
+                    bool[] compData = new bool[] { ReelData.Ex10, ReelData.Ex11, ReelData.Ex12, ReelData.Ex13 };
+                    const uint combOffset = LocalDataSet.SYMBOL_MAX;
+                    for (uint i = 0; i < compData.Length; ++i)
+                        JudgeReel |= comb.Combination.GetData(i + combOffset) > 0 && compData[i];
                 }
             }
-            
+
             // 論理反転処理
             if (pCompData.IsInvert) JudgeReel = !JudgeReel;
             return JudgeReel;
         }
 
-        // 指定箇所のリール制御結果をすべりコマで返す(エラー：-1)
+        /// <summary>
+        /// 3リール用リール制御ロジックより、所定のすべりコマ数を算出し返します。
+        /// </summary>
+        /// <param name="pStopReelID">停止対象のリールID。</param>
+        /// <param name="pStopPos">各リールの停止コマ位置。</param>
+        /// <param name="p1stStopID">第1停止時の停止位置全コマインデックス。</param>
+        /// <param name="p1stSlipNum">第1停止時のすべり数。</param>
+        /// <param name="pBetNum">BET数。</param>
+        /// <param name="pMode">ゲームモード。</param>
+        /// <param name="pBonusFlag">ボーナスフラグID。</param>
+        /// <param name="pCastFlag">小役フラグID。</param>
+        /// <returns>算出されたすべりコマ数。エラー時は -1。</returns>
         public int GetReelControl3R(int pStopReelID, int[] pStopPos, int p1stStopID, int p1stSlipNum, int pBetNum, int pMode, int pBonusFlag, int pCastFlag)
         {
             // 停止リールのpStopPosがデータ範囲外の場合は判定を行わない
@@ -423,7 +483,8 @@ namespace SlotMaker2022.main_function
                 int priIndex = 0;       // priority停止順index
                 int slipIndex = 0;      // slipData
 
-                foreach (var data in pStopPos) {
+                foreach (var data in pStopPos)
+                {
                     // リールが回転中なら処理を行わない
                     if (data < 0 || data >= LocalDataSet.COMA_MAX) continue;
                     ++stopReelNum;  // 停止中リール数加算
@@ -450,7 +511,7 @@ namespace SlotMaker2022.main_function
                         }
                         else slipIndex = -1;
                     }
-                    for(uint i=0; i<slipLoopNum && slipIndex >= 0; ++i)
+                    for (uint i = 0; i < slipLoopNum && slipIndex >= 0; ++i)
                     {
                         if (useData.Exist2ndSlip.GetData(i) == 0) continue;
                         slipIndex += LocalDataSet.REEL_MAX - 1;
@@ -476,25 +537,26 @@ namespace SlotMaker2022.main_function
                 }
 
                 // テーブル取得(index範囲外の場合は初期値を入れる)
-                var slipElemData = (slipIndex < 0 || slipIndex >= useData.SlipElem.Count) ? 
+                var slipElemData = (slipIndex < 0 || slipIndex >= useData.SlipElem.Count) ?
                     new LocalDataSet.ControlSlipElem() : useData.SlipElem[slipIndex];
                 var priorityData = mainROM.CombiPriorityData[ctrl.CombiPriority];
                 bool isPriority = priorityData.PriData[stopReelNum].GetData((uint)priIndex) > 0;
 
                 // すべりコマ数分の停止可否判定データを取得する
                 GetCastResult[] posJudge = new GetCastResult[LocalDataSet.SLIP_MAX];
-                for (int slipC=0; slipC<posJudge.Length; ++slipC)
+                for (int slipC = 0; slipC < posJudge.Length; ++slipC)
                 {
                     // CT中の規定すべり数を超える場合処理を行わない
                     if (pCastFlag > 0)
                     {
-                        if (mainROM.FlagElemData[pCastFlag - 1].ControlCT == pStopReelID + 1 && slipC >= LocalDataSet.SLIP_CT) {
-                            posJudge[slipC] = null; continue; 
+                        if (mainROM.FlagElemData[pCastFlag - 1].ControlCT == pStopReelID + 1 && slipC >= LocalDataSet.SLIP_CT)
+                        {
+                            posJudge[slipC] = null; continue;
                         }
                     }
 
                     int[] judgeReelPos = new int[pStopPos.Length];
-                    for (int reelC=0; reelC<pStopPos.Length; ++reelC)
+                    for (int reelC = 0; reelC < pStopPos.Length; ++reelC)
                     {
                         judgeReelPos[reelC] = pStopPos[reelC];
                         if (reelC == pStopReelID) judgeReelPos[reelC] = (judgeReelPos[reelC] + slipC) % LocalDataSet.COMA_MAX;
@@ -546,7 +608,7 @@ namespace SlotMaker2022.main_function
                     addFlag |= posJudge[item].payoutNum < 0 && posJudge[item].payPriority == payPriMax;
                     // 組合せ優先許可が出ている場合、組合せ数が最大かつその中で配当が最大となる物も許容
                     addFlag |= posJudge[item].castPattern == combiMax && posJudge[item].payoutNum == combiPayMax && isPriority;
-                    
+
                     if (addFlag) slipPri_Step2.Add(item);
                 }
 
@@ -561,7 +623,7 @@ namespace SlotMaker2022.main_function
                         bool passFlag = true;
                         bool priFlag = false;   // 優先格納フラグ
                         // データ数分ループする
-                        for (int avoidC=0; avoidC<useData.AvoidPos.Count; ++avoidC)
+                        for (int avoidC = 0; avoidC < useData.AvoidPos.Count; ++avoidC)
                         {
                             // 押し順によってスキップ処理を行う(ゴリゴリのマジックナンバーだがとりあえず実装…)
                             if (stopReelNum >= 1 && avoidC >= avoidNum[0] + avoidNum[1] + avoidNum[2]) break;
@@ -590,7 +652,7 @@ namespace SlotMaker2022.main_function
                 int ansMemo = -1;
                 int[] reachPos = new int[pStopPos.Length];
                 bool passReachSecondary = false;    // Lv.2を踏んだか
-                foreach(var item in slipPri_Step3)
+                foreach (var item in slipPri_Step3)
                 {
                     for (int reelC = 0; reelC < pStopPos.Length; ++reelC)
                     {
@@ -604,7 +666,7 @@ namespace SlotMaker2022.main_function
                         uint checkIndex = (uint)reachLevel - 1;
                         if (ctrl.ReachAvail.GetData(checkIndex) == 0) continue;
                         if (ctrl.ReachPri.GetData(checkIndex) > 0) return item;
-                        if (ctrl.ReachSec.GetData(checkIndex) > 0  && !passReachSecondary) { ansMemo = item; passReachSecondary = true; }
+                        if (ctrl.ReachSec.GetData(checkIndex) > 0 && !passReachSecondary) { ansMemo = item; passReachSecondary = true; }
                         if (ctrl.ReachSec.GetData(checkIndex) == 0 && ansMemo == -1) ansMemo = item;
                     }
                     else if (ansMemo == -1) ansMemo = item;

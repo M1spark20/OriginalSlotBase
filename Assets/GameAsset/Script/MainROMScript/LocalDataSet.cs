@@ -5,13 +5,16 @@ using System.IO;
 
 namespace SlotMaker2022
 {
+    /// <summary>
+    /// スロットマシンに使用する定数およびデータ定義クラスをまとめたクラスです。
+    /// </summary>
     public class LocalDataSet
     {
-        public const int REEL_MAX =  3;
+        public const int REEL_MAX = 3;
         public const int COMA_MAX = 21;
-        public const int SLIP_MAX =  5; // スベリ最大数+1を定義
+        public const int SLIP_MAX = 5; // スベリ最大数+1を定義
         public const int SLIP_CT = 2;   // CT中最大スベリ。スベリ最大数+1を定義
-        public const int SHOW_MAX =  3; // リール表示コマ数(3コマ)
+        public const int SHOW_MAX = 3; // リール表示コマ数(3コマ)
         public const int PAYLINE_MAX = 6;
         public const int GAMEMODE_MAX = 4;
         public const int BET_MAX = 3;
@@ -21,6 +24,9 @@ namespace SlotMaker2022
         public const int SETTING_MAX = 6;
         public const int GAME_COUNTER_MAX = 3;
 
+        /// <summary>
+        /// ソフトウェア情報を保持し、バイナリストリームへの読み書きを行うクラスです。
+        /// </summary>
         public class SoftwareInformation : ILocalDataInterface
         {
             public string ReelChipPath { get; set; }
@@ -34,6 +40,10 @@ namespace SlotMaker2022
             public int CtrlGameMode { get; set; }   // ctrlのMode位置
             public int CtrlBonusFlag { get; set; }  // ctrlのBonus位置
             public int CtrlCastFlag { get; set; }   // ctrlのCast位置
+
+            /// <summary>
+            /// インスタンスを初期化し、フィールドをデフォルト値で設定します。
+            /// </summary>
             public SoftwareInformation()
             {
                 ReelChipPath = "";
@@ -48,6 +58,13 @@ namespace SlotMaker2022
                 CtrlBonusFlag = 0;
                 CtrlCastFlag = 0;
             }
+
+            /// <summary>
+            /// ソフトウェア情報をバイナリに書き出します。
+            /// </summary>
+            /// <param name="fs">書き込み先の BinaryWriter への参照</param>
+            /// <param name="version">データバージョン番号</param>
+            /// <returns>書き込みが成功した場合は true、それ以外は false</returns>
             public bool StoreData(ref BinaryWriter fs, int version)
             {
                 fs.Write(ReelChipPath);
@@ -63,6 +80,13 @@ namespace SlotMaker2022
                 fs.Write(CtrlCastFlag);
                 return true;
             }
+
+            /// <summary>
+            /// バイナリストリームからソフトウェア情報を読み込みます。
+            /// </summary>
+            /// <param name="fs">読み込み元の BinaryReader への参照</param>
+            /// <param name="version">データバージョン番号</param>
+            /// <returns>読み込みが成功した場合は true、それ以外は false</returns>
             public bool ReadData(ref BinaryReader fs, int version)
             {
                 ReelChipPath = fs.ReadString();
@@ -79,6 +103,10 @@ namespace SlotMaker2022
                 return true;
             }
         }
+
+        /// <summary>
+        /// リール配列データを保持し、バイナリへの読み書きを行うクラスです。
+        /// </summary>
         public class ReelArray : ILocalDataInterface
         {
             public int Pos { get; set; }
@@ -88,7 +116,9 @@ namespace SlotMaker2022
             public bool Ex11 { get; set; }
             public bool Ex10 { get; set; }
 
-            // 配列数を初期化
+            /// <summary>
+            /// インスタンスを初期化し、フィールドをデフォルト値で設定します。
+            /// </summary>
             public ReelArray()
             {
                 this.Pos = 0;
@@ -98,6 +128,13 @@ namespace SlotMaker2022
                 this.Ex11 = false;
                 this.Ex10 = false;
             }
+
+            /// <summary>
+            /// リール配列データをバイナリに書き出します。
+            /// </summary>
+            /// <param name="fs">書き込み先の BinaryWriter への参照</param>
+            /// <param name="version">データバージョン番号</param>
+            /// <returns>書き込みが成功した場合は true、それ以外は false</returns>
             public bool StoreData(ref BinaryWriter fs, int version)
             {
                 fs.Write(Coma);
@@ -107,6 +144,13 @@ namespace SlotMaker2022
                 fs.Write(Ex10);
                 return true;
             }
+
+            /// <summary>
+            /// バイナリストリームからリール配列データを読み込みます。
+            /// </summary>
+            /// <param name="fs">読み込み元の BinaryReader への参照</param>
+            /// <param name="version">データバージョン番号</param>
+            /// <returns>読み込みが成功した場合は true、それ以外は false</returns>
             public bool ReadData(ref BinaryReader fs, int version)
             {
                 Coma = fs.ReadByte();
@@ -114,11 +158,13 @@ namespace SlotMaker2022
                 Ex12 = fs.ReadBoolean();
                 Ex11 = fs.ReadBoolean();
                 Ex10 = fs.ReadBoolean();
-              return true;
+                return true;
             }
         }
 
-        // 配当関係データ
+        /// <summary>
+        /// 配当関係の共通データを管理し、バイナリ読み書きを行うクラスです。
+        /// </summary>
         public class CastCommonData : ILocalDataInterface
         {
             // 定数
@@ -151,20 +197,30 @@ namespace SlotMaker2022
             // リプレイインターバル
             public uint IntervalRep { get; set; }
 
+            /// <summary>
+            /// インスタンスを初期化し、各 UserBaseData を生成します。
+            /// </summary>
             public CastCommonData()
             {
                 CanUseBet = new UserBaseData(1, true, BET_MAX * GAMEMODE_MAX);
-                MaxPayout = new UserBaseData(PAYOUT_NUM_MAX+1, false, BET_MAX);
+                MaxPayout = new UserBaseData(PAYOUT_NUM_MAX + 1, false, BET_MAX);
                 PayLineData = new UserBaseData((uint)Math.Pow(REEL_MAX, SHOW_MAX) + 1, false, PAYLINE_MAX);
                 AvailableLineData = new UserBaseData(1, true, PAYLINE_MAX * BET_MAX);
                 IsPriorBonus = false;
                 PayoutData = new UserBaseData(PAYOUT_NUM_MAX + 1, false, PAYOUT_DATA_MAX);
                 BonusPayData = new UserBaseData(9, true, BONUSPAY_DATA_MAX);
-                GameNumData = new UserBaseData(10, true, GAMENUM_DATA_MAX);//new uint[GAMENUM_DATA_MAX];
+                GameNumData = new UserBaseData(10, true, GAMENUM_DATA_MAX);
 
                 IntervalPay = 0;
                 IntervalRep = 0;
             }
+
+            /// <summary>
+            /// 配当共通データをバイナリに書き出します。
+            /// </summary>
+            /// <param name="fs">書き込み先の BinaryWriter への参照</param>
+            /// <param name="version">データバージョン番号</param>
+            /// <returns>書き込みが成功した場合は true、それ以外は false</returns>
             public bool StoreData(ref BinaryWriter fs, int version)
             {
                 fs.Write(decimal.ToUInt32(CanUseBet.Export()));
@@ -180,6 +236,13 @@ namespace SlotMaker2022
                 fs.Write(IntervalRep);
                 return true;
             }
+
+            /// <summary>
+            /// バイナリストリームから配当共通データを読み込みます。
+            /// </summary>
+            /// <param name="fs">読み込み元の BinaryReader への参照</param>
+            /// <param name="version">データバージョン番号</param>
+            /// <returns>読み込みが成功した場合は true、それ以外は false</returns>
             public bool ReadData(ref BinaryReader fs, int version)
             {
                 CanUseBet.Import(fs.ReadUInt32());
@@ -196,6 +259,10 @@ namespace SlotMaker2022
                 return true;
             }
         }
+
+        /// <summary>
+        /// キャスト要素データを管理するクラスです。
+        /// </summary>
         public class CastElemData : ILocalDataInterface
         {
             // 有効モード定義
@@ -226,6 +293,10 @@ namespace SlotMaker2022
             // フラグ名(ROMデータには反映しない)
             public string FlagName { get; set; }
 
+            /// <summary>
+            /// 新しいインスタンスを初期化します。
+            /// 事前に要素数を読み込んでデータを作成します。
+            /// </summary>
             public CastElemData()
             {
                 // 事前に要素数を読み込んでデータを作成すること
@@ -245,6 +316,13 @@ namespace SlotMaker2022
                 ResetGame = 0;
                 FlagName = "";
             }
+
+            /// <summary>
+            /// 指定したバイナリライターにデータを書き込みます。
+            /// </summary>
+            /// <param name="fs">データを書き込む BinaryWriter への参照</param>
+            /// <param name="version">書き込み対象のデータバージョン</param>
+            /// <returns>書き込みに成功した場合は true、失敗した場合は false</returns>
             public bool StoreData(ref BinaryWriter fs, int version)
             {
                 fs.Write(decimal.ToByte(AvailGameMode.Export()));
@@ -264,6 +342,13 @@ namespace SlotMaker2022
                 fs.Write(FlagName);
                 return true;
             }
+
+            /// <summary>
+            /// 指定したバイナリリーダーからデータを読み込みます。
+            /// </summary>
+            /// <param name="fs">データを読み込む BinaryReader への参照</param>
+            /// <param name="version">読み込み対象のデータバージョン</param>
+            /// <returns>読み込みに成功した場合は true、失敗した場合は false</returns>
             public bool ReadData(ref BinaryReader fs, int version)
             {
                 AvailGameMode.Import(fs.ReadByte());
@@ -284,11 +369,14 @@ namespace SlotMaker2022
                 return true;
             }
         }
-
-        // フラグ関係データ
+        /// <summary>
+        /// フラグ関係データを管理するクラスです。
+        /// </summary>
         public class FlagCommonData : ILocalDataInterface
         {
-            // 乱数最大値
+            /// <summary>
+            /// 乱数最大値
+            /// </summary>
             public const int RAND_MAX = 65536;
 
             // フラグ数
@@ -298,12 +386,22 @@ namespace SlotMaker2022
             // 当該機種の最大設定数
             public byte SetNum { get; set; }
 
+            /// <summary>
+            /// 新しいインスタンスを初期化します。
+            /// </summary>
             public FlagCommonData()
             {
                 FlagNum = 0;
                 RandNum = 0;
                 SetNum = SETTING_MAX;
             }
+
+            /// <summary>
+            /// データをバイナリライターに書き込みます。
+            /// </summary>
+            /// <param name="fs">データを書き込む BinaryWriter への参照</param>
+            /// <param name="version">データのバージョン</param>
+            /// <returns>書き込みに成功した場合は true</returns>
             public bool StoreData(ref BinaryWriter fs, int version)
             {
                 fs.Write(FlagNum);
@@ -311,6 +409,13 @@ namespace SlotMaker2022
                 fs.Write(SetNum);
                 return true;
             }
+
+            /// <summary>
+            /// バイナリリーダーからデータを読み込みます。
+            /// </summary>
+            /// <param name="fs">データを読み込む BinaryReader への参照</param>
+            /// <param name="version">データのバージョン</param>
+            /// <returns>読み込みに成功した場合は true</returns>
             public bool ReadData(ref BinaryReader fs, int version)
             {
                 FlagNum = fs.ReadByte();
@@ -319,6 +424,10 @@ namespace SlotMaker2022
                 return true;
             }
         }
+
+        /// <summary>
+        /// フラグ要素データを管理するクラスです。
+        /// </summary>
         public class FlagElemData : ILocalDataInterface
         {
             // 成立時CT制御指定(1コマすべり)
@@ -332,6 +441,9 @@ namespace SlotMaker2022
             // フラグ名指定(ユーザ入力)
             public string UserFlagName { get; set; }
 
+            /// <summary>
+            /// 新しいインスタンスを初期化します。
+            /// </summary>
             public FlagElemData()
             {
                 ControlCT = 0;
@@ -340,6 +452,13 @@ namespace SlotMaker2022
                 IsReplay = new UserBaseData(1, true, BET_MAX);
                 UserFlagName = string.Empty;
             }
+
+            /// <summary>
+            /// データをバイナリライターに書き込みます。
+            /// </summary>
+            /// <param name="fs">データを書き込む BinaryWriter への参照</param>
+            /// <param name="version">データのバージョン</param>
+            /// <returns>書き込みに成功した場合は true</returns>
             public bool StoreData(ref BinaryWriter fs, int version)
             {
                 fs.Write(ControlCT);
@@ -349,6 +468,13 @@ namespace SlotMaker2022
                 fs.Write(UserFlagName);
                 return true;
             }
+
+            /// <summary>
+            /// バイナリリーダーからデータを読み込みます。
+            /// </summary>
+            /// <param name="fs">データを読み込む BinaryReader への参照</param>
+            /// <param name="version">データのバージョン</param>
+            /// <returns>読み込みに成功した場合は true</returns>
             public bool ReadData(ref BinaryReader fs, int version)
             {
                 ControlCT = fs.ReadByte();
@@ -359,6 +485,9 @@ namespace SlotMaker2022
                 return true;
             }
         }
+        /// <summary>
+        /// ボーナスフラグ抽選データを管理するクラスです。
+        /// </summary>
         public class FlagRandData : ILocalDataInterface
         {
             // ボーナスフラグ定義
@@ -377,6 +506,9 @@ namespace SlotMaker2022
             // CommonSet = trueの時は、index:0のデータを参考とすること
             public UserBaseData RandValue { get; set; }
 
+            /// <summary>
+            /// 新しいインスタンスを初期化します。
+            /// </summary>
             public FlagRandData()
             {
                 BonusFlag = 0;
@@ -389,6 +521,13 @@ namespace SlotMaker2022
                 // 最大設定数に関わらず配列数はSETTING_MAX分確保しておく
                 RandValue = new UserBaseData(16, true, SETTING_MAX);
             }
+
+            /// <summary>
+            /// データをバイナリライターに書き込みます。
+            /// </summary>
+            /// <param name="fs">データを書き込む BinaryWriter への参照</param>
+            /// <param name="version">データのバージョン</param>
+            /// <returns>書き込みに成功した場合は true</returns>
             public bool StoreData(ref BinaryWriter fs, int version)
             {
                 fs.Write(BonusFlag);
@@ -400,6 +539,13 @@ namespace SlotMaker2022
                 fs.Write(RandValue.Export());   // decimal型
                 return true;
             }
+
+            /// <summary>
+            /// バイナリリーダーからデータを読み込みます。
+            /// </summary>
+            /// <param name="fs">データを読み込む BinaryReader への参照</param>
+            /// <param name="version">データのバージョン</param>
+            /// <returns>読み込みに成功した場合は true</returns>
             public bool ReadData(ref BinaryReader fs, int version)
             {
                 BonusFlag = fs.ReadByte();
@@ -413,7 +559,9 @@ namespace SlotMaker2022
             }
         }
 
-        // RT関係データ
+        /// <summary>
+        /// RT継続ゲーム数およびRT移行データを管理するクラスです。
+        /// </summary>
         public class RTCommonData : ILocalDataInterface
         {
             // RT継続ゲーム数データ
@@ -423,12 +571,22 @@ namespace SlotMaker2022
             // ボーナス成立時RT移行先
             public UserBaseData MoveByBonus { get; set; }
 
+            /// <summary>
+            /// 新しいインスタンスを初期化します。
+            /// </summary>
             public RTCommonData()
             {
-                ContGameNum = new UserBaseData(CastCommonData.GAMENUM_DATA_MAX+1, false, RTMODE_MAX);
+                ContGameNum = new UserBaseData(CastCommonData.GAMENUM_DATA_MAX + 1, false, RTMODE_MAX);
                 MoveRTNum = 0;
                 MoveByBonus = new UserBaseData(RTMODE_MAX + 1, false, BONUSFLAG_MAX - 1);
             }
+
+            /// <summary>
+            /// データをバイナリライターに書き込みます。
+            /// </summary>
+            /// <param name="fs">データを書き込む BinaryWriter への参照</param>
+            /// <param name="version">データのバージョン</param>
+            /// <returns>書き込みに成功した場合は true</returns>
             public bool StoreData(ref BinaryWriter fs, int version)
             {
                 fs.Write(decimal.ToUInt16(ContGameNum.Export()));
@@ -436,6 +594,13 @@ namespace SlotMaker2022
                 fs.Write(decimal.ToUInt32(MoveByBonus.Export()));
                 return true;
             }
+
+            /// <summary>
+            /// バイナリリーダーからデータを読み込みます。
+            /// </summary>
+            /// <param name="fs">データを読み込む BinaryReader への参照</param>
+            /// <param name="version">データのバージョン</param>
+            /// <returns>読み込みに成功した場合は true</returns>
             public bool ReadData(ref BinaryReader fs, int version)
             {
                 ContGameNum.Import(fs.ReadUInt16());
@@ -444,6 +609,9 @@ namespace SlotMaker2022
                 return true;
             }
         }
+        /// <summary>
+        /// RT移行データを管理するクラスです。
+        /// </summary>
         public class RTMoveData : ILocalDataInterface
         {
             // 状態移行元GameMode
@@ -455,6 +623,9 @@ namespace SlotMaker2022
             // RT移行先
             public byte Destination { get; set; }
 
+            /// <summary>
+            /// 新しいインスタンスを初期化します。
+            /// </summary>
             public RTMoveData()
             {
                 ModeSrc = 0;
@@ -462,6 +633,13 @@ namespace SlotMaker2022
                 CanOverride = false;
                 Destination = 0;
             }
+
+            /// <summary>
+            /// データをバイナリライターに書き込みます。
+            /// </summary>
+            /// <param name="fs">データを書き込む BinaryWriter への参照</param>
+            /// <param name="version">データのバージョン</param>
+            /// <returns>書き込みに成功した場合は true</returns>
             public bool StoreData(ref BinaryWriter fs, int version)
             {
                 fs.Write(ModeSrc);
@@ -470,6 +648,13 @@ namespace SlotMaker2022
                 fs.Write(Destination);
                 return true;
             }
+
+            /// <summary>
+            /// バイナリリーダーからデータを読み込みます。
+            /// </summary>
+            /// <param name="fs">データを読み込む BinaryReader への参照</param>
+            /// <param name="version">データのバージョン</param>
+            /// <returns>読み込みに成功した場合は true</returns>
             public bool ReadData(ref BinaryReader fs, int version)
             {
                 ModeSrc = fs.ReadByte();
@@ -480,7 +665,9 @@ namespace SlotMaker2022
             }
         }
 
-        // フリーズ関係データ
+        /// <summary>
+        /// フリーズ共通データを管理するクラスです。
+        /// </summary>
         public class FreezeCommonData : ILocalDataInterface
         {
             // フリーズ制御データ数
@@ -488,17 +675,34 @@ namespace SlotMaker2022
             // フリーズ時間データ数
             public byte TimeNum { get; set; }
 
+            /// <summary>
+            /// 新しいインスタンスを初期化します。
+            /// </summary>
             public FreezeCommonData()
             {
                 ControlNum = 0;
                 TimeNum = 0;
             }
+
+            /// <summary>
+            /// データをバイナリライターに書き込みます。
+            /// </summary>
+            /// <param name="fs">データを書き込む BinaryWriter への参照</param>
+            /// <param name="version">データのバージョン</param>
+            /// <returns>書き込みに成功した場合は true</returns>
             public bool StoreData(ref BinaryWriter fs, int version)
             {
                 fs.Write(ControlNum);
                 fs.Write(TimeNum);
                 return true;
             }
+
+            /// <summary>
+            /// バイナリリーダーからデータを読み込みます。
+            /// </summary>
+            /// <param name="fs">データを読み込む BinaryReader への参照</param>
+            /// <param name="version">データのバージョン</param>
+            /// <returns>読み込みに成功した場合は true</returns>
             public bool ReadData(ref BinaryReader fs, int version)
             {
                 ControlNum = fs.ReadByte();
@@ -506,24 +710,48 @@ namespace SlotMaker2022
                 return true;
             }
         }
+        /// <summary>
+        /// フリーズ制御データを管理するクラスです。
+        /// フリーズの種類やタイミング、抽選条件などを保持し、シリアライズ/デシリアライズを提供します。
+        /// </summary>
         public class FreezeControlData : ILocalDataInterface
         {
             // 定数定義
+            /// <summary>
+            /// フリーズ制御タイプを表す列挙型です。
+            /// </summary>
             public enum FreezeControlType : byte
             {
                 Flag, Cast, Mode, RT
             }
+
+            /// <summary>
+            /// フリーズ発生タイミングを表す列挙型です。
+            /// </summary>
             public enum FreezeTiming : byte
             {
                 BeforeWait, AfterWait, Stop1st, Stop2nd, BeforePay, AfterPay, AddGames, Reset
             };
 
             // 条件判定インターフェイス
+            /// <summary>
+            /// フリーズ抽選条件のインターフェイスです。
+            /// 条件データをエクスポートする Export メソッドを提供します。
+            /// </summary>
             public interface IFreezeCond
             {
+                /// <summary>
+                /// 条件データをバイナリ形式のバイトとして取得します。
+                /// </summary>
+                /// <returns>エクスポートされた条件データのバイト値</returns>
                 byte Export();
             }
+
             // 条件判定：フラグ成立/小役入賞
+            /// <summary>
+            /// フリーズ条件として小役入賞やボーナス成立を判定するクラスです。
+            /// NoBonusFlag と FlagID に基づいて条件をバイトデータにエクスポートします。
+            /// </summary>
             public class FreezeCondFlag : IFreezeCond
             {
                 // ボーナス非成立時or成立G限定か(true: 非成立時or成立G限定)
@@ -531,16 +759,29 @@ namespace SlotMaker2022
                 // 成立フラグID/入賞小役ID
                 public byte FlagID { get; set; }
 
+                /// <summary>
+                /// 指定の条件データを解析して初期化します。
+                /// </summary>
+                /// <param name="pConditionData">フラグおよびボーナス条件を含むバイトデータ</param>
                 public FreezeCondFlag(byte pConditionData)
                 {
                     FlagID = (byte)(pConditionData & 0x7F);
                     NoBonusFlag = (pConditionData & 0x80) != 0;
                 }
+
+                /// <summary>
+                /// デフォルト値でインスタンスを初期化します。
+                /// </summary>
                 public FreezeCondFlag()
                 {
                     NoBonusFlag = true;
                     FlagID = 0;
                 }
+
+                /// <summary>
+                /// 現在の条件をバイト形式でエクスポートします。
+                /// </summary>
+                /// <returns>エクスポートされた条件データのバイト値</returns>
                 public byte Export()
                 {
                     byte ans = FlagID;
@@ -548,7 +789,10 @@ namespace SlotMaker2022
                     return ans;
                 }
             }
-            // 条件判定：ボナ・状態
+            /// <summary>
+            /// 条件判定：ボーナスフラグおよびモード変化を判定するクラスです。
+            /// 指定のバイトデータからボーナスフラグ、元のゲームモードおよび移行先ゲームモードを解析します。
+            /// </summary>
             public class FreezeCondMode : IFreezeCond
             {
                 // ボーナスフラグ(成立Gのみ有効)
@@ -560,6 +804,10 @@ namespace SlotMaker2022
                 // 抽選対象がボーナスフラグか
                 public bool IsBonus { get; set; }
 
+                /// <summary>
+                /// 指定のバイトデータから条件を解析して初期化します。
+                /// </summary>
+                /// <param name="pConditionData">解析対象のバイトデータ</param>
                 public FreezeCondMode(byte pConditionData)
                 {
                     IsBonus = (pConditionData & 0x80) != 0;
@@ -567,6 +815,10 @@ namespace SlotMaker2022
                     ModeSrc = (byte)((pConditionData >> 2) & 0x3);
                     ModeDst = (byte)((pConditionData >> 0) & 0x3);
                 }
+
+                /// <summary>
+                /// デフォルトの条件で初期化します。全フラグおよびモードは0に設定されます。
+                /// </summary>
                 public FreezeCondMode()
                 {
                     BonusFlag = 0;
@@ -574,6 +826,11 @@ namespace SlotMaker2022
                     ModeDst = 0;
                     IsBonus = false;
                 }
+
+                /// <summary>
+                /// 条件をバイト形式でエクスポートします。フラグおよびモード情報を1バイトにパックします。
+                /// </summary>
+                /// <returns>エクスポートされた条件データのバイト値</returns>
                 public byte Export()
                 {
                     byte ans = (byte)(IsBonus ? 0x80 : 0x00);
@@ -583,7 +840,11 @@ namespace SlotMaker2022
                     return ans;
                 }
             }
-            // 条件判定：RT移行
+
+            /// <summary>
+            /// 条件判定：RT（リプレイタイム）移行を判定するクラスです。
+            /// 指定のバイトデータからRT移行元および移行先モードを解析します。
+            /// </summary>
             public class FreezeCondRT : IFreezeCond
             {
                 // RT移行元
@@ -591,16 +852,29 @@ namespace SlotMaker2022
                 // RT移行先
                 public byte ModeDst { get; set; }
 
+                /// <summary>
+                /// 指定のバイトデータからRT移行条件を解析して初期化します。
+                /// </summary>
+                /// <param name="pConditionData">解析対象のバイトデータ</param>
                 public FreezeCondRT(byte pConditionData)
                 {
                     ModeSrc = (byte)((pConditionData >> 3) & 0x7);
                     ModeDst = (byte)((pConditionData >> 0) & 0x7);
                 }
+
+                /// <summary>
+                /// デフォルトのRT条件で初期化します。移行元および移行先は0に設定されます。
+                /// </summary>
                 public FreezeCondRT()
                 {
                     ModeSrc = 0;
                     ModeDst = 0;
                 }
+
+                /// <summary>
+                /// RT移行条件をバイト形式でエクスポートします。移行元および移行先情報を1バイトにパックします。
+                /// </summary>
+                /// <returns>エクスポートされた条件データのバイト値</returns>
                 public byte Export()
                 {
                     byte ans = ModeDst;
@@ -608,24 +882,42 @@ namespace SlotMaker2022
                     return ans;
                 }
             }
-
-            // フリーズ抽選タイプ
+            /// <summary>
+            /// フリーズ抽選タイプ
+            /// </summary>
             public FreezeControlType ControlType { get; set; }
-            // フリーズ発生タイミング・操作
+            /// <summary>
+            /// フリーズ発生タイミング・操作
+            /// </summary>
             public FreezeTiming Timing { get; set; }
-            // フリーズ待機時間ID
+            /// <summary>
+            /// フリーズ待機時間ID
+            /// </summary>
             public byte WaitID { get; set; }
-            // 抽選条件(データはIFreezeCond実装で読込・判定)
+            /// <summary>
+            /// 抽選条件(データは IFreezeCond 実装で読み込み・判定される)
+            /// </summary>
             public byte Condition { get; set; }
-            // 抽選分母
+            /// <summary>
+            /// 抽選分母
+            /// </summary>
             public byte RandVal { get; set; }
-            // ゲーム数シフト
+            /// <summary>
+            /// ゲーム数シフト
+            /// </summary>
             public byte ShiftGameNum { get; set; }
-            // 抽選タイプ名
+            /// <summary>
+            /// 抽選タイプ名
+            /// </summary>
             public string ControlTypeName { get; set; }
-            // 発生タイミング名
+            /// <summary>
+            /// 発生タイミング名
+            /// </summary>
             public string TimingName { get; set; }
 
+            /// <summary>
+            /// デフォルトの抽選設定でインスタンスを初期化します。
+            /// </summary>
             public FreezeControlData()
             {
                 ControlType = FreezeControlType.Flag;
@@ -637,6 +929,13 @@ namespace SlotMaker2022
                 ControlTypeName = "";
                 TimingName = "";
             }
+
+            /// <summary>
+            /// インスタンスのデータをバイナリストリームに書き込みます。
+            /// </summary>
+            /// <param name="fs">書き込み先の BinaryWriter 参照</param>
+            /// <param name="version">データバージョン</param>
+            /// <returns>書き込みが成功した場合に true を返します</returns>
             public bool StoreData(ref BinaryWriter fs, int version)
             {
                 // enum->byte変換
@@ -650,6 +949,13 @@ namespace SlotMaker2022
                 fs.Write(TimingName);
                 return true;
             }
+
+            /// <summary>
+            /// バイナリストリームからデータを読み込み、インスタンスを初期化します。
+            /// </summary>
+            /// <param name="fs">読み込み元の BinaryReader 参照</param>
+            /// <param name="version">データバージョン</param>
+            /// <returns>読み込みが成功した場合に true を返します</returns>
             public bool ReadData(ref BinaryReader fs, int version)
             {
                 // byte->enum変換
@@ -664,35 +970,64 @@ namespace SlotMaker2022
                 return true;
             }
         }
+        /// <summary>
+        /// フリーズ待機時間データを管理します。
+        /// Exp が true の場合は TIME_LONG、false の場合は TIME_SHORT を単位として待機時間を計算します。
+        /// </summary>
         public class FreezeTimeData : ILocalDataInterface
         {
             // 時素定義
             public const int TIME_SHORT = 100;
             public const int TIME_LONG = 1000;
 
-            // 単位設定(True:1000[ms], False:100[ms])
+            /// <summary>
+            /// 単位設定(True:1000[ms], False:100[ms])
+            /// </summary>
             public bool Exp { get; set; }
-            // フリーズ待機時間
+            /// <summary>
+            /// フリーズ待機時間の要素数
+            /// </summary>
             public byte Elem { get; set; }
 
+            /// <summary>
+            /// デフォルトのフリーズ時間データでインスタンスを初期化します。
+            /// </summary>
             public FreezeTimeData()
             {
                 Exp = false;
                 Elem = 0;
             }
+
+            /// <summary>
+            /// インスタンスのデータをバイナリストリームに書き込みます。
+            /// </summary>
+            /// <param name="fs">書き込み先の BinaryWriter 参照</param>
+            /// <param name="version">データバージョン</param>
+            /// <returns>書き込みが成功した場合に true を返します</returns>
             public bool StoreData(ref BinaryWriter fs, int version)
             {
                 fs.Write(Exp);
                 fs.Write(Elem);
                 return true;
             }
+
+            /// <summary>
+            /// バイナリストリームからデータを読み込み、インスタンスを初期化します。
+            /// </summary>
+            /// <param name="fs">読み込み元の BinaryReader 参照</param>
+            /// <param name="version">データバージョン</param>
+            /// <returns>読み込みが成功した場合に true を返します</returns>
             public bool ReadData(ref BinaryReader fs, int version)
             {
                 Exp = fs.ReadBoolean();
                 Elem = fs.ReadByte();
                 return true;
             }
-            // Time計算
+
+            /// <summary>
+            /// 実際の待機時間を計算して返します。
+            /// </summary>
+            /// <returns>計算された待機時間（ミリ秒）</returns>
             public int CalcTime()
             {
                 int res = Exp ? TIME_LONG : TIME_SHORT;
@@ -705,20 +1040,39 @@ namespace SlotMaker2022
         public class ComaCombinationData : ILocalDataInterface // 停止位置テーブル定義
         {
             public const byte PresetCombNum = SYMBOL_MAX + 4;
+            /// <summary>停止位置テーブルの組み合わせデータ</summary>
             public UserBaseData Combination { get; set; }
+            /// <summary>ユーザコメント</summary>
             public string UserComment { get; set; }
 
+            /// <summary>
+            /// デフォルトの停止位置テーブル定義でインスタンスを初期化します。
+            /// </summary>
             public ComaCombinationData()
             {
                 Combination = new UserBaseData(1, true, PresetCombNum);
                 UserComment = string.Empty;
             }
+
+            /// <summary>
+            /// インスタンスのデータをバイナリストリームに書き込みます。
+            /// </summary>
+            /// <param name="fs">書き込み先の BinaryWriter 参照</param>
+            /// <param name="version">データバージョン</param>
+            /// <returns>書き込みが成功した場合に true を返します</returns>
             public bool StoreData(ref BinaryWriter fs, int version)
             {
                 fs.Write((ushort)Combination.Export());
                 fs.Write(UserComment);
                 return true;
             }
+
+            /// <summary>
+            /// バイナリストリームからデータを読み込み、インスタンスを初期化します。
+            /// </summary>
+            /// <param name="fs">読み込み元の BinaryReader 参照</param>
+            /// <param name="version">データバージョン</param>
+            /// <returns>読み込みが成功した場合に true を返します</returns>
             public bool ReadData(ref BinaryReader fs, int version)
             {
                 Combination.Import(fs.ReadUInt16());
@@ -726,22 +1080,42 @@ namespace SlotMaker2022
                 return true;
             }
         }
+
         public class SlipBaseData : ILocalDataInterface
         {   // すべりコマテーブル定義
+            /// <summary>すべりコマテーブルデータ</summary>
             public UserBaseData Table { get; set; }
+            /// <summary>コメント</summary>
             public string Comment { get; set; }
 
+            /// <summary>
+            /// デフォルトのすべりコマテーブル定義でインスタンスを初期化します。
+            /// </summary>
             public SlipBaseData()
             {
                 Table = new UserBaseData(SLIP_MAX, false, COMA_MAX);
                 Comment = string.Empty;
             }
+
+            /// <summary>
+            /// インスタンスのデータをバイナリストリームに書き込みます。
+            /// </summary>
+            /// <param name="fs">書き込み先の BinaryWriter 参照</param>
+            /// <param name="version">データバージョン</param>
+            /// <returns>書き込みが成功した場合に true を返します</returns>
             public bool StoreData(ref BinaryWriter fs, int version)
             {
                 fs.Write((ulong)Table.Export());
                 fs.Write(Comment);
                 return true;
             }
+
+            /// <summary>
+            /// バイナリストリームからデータを読み込み、インスタンスを初期化します。
+            /// </summary>
+            /// <param name="fs">読み込み元の BinaryReader 参照</param>
+            /// <param name="version">データバージョン</param>
+            /// <returns>読み込みが成功した場合に true を返します</returns>
             public bool ReadData(ref BinaryReader fs, int version)
             {
                 Table.Import(fs.ReadUInt64());
@@ -749,6 +1123,10 @@ namespace SlotMaker2022
                 return true;
             }
         }
+        /// <summary>
+        /// リーチ目・停止位置定義共通のリール位置データを管理します。
+        /// JudgeReel が REEL_MAX 以上の場合、該当リール引込制御を行います。
+        /// </summary>
         public class ReelPosElemData : ILocalDataInterface // リーチ目・停止位置定義共通のリール位置データ
         {
             // 定義基準リール：REEL_MAX以上の場合当該リール引込制御を起こす
@@ -760,6 +1138,9 @@ namespace SlotMaker2022
             // 停止位置テーブル番号
             public byte CombinationID { get; set; }
 
+            /// <summary>
+            /// デフォルトのリール位置要素データでインスタンスを初期化します。
+            /// </summary>
             public ReelPosElemData()
             {
                 JudgeReel = 0;
@@ -767,6 +1148,11 @@ namespace SlotMaker2022
                 IsInvert = false;
                 CombinationID = 0;
             }
+
+            /// <summary>
+            /// 指定されたインスタンスをディープコピーして新しいインスタンスを生成します。
+            /// </summary>
+            /// <param name="deepCopySrc">コピー元の ReelPosElemData インスタンス</param>
             public ReelPosElemData(ReelPosElemData deepCopySrc)
             {   // 引数データのディープコピー(値渡し)を生成する
                 JudgeReel = deepCopySrc.JudgeReel;
@@ -775,6 +1161,12 @@ namespace SlotMaker2022
                 CombinationID = deepCopySrc.CombinationID;
             }
 
+            /// <summary>
+            /// インスタンスのデータをバイナリストリームに書き込みます。
+            /// </summary>
+            /// <param name="fs">書き込み先の BinaryWriter 参照</param>
+            /// <param name="version">データバージョン</param>
+            /// <returns>書き込みが成功した場合に true を返します</returns>
             public bool StoreData(ref BinaryWriter fs, int version)
             {
                 fs.Write(JudgeReel);
@@ -783,6 +1175,13 @@ namespace SlotMaker2022
                 fs.Write(CombinationID);
                 return true;
             }
+
+            /// <summary>
+            /// バイナリストリームからデータを読み込み、インスタンスを初期化します。
+            /// </summary>
+            /// <param name="fs">読み込み元の BinaryReader 参照</param>
+            /// <param name="version">データバージョン</param>
+            /// <returns>読み込みが成功した場合に true を返します</returns>
             public bool ReadData(ref BinaryReader fs, int version)
             {
                 JudgeReel = fs.ReadByte();
@@ -792,21 +1191,35 @@ namespace SlotMaker2022
                 return true;
             }
         }
+
+        /// <summary>
+        /// 各リーチ目要素定義を管理します。
+        /// DefReelPosNum 個の ReelPosElemData と コメント文字列を保持します。
+        /// </summary>
         public class ReelPosData : ILocalDataInterface    // 各リーチ目要素定義
         {
             // ReelPosData定義数
             public const byte DefReelPosNum = REEL_MAX;
-            
+
             // リール停止位置データ
             public ReelPosElemData[] PosData { get; set; }
+            /// <summary>コメント</summary>
             public string Comment { get; set; }
 
+            /// <summary>
+            /// デフォルトの各リーチ目要素定義でインスタンスを初期化します。
+            /// </summary>
             public ReelPosData()
             {
                 PosData = new ReelPosElemData[DefReelPosNum];
                 for (int i = 0; i < DefReelPosNum; ++i)
                     PosData[i] = new ReelPosElemData();
             }
+
+            /// <summary>
+            /// 指定されたインスタンスをディープコピーして新しいインスタンスを生成します。
+            /// </summary>
+            /// <param name="deepCopySrc">コピー元の ReelPosData インスタンス</param>
             public ReelPosData(ReelPosData deepCopySrc)
             {   // 引数データのディープコピー(値渡し)を生成する
                 Comment = deepCopySrc.Comment;
@@ -815,14 +1228,27 @@ namespace SlotMaker2022
                     PosData[i] = new ReelPosElemData(deepCopySrc.PosData[i]);
             }
 
+            /// <summary>
+            /// インスタンスのデータをバイナリストリームに書き込みます。
+            /// </summary>
+            /// <param name="fs">書き込み先の BinaryWriter 参照</param>
+            /// <param name="version">データバージョン</param>
+            /// <returns>書き込みが成功した場合に true を返します</returns>
             public bool StoreData(ref BinaryWriter fs, int version)
             {
                 fs.Write(DefReelPosNum);
-                for (int i=0; i<DefReelPosNum; ++i)
+                for (int i = 0; i < DefReelPosNum; ++i)
                     if (!PosData[i].StoreData(ref fs, version)) return false;
                 fs.Write(Comment);
                 return true;
             }
+
+            /// <summary>
+            /// バイナリストリームからデータを読み込み、インスタンスを初期化します。
+            /// </summary>
+            /// <param name="fs">読み込み元の BinaryReader 参照</param>
+            /// <param name="version">データバージョン</param>
+            /// <returns>読み込みが成功した場合に true を返します</returns>
             public bool ReadData(ref BinaryReader fs, int version)
             {
                 byte dataSize = fs.ReadByte();
@@ -833,6 +1259,10 @@ namespace SlotMaker2022
                 return true;
             }
         }
+        /// <summary>
+        /// リーチ目定義を管理します。
+        /// 最大BET数、モード0のみ有効なリーチ目データを保持し、シリアライズ/デシリアライズを行います。
+        /// </summary>
         public class ReachData : ILocalDataInterface // リーチ目定義(最大BET数、モード0のみ有効)
         {
             // リーチ目レベル最大数設定
@@ -845,6 +1275,9 @@ namespace SlotMaker2022
             // リーチ目定義
             public List<ReelPosData> PosData { get; set; }
 
+            /// <summary>
+            /// デフォルトコンストラクタ：リーチ目定義リストとレベル数を初期化します。
+            /// </summary>
             public ReachData()
             {
                 BaseReelPos = 0;
@@ -852,6 +1285,13 @@ namespace SlotMaker2022
                 for (int i = 0; i < ReachLevelMax; ++i) ReachPatNum[i] = 0;
                 PosData = new List<ReelPosData>();
             }
+
+            /// <summary>
+            /// データをバイナリライターに書き込みます。
+            /// </summary>
+            /// <param name="fs">書き込み先の BinaryWriter 参照</param>
+            /// <param name="version">データバージョン</param>
+            /// <returns>書き込みが成功した場合に true を返します</returns>
             public bool StoreData(ref BinaryWriter fs, int version)
             {
                 fs.Write(BaseReelPos);
@@ -859,9 +1299,17 @@ namespace SlotMaker2022
                 for (int i = 0; i < ReachLevelMax; ++i) fs.Write(ReachPatNum[i]);
 
                 fs.Write(PosData.Count);
-                for (int i = 0; i < PosData.Count; ++i) if(!PosData[i].StoreData(ref fs, version)) return false;
+                for (int i = 0; i < PosData.Count; ++i)
+                    if (!PosData[i].StoreData(ref fs, version)) return false;
                 return true;
             }
+
+            /// <summary>
+            /// バイナリリーダーからデータを読み込みます。
+            /// </summary>
+            /// <param name="fs">読み込み元の BinaryReader 参照</param>
+            /// <param name="version">データバージョン</param>
+            /// <returns>読み込みが成功した場合に true を返します</returns>
             public bool ReadData(ref BinaryReader fs, int version)
             {
                 BaseReelPos = fs.ReadByte();
@@ -879,72 +1327,125 @@ namespace SlotMaker2022
                 int posNumFromBinary = fs.ReadInt32();
                 if (posNumFromPatNum != posNumFromBinary) return false;
 
-                for (int i=0; i<posNumFromBinary; ++i)
+                for (int i = 0; i < posNumFromBinary; ++i)
                 {
                     var addData = new ReelPosData();
-                    if(!addData.ReadData(ref fs, version)) return false;
+                    if (!addData.ReadData(ref fs, version)) return false;
                     PosData.Add(addData);
                 }
-                
+
                 return true;
             }
         }
+
+        /// <summary>
+        /// 組み合わせ優先制御容認データを管理します。
+        /// 各リールの組み合わせ優先制御データとコメントを保持し、シリアライズ/デシリアライズを行います。
+        /// </summary>
         public class CombiPriorityData : ILocalDataInterface
         {
             // 組み合わせ優先制御容認データ：(0,1,2)=(1st, 2nd, 3rd)
             public UserBaseData[] PriData { get; set; }
+            /// <summary>コメント</summary>
             public string Comment { get; set; }
-            
+
+            /// <summary>
+            /// デフォルトコンストラクタ：PriData 配列とコメントを初期化します。
+            /// </summary>
             public CombiPriorityData()
             {
                 PriData = new UserBaseData[REEL_MAX];
                 Comment = string.Empty;
 
                 uint elemNum = 1;
-                for (int i = 0; i < REEL_MAX; ++i) 
+                for (int i = 0; i < REEL_MAX; ++i)
                 {
                     elemNum *= (uint)(REEL_MAX - i);   // 各押し順のデータ数決定
                     PriData[i] = new UserBaseData(1, true, elemNum);
                 }
             }
+
+            /// <summary>
+            /// データをバイナリライターに書き込みます。
+            /// </summary>
+            /// <param name="fs">書き込み先の BinaryWriter 参照</param>
+            /// <param name="version">データバージョン</param>
+            /// <returns>書き込みが成功した場合に true を返します</returns>
             public bool StoreData(ref BinaryWriter fs, int version)
             {
                 fs.Write(PriData.Length);
-                for (int i = 0; i < PriData.Length; ++i) fs.Write((byte)PriData[i].Export());
+                for (int i = 0; i < PriData.Length; ++i)
+                    fs.Write((byte)PriData[i].Export());
                 fs.Write(Comment);
                 return true;
             }
+
+            /// <summary>
+            /// バイナリリーダーからデータを読み込みます。
+            /// </summary>
+            /// <param name="fs">読み込み元の BinaryReader 参照</param>
+            /// <param name="version">データバージョン</param>
+            /// <returns>読み込みが成功した場合に true を返します</returns>
             public bool ReadData(ref BinaryReader fs, int version)
             {
                 int dataSize = fs.ReadInt32();
                 if (dataSize != REEL_MAX) return false;
-                for (int i = 0; i < PriData.Length; ++i) PriData[i].Import(fs.ReadByte());
+                for (int i = 0; i < PriData.Length; ++i)
+                    PriData[i].Import(fs.ReadByte());
                 Comment = fs.ReadString();
                 return true;
             }
         }
+
+        /// <summary>
+        /// すべりコマ数増分およびテーブルIDを管理する要素データです。
+        /// ディープコピー、シリアライズ、デシリアライズをサポートします。
+        /// </summary>
         public class ControlSlipElem : ILocalDataInterface
         {
-            public byte SlipIncrement { get; set; } // すべりコマ数増分(0～3)
-            public byte TableID { get; set; }       // すべりコマテーブル番号
+            /// <summary>すべりコマ数増分(0～3)</summary>
+            public byte SlipIncrement { get; set; }
+            /// <summary>すべりコマテーブル番号</summary>
+            public byte TableID { get; set; }
 
+            /// <summary>
+            /// デフォルトコンストラクタ：SlipIncrement を 1、TableID を 0 に初期化します。
+            /// </summary>
             public ControlSlipElem()
             {
                 SlipIncrement = 1;
                 TableID = 0;
             }
+
+            /// <summary>
+            /// 指定されたインスタンスをディープコピーして新しいインスタンスを生成します。
+            /// </summary>
+            /// <param name="deepCopySrc">コピー元の ControlSlipElem インスタンス</param>
             public ControlSlipElem(ControlSlipElem deepCopySrc)
             {   // 引数データのディープコピー(値渡し)を生成する
                 SlipIncrement = deepCopySrc.SlipIncrement;
                 TableID = deepCopySrc.TableID;
             }
 
+            /// <summary>
+            /// データをバイナリライターに書き込みます。
+            /// </summary>
+            /// <param name="fs">書き込み先の BinaryWriter 参照</param>
+            /// <param name="version">データバージョン</param>
+            /// <returns>書き込みが成功した場合に true を返します</returns>
             public bool StoreData(ref BinaryWriter fs, int version)
             {
                 fs.Write(SlipIncrement);
                 fs.Write(TableID);
                 return true;
             }
+
+            /// <summary>
+            /// バイナリリーダーからデータを読み込みます。
+            /// </summary>
+            /// <param name="fs">読み込み元の BinaryReader 参照</param>
+            /// <param name="version">データバージョン</param>
+            /// <returns>読み込みが成功した場合に true を返します</returns>
             public bool ReadData(ref BinaryReader fs, int version)
             {
                 SlipIncrement = fs.ReadByte();
@@ -952,6 +1453,10 @@ namespace SlotMaker2022
                 return true;
             }
         }
+        /// <summary>
+        /// リール制御定義の基本データを表します。
+        /// 3リール用のすべり制御や回避位置テーブルを保持し、シリアライズ/デシリアライズをサポートします。
+        /// </summary>
         public class ReelControlElem3Reels : ILocalDataInterface
         {   // リール制御定義：基本データ
             public const byte AvoidPosNum = 3;
@@ -963,6 +1468,9 @@ namespace SlotMaker2022
             public List<ReelPosData> AvoidPos { get; set; }     // 停止位置テーブル数定義(回避箇所) 配列：定義種別/List：定義データ
             public List<ControlSlipElem> SlipElem { get; set; } // すべりコマ定義(定義過剰は無視、定義不足はデフォルト値使用)
 
+            /// <summary>
+            /// デフォルトコンストラクタ：各プロパティを初期値で初期化します。
+            /// </summary>
             public ReelControlElem3Reels()
             {
                 DefinePos = COMA_MAX * REEL_MAX;
@@ -972,6 +1480,11 @@ namespace SlotMaker2022
                 AvoidPos = new List<ReelPosData>();
                 SlipElem = new List<ControlSlipElem>();
             }
+
+            /// <summary>
+            /// ディープコピーコンストラクタ：指定されたインスタンスの値を複製して新しいインスタンスを生成します。
+            /// </summary>
+            /// <param name="deepCopySrc">コピー元の ReelControlElem3Reels インスタンス</param>
             public ReelControlElem3Reels(ReelControlElem3Reels deepCopySrc)
             {   // 引数データのディープコピー(値渡し)を生成する
                 DefinePos = deepCopySrc.DefinePos;
@@ -986,6 +1499,12 @@ namespace SlotMaker2022
                 foreach (var item in deepCopySrc.SlipElem) SlipElem.Add(new ControlSlipElem(item));
             }
 
+            /// <summary>
+            /// データをバイナリライターに書き込みます。
+            /// </summary>
+            /// <param name="fs">書き込み先の BinaryWriter 参照</param>
+            /// <param name="version">データバージョン</param>
+            /// <returns>書き込みが成功した場合に true を返します</returns>
             public bool StoreData(ref BinaryWriter fs, int version)
             {
                 fs.Write(DefinePos);
@@ -1002,6 +1521,13 @@ namespace SlotMaker2022
                 for (int i = 0; i < SlipElem.Count; ++i) SlipElem[i].StoreData(ref fs, version);
                 return true;
             }
+
+            /// <summary>
+            /// バイナリリーダーからデータを読み込みます。
+            /// </summary>
+            /// <param name="fs">読み込み元の BinaryReader 参照</param>
+            /// <param name="version">データバージョン</param>
+            /// <returns>読み込みが成功した場合に true を返します</returns>
             public bool ReadData(ref BinaryReader fs, int version)
             {
                 DefinePos = fs.ReadByte();
@@ -1021,7 +1547,7 @@ namespace SlotMaker2022
                 }
 
                 int slipNum = fs.ReadInt32();
-                for (int i=0; i<slipNum; ++i)
+                for (int i = 0; i < slipNum; ++i)
                 {
                     ControlSlipElem newData = new ControlSlipElem();
                     if (!newData.ReadData(ref fs, version)) return false;
@@ -1030,6 +1556,11 @@ namespace SlotMaker2022
                 return true;
             }
         }
+
+        /// <summary>
+        /// リール制御定義のヘッダデータを表します。
+        /// BET数、ゲームモード、フラグ状態、および停止位置制御要素リストを管理し、シリアライズ/デシリアライズを行います。
+        /// </summary>
         public class ReelControlData : ILocalDataInterface
         {   // リール制御定義：ヘッダデータ
             public byte BetNum { get; set; }                            // 制御対象BET数
@@ -1042,6 +1573,9 @@ namespace SlotMaker2022
             public List<ReelControlElem3Reels> ElemData { get; set; }   // 各停止位置要素データ
             public byte CombiPriority { get; set; }                     // 組み合わせ優先制御容認データID(1stのみ)
 
+            /// <summary>
+            /// デフォルトコンストラクタ：各プロパティを初期値で初期化します。
+            /// </summary>
             public ReelControlData()
             {
                 BetNum = 0;
@@ -1054,6 +1588,13 @@ namespace SlotMaker2022
                 ElemData = new List<ReelControlElem3Reels>();
                 CombiPriority = 0;
             }
+
+            /// <summary>
+            /// データをバイナリライターに書き込みます。
+            /// </summary>
+            /// <param name="fs">書き込み先の BinaryWriter 参照</param>
+            /// <param name="version">データバージョン</param>
+            /// <returns>書き込みが成功した場合に true を返します</returns>
             public bool StoreData(ref BinaryWriter fs, int version)
             {
                 fs.Write(BetNum);
@@ -1068,6 +1609,13 @@ namespace SlotMaker2022
                 fs.Write(CombiPriority);
                 return true;
             }
+
+            /// <summary>
+            /// バイナリリーダーからデータを読み込みます。
+            /// </summary>
+            /// <param name="fs">読み込み元の BinaryReader 参照</param>
+            /// <param name="version">データバージョン</param>
+            /// <returns>読み込みが成功した場合に true を返します</returns>
             public bool ReadData(ref BinaryReader fs, int version)
             {
                 BetNum = fs.ReadByte();
@@ -1078,7 +1626,7 @@ namespace SlotMaker2022
                 ReachPri.Import(fs.ReadByte());
                 ReachSec.Import(fs.ReadByte());
                 int elemDataSize = fs.ReadInt32();
-                for (int i=0; i<elemDataSize; ++i)
+                for (int i = 0; i < elemDataSize; ++i)
                 {
                     var newData = new ReelControlElem3Reels();
                     if (!newData.ReadData(ref fs, version)) return false;

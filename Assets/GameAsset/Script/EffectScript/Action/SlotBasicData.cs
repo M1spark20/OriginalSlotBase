@@ -7,8 +7,13 @@ using SlotMaker2022.main_function;
 
 namespace SlotEffectMaker2023.Action
 {
+	/// <summary>
+	/// スロットの内部データを管理するクラス。
+	/// クレジット数、BET数、モード状態、配当データなどを保持・操作します。
+	/// </summary>
 	public class SlotBasicData : ILocalDataInterface
-	{	// スロットの内部データを管理する(Sav)
+	{
+		// スロットの内部データを管理する(Sav)
 		// 定数
 		public const byte CREDIT_MAX = 50;
 
@@ -37,8 +42,11 @@ namespace SlotEffectMaker2023.Action
 
 		// 配当データ(使用するものだけ抽出)
 		public UserBaseData castLines { get; private set; }   // 配当入賞ライン
-		public int castBonusID { get; private set; }    // 入賞したボーナスのID
+		public int castBonusID { get; private set; }          // 入賞したボーナスのID
 
+		/// <summary>
+		/// コンストラクタ。初期値を設定します。
+		/// </summary>
 		public SlotBasicData()
 		{
 			slotSetting = 5;
@@ -46,7 +54,7 @@ namespace SlotEffectMaker2023.Action
 			inCount = 0;
 			outCount = 0;
 			betCount = 0;
-			creditShow = 50;
+			creditShow = CREDIT_MAX;
 			payoutShow = 0;
 			isBetLatched = false;
 			isReplay = false;
@@ -68,6 +76,12 @@ namespace SlotEffectMaker2023.Action
 			castBonusID = 0;
 		}
 
+		/// <summary>
+		/// 内部データをバイナリ形式で保存します。
+		/// </summary>
+		/// <param name="fs">BinaryWriter の参照</param>
+		/// <param name="version">保存バージョン</param>
+		/// <returns>保存に成功したか（常に true）</returns>
 		public bool StoreData(ref BinaryWriter fs, int version)
 		{
 			fs.Write(inCount);
@@ -95,6 +109,13 @@ namespace SlotEffectMaker2023.Action
 			}
 			return true;
 		}
+
+		/// <summary>
+		/// バイナリ形式から内部データを読み込みます。
+		/// </summary>
+		/// <param name="fs">BinaryReader の参照</param>
+		/// <param name="version">保存バージョン</param>
+		/// <returns>読込に成功したか（常に true）</returns>
 		public bool ReadData(ref BinaryReader fs, int version)
 		{
 			inCount = fs.ReadUInt32();
@@ -123,9 +144,9 @@ namespace SlotEffectMaker2023.Action
 			return true;
 		}
 
-		// 変数設定用メソッド
-		// BETをクレジットから1転送する。BETLatchをfalse(=未消化)にする
-		// リプレイの場合はクレジット数を減算しない
+		/// <summary>
+		/// BETを1追加し、クレジットから減算します。リプレイ時は減算しない。
+		/// </summary>
 		public void AddBetCount()
 		{
 			++betCount;
@@ -133,20 +154,34 @@ namespace SlotEffectMaker2023.Action
 			payoutShow = 0;
 			isBetLatched = false;
 		}
-		// BETをクリアする。ゲーム消化されていなければクレジットにメダルを戻す
+
+		/// <summary>
+		/// BETをクリアし、未消化時はクレジットに戻します。
+		/// </summary>
 		public void ClearBetCount()
 		{
 			if (!isBetLatched) creditShow = (byte)Math.Min(creditShow + betCount, CREDIT_MAX);
 			betCount = 0;
 		}
-		// BETを用いてリールを回転させる
+
+		/// <summary>
+		/// リール始動時にBETを消化し、IN/OUTを更新します。
+		/// </summary>
 		public void LatchBet()
 		{
 			isBetLatched = true;                // BETを消化済みにする
 			inCount += betCount;                // INメダル枚数を加算する
 			if (isReplay) outCount += betCount; // リプレイの場合、OUTメダル枚数も加算する
 		}
-		// フラグ設定
+
+		/// <summary>
+		/// フラグを設定し、必要に応じてモードとRTを遷移させます。
+		/// </summary>
+		/// <param name="pBonusFlag">ボーナスフラグ</param>
+		/// <param name="pCastFlag">子役フラグ</param>
+		/// <param name="cc">CastCommonData の参照</param>
+		/// <param name="rtc">RTCommonData の参照</param>
+		/// <param name="tm">SlotTimerManager の参照</param>
 		public void SetCastFlag(byte pBonusFlag, byte pCastFlag, LocalDataSet.CastCommonData cc, LocalDataSet.RTCommonData rtc, SlotTimerManager tm)
 		{
 			if (bonusFlag == 0 && pBonusFlag > 0)
@@ -160,8 +195,16 @@ namespace SlotEffectMaker2023.Action
 			// if (gameMode == 0) bonusFlag = 4;
 			// Debug.Log("FlagSet: bonus->" + bonusFlag.ToString() + " cast->" + castFlag.ToString());
 		}
-		// 配当設定(必要なものだけ設定する)
-		// ret: 当該配当での総払出枚数(0-max), replay(-1)
+
+		/// <summary>
+		/// 配当を設定し、払い出し枚数を計算します。
+		/// </summary>
+		/// <param name="castResult">GetCastResult の参照</param>
+		/// <param name="cc">CastCommonData の参照</param>
+		/// <param name="hm">HistoryManager の参照</param>
+		/// <param name="rd">リールデータ一覧</param>
+		/// <param name="vm">SlotValManager の参照</param>
+		/// <returns>リプレイ時は -1、それ以外は払い出し枚数</returns>
 		public int SetPayout(MainReelManager.GetCastResult castResult, LocalDataSet.CastCommonData cc, HistoryManager hm, List<ReelBasicData> rd, SlotValManager vm)
 		{
 			// データリセット
@@ -178,9 +221,9 @@ namespace SlotEffectMaker2023.Action
 				// 入賞ラインと配当名を読み込む
 				castLines.SetData((uint)castResult.payLine[castC], 1);
 				int bid = castResult.matchCast[castC].ValidateBonusFlag;
-				if (bid > 0) castBonusID += bid; 
+				if (bid > 0) castBonusID += bid;
 
-				// 配当読込(リプレイ・小役判定) payoutID == 0は配当なしとして処理しない
+				// 配当読込(リプレイ・小役判定)
 				uint payoutID = castResult.matchCast[castC].PayoutNumID.GetData((uint)(betCount - 1));
 				if (payoutID > LocalDataSet.CastCommonData.PAYOUT_DATA_MAX)
 					isReplay = true;
@@ -191,8 +234,6 @@ namespace SlotEffectMaker2023.Action
 			// 払出枚数の丸め処理
 			int maxPay = (int)cc.MaxPayout.GetData((uint)(betCount - 1));
 			payCount = Math.Min(maxPay, payCount);
-			// デバッグ出力
-			// Debug.Log("SetCast: " + castLines.Export().ToString() + " - " + castName + " - " + payCount.ToString() + " - rep:" + isReplay.ToString());
 			// モード/RTゲーム数減算
 			if (RTGameCount > 0) --RTGameCount;
 			if (modeGameCount > 0) --modeGameCount;
@@ -200,9 +241,14 @@ namespace SlotEffectMaker2023.Action
 			// replayなら-1、それ以外なら配当枚数を返す
 			return isReplay ? -1 : payCount;
 		}
-		// テンパイの有無を確認する
+
+		/// <summary>
+		/// テンパイ状態を確認し、ボーナスフラグを設定します。
+		/// </summary>
+		/// <param name="castResult">GetCastResult の参照</param>
+		/// <param name="cc">CastCommonData の参照</param>
 		public void CheckTenpai(MainReelManager.GetCastResult castResult, LocalDataSet.CastCommonData cc)
-        {
+		{
 			// データリセット
 			castBonusID = 0;
 			for (int castC = 0; castC < castResult.payLine.Count; ++castC)
@@ -211,7 +257,11 @@ namespace SlotEffectMaker2023.Action
 				int bid = castResult.matchCast[castC].ValidateBonusFlag;
 				if (bid > castBonusID) castBonusID = bid;
 			}
-        }
+		}
+
+		/// <summary>
+		/// 払い出しを1増加させ、クレジットとモード残数を更新します。
+		/// </summary>
 		public void AddPayout()
 		{
 			++outCount;
@@ -220,7 +270,18 @@ namespace SlotEffectMaker2023.Action
 			if (modeMedalCount <= 0) modeMedalCount = -1;
 			creditShow = (byte)Math.Min(creditShow + 1, CREDIT_MAX);
 		}
-		// モード移行処理(入賞による) modeChangeとRTChangeで状態変化結果を返す
+
+		/// <summary>
+		/// キャスト結果に応じてモードとRTを更新します。
+		/// </summary>
+		/// <param name="castResult">GetCastResult の参照</param>
+		/// <param name="cc">CastCommonData の参照</param>
+		/// <param name="rtc">RTCommonData の参照</param>
+		/// <param name="rmList">RT移動設定一覧</param>
+		/// <param name="tm">SlotTimerManager の参照</param>
+		/// <param name="hm">HistoryManager の参照</param>
+		/// <param name="cl">CollectionLogger の参照</param>
+		/// <param name="vm">SlotValManager の参照</param>
 		public void ModeChange(MainReelManager.GetCastResult castResult, LocalDataSet.CastCommonData cc, LocalDataSet.RTCommonData rtc, List<LocalDataSet.RTMoveData> rmList, SlotTimerManager tm, HistoryManager hm, CollectionLogger cl, SlotValManager vm)
 		{
 			for (int castC = 0; castC < castResult.matchCast.Count; ++castC)
@@ -230,7 +291,7 @@ namespace SlotEffectMaker2023.Action
 				if (checkData.ChangeGameModeFlag)
 				{
 					hm.StartBonus(this, vm);    // ボーナス履歴更新
-					cl.ClearLatch();			// 入賞までの新規リーチ目コレクション流し
+					cl.ClearLatch();           // コレクションLatchクリア
 					bonusFlag = 0;
 					SetMode(checkData.ChangeGameModeDest, checkData.BonusPayoutMaxID, checkData.BonusGameMaxID, cc, rtc, rmList, tm);
 				}
@@ -239,7 +300,16 @@ namespace SlotEffectMaker2023.Action
 					SetRT(checkData.ChangeRTDest, checkData.CanOverwriteRT, false, cc, rtc, tm);
 			}
 		}
-		// モードリセット処理
+
+		/// <summary>
+		/// モードおよびRTをリセットします。
+		/// </summary>
+		/// <param name="cc">CastCommonData の参照</param>
+		/// <param name="rtc">RTCommonData の参照</param>
+		/// <param name="rmList">RT移動設定一覧</param>
+		/// <param name="tm">SlotTimerManager の参照</param>
+		/// <param name="nowPayout":現在の払い出し枚数</param>
+		/// <param name="hm":HistoryManager の参照</param>
 		public void ModeReset(LocalDataSet.CastCommonData cc, LocalDataSet.RTCommonData rtc, List<LocalDataSet.RTMoveData> rmList, SlotTimerManager tm, int nowPayout, HistoryManager hm)
 		{
 			if (gameMode != 0)
@@ -247,42 +317,54 @@ namespace SlotEffectMaker2023.Action
 				// モードのリセット: 払出残数=0または残ゲーム数=0orJAC数=0
 				if (modeMedalCount >= 0 && modeMedalCount - nowPayout <= 0)
 				{
-					hm.FinishBonus(this, nowPayout);		// ボーナス履歴更新
+					// ボーナス履歴更新
+					hm.FinishBonus(this, nowPayout);
 					SetMode(0, 0, 0, cc, rtc, rmList, tm);
 				}
 				if (modeMedalCount < 0 && (modeGameCount <= 0 || modeJacCount <= 0))
 				{
-					hm.FinishBonus(this, nowPayout);		// ボーナス履歴更新
+					// ボーナス履歴更新
+					hm.FinishBonus(this, nowPayout);
 					SetMode(0, 0, 0, cc, rtc, rmList, tm);
 				}
-				// Debug.Log("ModeChk: Mode=" + gameMode + " Limit(Game/Jac/Medal)=" + modeGameCount + "/" + modeJacCount + "/" + modeMedalCount);
 			}
-			if (RTMode != 0)
-			{
+			if (RTMode != 0 && RTGameCount == 0)
 				// RTのリセット: 残ゲーム数=0
-				if (RTGameCount == 0) SetRT(0, true, true, cc, rtc, tm);
-				// Debug.Log("RTChk: RT=" + RTMode + " Game=" + RTGameCount);
-			}
+				SetRT(0, true, true, cc, rtc, tm);
 		}
-		// 設定変更
+
+		/// <summary>
+		/// スロット設定を変更します。
+		/// </summary>
+		/// <param name="val">設定値</param>
+		/// <param name="isRandom">ランダム設定フラグ</param>
 		public void ChangeSlotSetting(byte val, bool isRandom)
-        {
+		{
 			if (val >= LocalDataSet.SETTING_MAX) return;
 			slotSetting = val;
 			setRandom = isRandom;
-        }
-		// 内部mode移行処理
+		}
+
+		/// <summary>
+		/// モード移行を内部で処理します。
+		/// </summary>
+		/// <param name="ModeDest">遷移先モード</param>
+		/// <param name="payIndex">配当インデックス</param>
+		/// <param name="gameIndex">ゲームインデックス</param>
+		/// <param name="cc">CastCommonData の参照</param>
+		/// <param name="rtc">RTCommonData の参照</param>
+		/// <param name="rmList">RT移動設定一覧</param>
+		/// <param name="tm">SlotTimerManager の参照</param>
 		private void SetMode(byte ModeDest, byte payIndex, byte gameIndex, LocalDataSet.CastCommonData cc, LocalDataSet.RTCommonData rtc, List<LocalDataSet.RTMoveData> rmList, SlotTimerManager tm)
 		{
 			byte lastMode = gameMode;
 			gameMode = ModeDest;
-			// 条件装置指定
 			if (gameIndex == 0)
 			{
 				if (payIndex > 0)
 				{
-					int val = (int)cc.BonusPayData.GetData((uint)(payIndex - 1));
-					if (val > 0) modeMedalCount = val;
+					int valMedal = (int)cc.BonusPayData.GetData((uint)(payIndex - 1));
+					if (valMedal > 0) modeMedalCount = valMedal;
 				}
 				modeGameCount = 0;
 				modeJacCount = 0;
@@ -290,14 +372,10 @@ namespace SlotEffectMaker2023.Action
 			else
 			{
 				modeGameCount = (byte)cc.GameNumData.GetData((uint)(gameIndex - 1));
-				if (payIndex == 0) modeJacCount = modeGameCount;
-				else modeJacCount = (byte)cc.BonusPayData.GetData((uint)(payIndex - 1));
+				modeJacCount = payIndex == 0 ? modeGameCount : (byte)cc.BonusPayData.GetData((uint)(payIndex - 1));
 			}
-			// タイマ作動
 			tm.GetTimer("changeMode").Activate();
 			tm.GetTimer("changeMode").Reset();
-			// Debug.Log("ModeSet: Mode=" + ModeDest + " Limit(Game/Jac/Medal)=" + modeGameCount + "/" + modeJacCount + "/" + modeMedalCount);
-			// モード移行によるRT移行チェック
 			foreach (var item in rmList)
 			{
 				if (item.ModeSrc != lastMode || item.ModeDst != gameMode) continue;
@@ -305,23 +383,25 @@ namespace SlotEffectMaker2023.Action
 				break;
 			}
 		}
-		// 内部RT移行処理(ret:RTを上書きしたか)
+
+		/// <summary>
+		/// RT移行を内部で処理します。
+		/// </summary>
+		/// <param name="RTDest">遷移先RT</param>
+		/// <param name="ovrDef">デフォルト上書き可否フラグ</param>
+		/// <param name="ovrGame">ゲーム中上書きフラグ</param>
+		/// <param name="cc">CastCommonData の参照</param>
+		/// <param name="rtc">RTCommonData の参照</param>
+		/// <param name="tm">SlotTimerManager の参照</param>
 		private void SetRT(byte RTDest, bool ovrDef, bool ovrGame, LocalDataSet.CastCommonData cc, LocalDataSet.RTCommonData rtc, SlotTimerManager tm)
 		{
-			// 移行処理
 			RTMode = RTDest;
 			RTOverride = ovrDef;
 			uint gameIdx = rtc.ContGameNum.GetData((uint)RTDest);
-			if (gameIdx == 0) RTGameCount = -1;
-			else
-			{
-				RTOverride &= ovrGame;
-				RTGameCount = (int)cc.GameNumData.GetData(gameIdx - 1u);
-			}
-			// タイマ作動
+			RTGameCount = gameIdx == 0 ? -1 : (int)cc.GameNumData.GetData(gameIdx - 1u);
+			RTOverride &= ovrGame;
 			tm.GetTimer("changeRT").Activate();
 			tm.GetTimer("changeRT").Reset();
-			// Debug.Log("RTSet: RT=" + RTDest + " Game=" + RTGameCount);
 		}
 	}
 }
