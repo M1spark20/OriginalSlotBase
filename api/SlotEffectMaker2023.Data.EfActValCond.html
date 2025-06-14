@@ -1,0 +1,470 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class EfActValCond
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class EfActValCond
+   ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="SlotEffectMaker2023.Data.EfActValCond">
+  
+  
+  <h1 id="SlotEffectMaker2023_Data_EfActValCond" data-uid="SlotEffectMaker2023.Data.EfActValCond" class="text-break">Class EfActValCond
+  </h1>
+  <div class="markdown level0 summary"><p>変数による条件分岐を行うアクションを表します。
+conds による AND-OR 条件評価後、actionList 内のアクションを実行します。</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><a class="xref" href="SlotEffectMaker2023.Data.IEfAct.html">IEfAct</a></div>
+    <div class="level2"><span class="xref">EfActValCond</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="SlotMaker2022.ILocalDataInterface.html">ILocalDataInterface</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="SlotEffectMaker2023.Data.IEfAct.html#SlotEffectMaker2023_Data_IEfAct_dataName">IEfAct.dataName</a>
+    </div>
+    <div>
+      <a class="xref" href="SlotEffectMaker2023.Data.IEfAct.html#SlotEffectMaker2023_Data_IEfAct_usage">IEfAct.usage</a>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="SlotEffectMaker2023.Data.html">SlotEffectMaker2023.Data</a></h6>
+  <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
+  <h5 id="SlotEffectMaker2023_Data_EfActValCond_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class EfActValCond : IEfAct, ILocalDataInterface</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  
+  
+  <a id="SlotEffectMaker2023_Data_EfActValCond__ctor_" data-uid="SlotEffectMaker2023.Data.EfActValCond.#ctor*"></a>
+  <h4 id="SlotEffectMaker2023_Data_EfActValCond__ctor" data-uid="SlotEffectMaker2023.Data.EfActValCond.#ctor">EfActValCond()</h4>
+  <div class="markdown level1 summary"><p>EfActValCond の新しいインスタンスを初期化します。
+conds と actionList を空のリストに設定し、usage を &quot;[変数条件]&quot; に設定します。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public EfActValCond()</code></pre>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="SlotEffectMaker2023_Data_EfActValCond_actionList_" data-uid="SlotEffectMaker2023.Data.EfActValCond.actionList*"></a>
+  <h4 id="SlotEffectMaker2023_Data_EfActValCond_actionList" data-uid="SlotEffectMaker2023.Data.EfActValCond.actionList">actionList</h4>
+  <div class="markdown level1 summary"><p>条件成立時に実行されるアクションリスト。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;EfCondTrig&gt; actionList { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="SlotEffectMaker2023.Data.EfCondTrig.html">EfCondTrig</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotEffectMaker2023_Data_EfActValCond_conds_" data-uid="SlotEffectMaker2023.Data.EfActValCond.conds*"></a>
+  <h4 id="SlotEffectMaker2023_Data_EfActValCond_conds" data-uid="SlotEffectMaker2023.Data.EfActValCond.conds">conds</h4>
+  <div class="markdown level1 summary"><p>AND-OR 構造で定義された変数条件のリスト。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;List&lt;EfValCond&gt;&gt; conds { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="SlotEffectMaker2023.Data.EfValCond.html">EfValCond</a>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="SlotEffectMaker2023_Data_EfActValCond_Action_" data-uid="SlotEffectMaker2023.Data.EfActValCond.Action*"></a>
+  <h4 id="SlotEffectMaker2023_Data_EfActValCond_Action" data-uid="SlotEffectMaker2023.Data.EfActValCond.Action">Action()</h4>
+  <div class="markdown level1 summary"><p>条件評価を行い、actionList 内の各アクションを実行します。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void Action()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="SlotEffectMaker2023.Data.IEfAct.html#SlotEffectMaker2023_Data_IEfAct_Action">IEfAct.Action()</a></div>
+  
+  
+  <a id="SlotEffectMaker2023_Data_EfActValCond_Evaluate_" data-uid="SlotEffectMaker2023.Data.EfActValCond.Evaluate*"></a>
+  <h4 id="SlotEffectMaker2023_Data_EfActValCond_Evaluate" data-uid="SlotEffectMaker2023.Data.EfActValCond.Evaluate">Evaluate()</h4>
+  <div class="markdown level1 summary"><p>登録された conds の条件を評価し、すべての AND グループが成立するかを判定します。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Evaluate()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>すべての条件が成立すれば true、そうでなければ false を返します。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotEffectMaker2023_Data_EfActValCond_Evaluate_" data-uid="SlotEffectMaker2023.Data.EfActValCond.Evaluate*"></a>
+  <h4 id="SlotEffectMaker2023_Data_EfActValCond_Evaluate_System_Collections_Generic_List_System_Tuple_System_String_System_Int32___" data-uid="SlotEffectMaker2023.Data.EfActValCond.Evaluate(System.Collections.Generic.List{System.Tuple{System.String,System.Int32}})">Evaluate(List&lt;Tuple&lt;String, Int32&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>offset を考慮して条件を評価します。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Evaluate(List&lt;Tuple&lt;string, int&gt;&gt; ov)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.Tuple</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.Int32</span>&gt;&gt;</td>
+        <td><span class="parametername">ov</span></td>
+        <td><p>変数名とオフセット値のタプルリスト。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>すべての条件が成立すれば true、そうでなければ false を返します。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotEffectMaker2023_Data_EfActValCond_ReadData_" data-uid="SlotEffectMaker2023.Data.EfActValCond.ReadData*"></a>
+  <h4 id="SlotEffectMaker2023_Data_EfActValCond_ReadData_BinaryReader__System_Int32_" data-uid="SlotEffectMaker2023.Data.EfActValCond.ReadData(BinaryReader@,System.Int32)">ReadData(ref BinaryReader, Int32)</h4>
+  <div class="markdown level1 summary"><p>base.ReadData を呼び出した後、conds と actionList のデータを読み込みます。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool ReadData(ref BinaryReader fs, int version)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">BinaryReader</span></td>
+        <td><span class="parametername">fs</span></td>
+        <td><p>データを読み込む BinaryReader への参照。</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">version</span></td>
+        <td><p>データ形式のバージョン。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>読み込み処理が成功した場合に true を返します。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="SlotEffectMaker2023.Data.IEfAct.html#SlotEffectMaker2023_Data_IEfAct_ReadData_BinaryReader__System_Int32_">IEfAct.ReadData(ref BinaryReader, Int32)</a></div>
+  
+  
+  <a id="SlotEffectMaker2023_Data_EfActValCond_Rename_" data-uid="SlotEffectMaker2023.Data.EfActValCond.Rename*"></a>
+  <h4 id="SlotEffectMaker2023_Data_EfActValCond_Rename_SlotEffectMaker2023_Data_EChangeNameType_System_String_System_String_" data-uid="SlotEffectMaker2023.Data.EfActValCond.Rename(SlotEffectMaker2023.Data.EChangeNameType,System.String,System.String)">Rename(EChangeNameType, String, String)</h4>
+  <div class="markdown level1 summary"><p>conds と actionList 内の各要素に対して Rename を実行します。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void Rename(EChangeNameType type, string src, string dst)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SlotEffectMaker2023.Data.EChangeNameType.html">EChangeNameType</a></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>変更を適用する名前の種類。</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">src</span></td>
+        <td><p>変更前の名前。</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">dst</span></td>
+        <td><p>変更後の名前。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="SlotEffectMaker2023.Data.IEfAct.html#SlotEffectMaker2023_Data_IEfAct_Rename_SlotEffectMaker2023_Data_EChangeNameType_System_String_System_String_">IEfAct.Rename(EChangeNameType, String, String)</a></div>
+  
+  
+  <a id="SlotEffectMaker2023_Data_EfActValCond_StoreData_" data-uid="SlotEffectMaker2023.Data.EfActValCond.StoreData*"></a>
+  <h4 id="SlotEffectMaker2023_Data_EfActValCond_StoreData_BinaryWriter__System_Int32_" data-uid="SlotEffectMaker2023.Data.EfActValCond.StoreData(BinaryWriter@,System.Int32)">StoreData(ref BinaryWriter, Int32)</h4>
+  <div class="markdown level1 summary"><p>base.StoreData を呼び出した後、conds と actionList のデータを書き込みます。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool StoreData(ref BinaryWriter fs, int version)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">BinaryWriter</span></td>
+        <td><span class="parametername">fs</span></td>
+        <td><p>データを書き込む BinaryWriter への参照。</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">version</span></td>
+        <td><p>データ形式のバージョン。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>書き込み処理が成功した場合に true を返します。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="SlotEffectMaker2023.Data.IEfAct.html#SlotEffectMaker2023_Data_IEfAct_StoreData_BinaryWriter__System_Int32_">IEfAct.StoreData(ref BinaryWriter, Int32)</a></div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="SlotMaker2022.ILocalDataInterface.html">ILocalDataInterface</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

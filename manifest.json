@@ -1,0 +1,1280 @@
+{
+  "homepages": [],
+  "source_base_path": "D:/UnityDocs/docfx_project",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Action.BalanceGraph.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Action.BalanceGraph.html",
+          "hash": "BQ+WFixzoH+6O2Y8XHVRqkNkNtarusi8NwUtCQbwSHY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Action.BonusHistoryElem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Action.BonusHistoryElem.html",
+          "hash": "WfQBsFM4agDXy2wqtqOTHZWqT7RtZ9VtmHb8L4+XlsI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Action.CollectionAchieveElem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Action.CollectionAchieveElem.html",
+          "hash": "cpAuAhFIQ3Uhd0/QRSkYEoWb7GKWd+0EvN8Ku13G8d0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Action.CollectionLogger.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Action.CollectionLogger.html",
+          "hash": "1+0YkFRuclFHhAW0Gs+aHphOEqJ+XyISPARDezhlG8c="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Action.DataShifterManager-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Action.DataShifterManager-1.html",
+          "hash": "Kfy1r4viHPjhN7agLGI5bM8wq0I7r6K2M/vRH4qpz94="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Action.FreezeManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Action.FreezeManager.html",
+          "hash": "O/ZbBSfnOPhx+jszHUcMWmYGElWRhTc5dn6B3kN/Wd4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Action.HistoryManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Action.HistoryManager.html",
+          "hash": "8yG4b2xsgIFrPkGyKfQTEugPWDkVVt6TZ2CVMR4o1Nc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Action.LangLocale.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Action.LangLocale.html",
+          "hash": "hfWtEaGTO1LS0VOmM6KuHvJigT/lQYDtKrIPkPQjYus="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Action.PatternHistoryElem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Action.PatternHistoryElem.html",
+          "hash": "Sveau2IZXvjbIfvbBLn1NcAOZcLfdiPONpekPjY/bxs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Action.ReelBasicData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Action.ReelBasicData.html",
+          "hash": "cq/gx6AQwhGVankd4bj0mhqy3DUJxvOMNC99hzlei+o="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Action.SlotBasicData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Action.SlotBasicData.html",
+          "hash": "aJ7Mrb7RYITZw8lndDLLzDgeS29s+vB5F5CcRurPuRA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Action.SlotTimer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Action.SlotTimer.html",
+          "hash": "1k/3Olqerz+gRFFmFFNlSzjtv/JG3ljvoHgM5Jb9TYU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Action.SlotTimerManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Action.SlotTimerManager.html",
+          "hash": "jwZV8HBoApKESOmXPPLMgAFdGfc3XQhjEoe6uItZi5Y="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Action.SlotValManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Action.SlotValManager.html",
+          "hash": "uX88I+0fHUC7TdxV+VMyfOMiM3IqhPEDUPREZsFk+9w="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Action.SoundDataManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Action.SoundDataManager.html",
+          "hash": "aTwbWFfEjwObXZX6kS9JoA14dUBax6v6mpne4W/5ELM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Action.SystemData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Action.SystemData.html",
+          "hash": "tpJ/l4s7d4KK23fMI6++ao3VrzAHGK9EIe/1d8C0OuE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Action.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Action.html",
+          "hash": "9lbdEo/Xx42XVmOq6SdfMRanPYwliEeNH+VZCr9Q9TE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Data.AchieveDataType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Data.AchieveDataType.html",
+          "hash": "n//xQbSmrtt7q55xGYXODnjEBqCf+h4O2m90FtruOqs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Data.BonusConfig.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Data.BonusConfig.html",
+          "hash": "gYl6ptgWzKA9jLKyVsuQiUp4LH9QgwohR3nhV7sRLcY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Data.CollectionData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Data.CollectionData.html",
+          "hash": "POjsPEDPJ8fl6pa+XpNM0Z8ILYhsfncXMmA61ESotJI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Data.CollectionDataElem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Data.CollectionDataElem.html",
+          "hash": "M9beHeLpjiKlaiKUp4kt8rBzzbOWhAOHkkkRFv8BW/E="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Data.CollectionReelElem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Data.CollectionReelElem.html",
+          "hash": "aIEbQuJG7y5kaHvzMoFm0sffMrtOHVpGZSF4XwkfCCQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Data.CollectionReelPattern.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Data.CollectionReelPattern.html",
+          "hash": "lmOquS3iSSxFV9dxYkG17bBO49k8NCgSw1Ugu8O9jQ8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Data.ColorMap.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Data.ColorMap.html",
+          "hash": "3vkvwz6fksanVujHlfxt1MNVzjLB3O+WYC7z097u+Q8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Data.ColorMapAccelation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Data.ColorMapAccelation.html",
+          "hash": "A26GRPCNTQ0J15qaVITEUvaobtYC5WOgRjvnBJkIG40="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Data.ColorMapDataManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Data.ColorMapDataManager.html",
+          "hash": "E9/ddDNj/a888ukHEioAuvL6xUtGzJt++mXE2DGxLF8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Data.ColorMapElem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Data.ColorMapElem.html",
+          "hash": "ekStUiGpT2LzCXJl0n4eaMI3ZbrjzEPqEeilgnmCBhs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Data.ColorMapList.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Data.ColorMapList.html",
+          "hash": "c49Cs99seJWC2ISmDk5Qn/Uwl6xbg96FJfzscbx17PI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Data.ColorMapShifter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Data.ColorMapShifter.html",
+          "hash": "XV8hXylSR9dn8BIdIkuQN13L5UOVBomABck/mbTDYrA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Data.DataShifterBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Data.DataShifterBase.html",
+          "hash": "kYmhUTyFBSbGWa8p3ExJPU9Gg7wz+Pni0RInuIIIfMY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Data.ECalcOperand.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Data.ECalcOperand.html",
+          "hash": "lWkOvXed3jl1w3bN/nRtVl/NsFcB/+vq0DjMEGQvFfY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Data.EChangeNameType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Data.EChangeNameType.html",
+          "hash": "nW37AeLVuLWWmz0cB3JX3jdBhHGgIA3Lcc7N9O1hwG0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Data.EfActChangeMap.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Data.EfActChangeMap.html",
+          "hash": "4zk9ejyky7IoP6JVQ0Y553kbOoZojHJJ5N6+4rSuAdE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Data.EfActChangeSound.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Data.EfActChangeSound.html",
+          "hash": "En6GBgXGP/G6LDpCqCsLoj1645tFpEx5+NzjQzejTKQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Data.EfActCtrlTimer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Data.EfActCtrlTimer.html",
+          "hash": "yz1brXFXOeCWkxnDZ/0ecgosXuNEm+96+GGIQCJZbp8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Data.EfActCtrlVal.OP.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Data.EfActCtrlVal.OP.html",
+          "hash": "5AbzXYK82KmD0V1CbM/TreM07ZMS/Di+dS+ppZKA6aU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Data.EfActCtrlVal.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Data.EfActCtrlVal.html",
+          "hash": "mZIi9aVNBSfGJbZLOAde3DqMRU+ByaMtflnkOPneMRY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Data.EfActMultiVarSet.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Data.EfActMultiVarSet.html",
+          "hash": "tDoVRN9Z4t6msuDSicPH3kKBwnD7QlTfkZwQySkeMMg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Data.EfActRandVal.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Data.EfActRandVal.html",
+          "hash": "LsqX812QU3qHNtsstPLDVnQc6qTZIRf8iQu8/WgxD8g="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Data.EfActTimerCond.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Data.EfActTimerCond.html",
+          "hash": "i/rgSlTUrtkKqyXMoFfETQQ+JTrLpNDP9RHygrLI4gY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Data.EfActValCond.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Data.EfActValCond.html",
+          "hash": "tkdZU4f8KjeMRnR8vT0zrb7qK1uUzdPBgFVmFiIfhNg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Data.EfActionSwitch.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Data.EfActionSwitch.html",
+          "hash": "MyGTedesf9CudS/wV/vkCtJaNQdrgwXBPdEqDnFDkmg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Data.EfCondTrig.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Data.EfCondTrig.html",
+          "hash": "vO2WtKE65UXFrXf38WBnN+E8Zn6TrIVFZMTOXG2V2Mg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Data.EfTimeCond.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Data.EfTimeCond.html",
+          "hash": "stCMfcHsdKKyIDiqqEfiV5yTmHwfWI/YB2cOqsInqlE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Data.EfValCond.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Data.EfValCond.html",
+          "hash": "3S10DMkdxHVNMDO5niN8JfXMzDX9kwyI+Y8nuOaQCok="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Data.FlagCounterCond.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Data.FlagCounterCond.html",
+          "hash": "0qoCWxTnUwH+obL3MZrxnHzqDiTYblbdPeDJcA6P0UI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Data.FlagCounterSet.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Data.FlagCounterSet.html",
+          "hash": "qaxQ2UC09V9vhBhsVCv4ebT15UmlBtBr+nB9WbDBWkg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Data.GameAchievement.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Data.GameAchievement.html",
+          "hash": "W8U+BfOSX2OfIvaQkynFPO9hhPx2XbgnTzcKBkfLOyM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Data.GameAchievementList.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Data.GameAchievementList.html",
+          "hash": "Eb1Ol/KPP1/XX9mFhCDoch01ENUdbDhkDO4SyWb+1Ac="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Data.HistoryConfig.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Data.HistoryConfig.html",
+          "hash": "K0dJeqSovnc+a/6xut8tHCa5ZIVmg8qVTkmdMluiQTw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Data.IEfAct.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Data.IEfAct.html",
+          "hash": "ZSkLPACI2A7sRO2HoxObBOnD/epdyL5tWxsMocdTt8Q="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Data.IEfChangeBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Data.IEfChangeBase.html",
+          "hash": "6x3WEEG6iiPoz2UUx+IVgSz1LK1FV6Gl9wB9f9ZvRzE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Data.SlotTimeline.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Data.SlotTimeline.html",
+          "hash": "2x1TjMVIvaA1qFG6nwS3MlUWJdO/pr0qm2KnGhzArpE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Data.SlotVariable.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Data.SlotVariable.html",
+          "hash": "z2hy6TkUkhQY+wUWz0KYM8YE6LL8nVaM16BZ11h2lLU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Data.SoundID.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Data.SoundID.html",
+          "hash": "HVZc1Ob6m0KDpIiQy+4UrtsGJh/T+HOqYcyP3nhl6sM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Data.SoundPlayData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Data.SoundPlayData.html",
+          "hash": "MWSolT5HK2OdHwujb6k7R0tk0+FI0POO/bXhQWyK/yo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Data.TimerList.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Data.TimerList.html",
+          "hash": "NixnDmSfP/8tda5EP8eizUaCFU19aC7YDUSRP9577Nk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Data.UserTimerData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Data.UserTimerData.html",
+          "hash": "uMT6PZ+bAQbFVHxTz3fJn7j+UIxV7spt+Rsi4ymyISE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Data.VarList.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Data.VarList.html",
+          "hash": "xVEHrhKZp+7VfbqHKd8z6BRQFkvWb/C2/B0tXOYYs7A="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Data.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Data.html",
+          "hash": "UZl2TC4blo1Kve8BKRZCC+rIh+IMPzqTAijK0n0O7hA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.html",
+          "hash": "VPAI4Tj3M0V0ganiVk9AdZfZ02VELllr3oar99WkrAU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Singleton.SlotDataSingleton.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Singleton.SlotDataSingleton.html",
+          "hash": "G2ZhNxV2lJt4zKtfCZBRU3GPy0CSQCd/Q28gwoI9LOc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotEffectMaker2023.Singleton.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotEffectMaker2023.Singleton.html",
+          "hash": "9tDe2kGNsKO7k0bNAqjeMc06qnW0kqROXLLqMCcmXkM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotMaker2022.ILocalDataInterface.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotMaker2022.ILocalDataInterface.html",
+          "hash": "tagFN1vf//8+IkYBzXMcsE9kdGCa1jG4gXq8HvlPvsU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotMaker2022.LocalDataSet.CastCommonData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotMaker2022.LocalDataSet.CastCommonData.html",
+          "hash": "w3xmNmAjg8eFimLB5gqslkhqV+1DIbMMQhnV10Wo0YE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotMaker2022.LocalDataSet.CastElemData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotMaker2022.LocalDataSet.CastElemData.html",
+          "hash": "2MubIXplcwfINEv2SCQ9NrZ8albsE06wWf7B3M1N37w="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotMaker2022.LocalDataSet.ComaCombinationData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotMaker2022.LocalDataSet.ComaCombinationData.html",
+          "hash": "tm8qOdENuR01JUcHyWNwaQX12hPBgZcmOxp8o68HGOw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotMaker2022.LocalDataSet.CombiPriorityData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotMaker2022.LocalDataSet.CombiPriorityData.html",
+          "hash": "HiJPVA9YqOBOCoWg9Vd/T5Ymb7oUVdlqnzVpUfOHPrE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotMaker2022.LocalDataSet.ControlSlipElem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotMaker2022.LocalDataSet.ControlSlipElem.html",
+          "hash": "oxJDZTzo4sKu31nVSApt+ZBLSepIAvasRmDDWgwubws="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotMaker2022.LocalDataSet.FlagCommonData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotMaker2022.LocalDataSet.FlagCommonData.html",
+          "hash": "Rrj87D4CPbSfotYzjKtMuImoErUvbcxFBP93UbZGUwI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotMaker2022.LocalDataSet.FlagElemData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotMaker2022.LocalDataSet.FlagElemData.html",
+          "hash": "KmFmvasABsRWhlRGWrmh8CdyEJP/UHJfS3LwVD86v8U="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotMaker2022.LocalDataSet.FlagRandData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotMaker2022.LocalDataSet.FlagRandData.html",
+          "hash": "Lahcak46QNK6shmMkLTS90nuiIxWP8RSf/INwwZ0gY0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotMaker2022.LocalDataSet.FreezeCommonData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotMaker2022.LocalDataSet.FreezeCommonData.html",
+          "hash": "THf//IwyN+1WnP+Y0Y8eYRwODrfo5E01KEZXGWXkk0I="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotMaker2022.LocalDataSet.FreezeControlData.FreezeCondFlag.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotMaker2022.LocalDataSet.FreezeControlData.FreezeCondFlag.html",
+          "hash": "V+ejkxzaD71Wiw5RmH5M/E2DmIFis4twECnUa+rxk1o="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotMaker2022.LocalDataSet.FreezeControlData.FreezeCondMode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotMaker2022.LocalDataSet.FreezeControlData.FreezeCondMode.html",
+          "hash": "HcMnFilUTn3v12aIHVSslHFeABv7r3jgF7mm7vFUfak="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotMaker2022.LocalDataSet.FreezeControlData.FreezeCondRT.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotMaker2022.LocalDataSet.FreezeControlData.FreezeCondRT.html",
+          "hash": "0Vnj1K2lCSCZF9/JhUtlVOA/6OBkmlZIHv4IbVNL3BQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotMaker2022.LocalDataSet.FreezeControlData.FreezeControlType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotMaker2022.LocalDataSet.FreezeControlData.FreezeControlType.html",
+          "hash": "g4rqZZHNToWB9/azfamt1zcATMu9bXBy2h1YZ5ThKfA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotMaker2022.LocalDataSet.FreezeControlData.FreezeTiming.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotMaker2022.LocalDataSet.FreezeControlData.FreezeTiming.html",
+          "hash": "6NXQNDnhbB5fFNfDQ+oTPPTpoVSf0ID2OokCEOgP7Fg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotMaker2022.LocalDataSet.FreezeControlData.IFreezeCond.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotMaker2022.LocalDataSet.FreezeControlData.IFreezeCond.html",
+          "hash": "jBQmvo0EFRcI5fvhCgjpbdsMQ2hOeETH/MqCNHcRel0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotMaker2022.LocalDataSet.FreezeControlData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotMaker2022.LocalDataSet.FreezeControlData.html",
+          "hash": "ftT3+cNeZEft33hp89Ib2qkOlzqxfzF7xhy4d/ajUOk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotMaker2022.LocalDataSet.FreezeTimeData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotMaker2022.LocalDataSet.FreezeTimeData.html",
+          "hash": "W+4ZhXsq4GSOiA3nVXuxwYbhkjySqob4ForqMZfLQ6g="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotMaker2022.LocalDataSet.RTCommonData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotMaker2022.LocalDataSet.RTCommonData.html",
+          "hash": "ZmqUAStPXBryn20IJ65Kepo5lPEjOPqzVSMLG0BX9vk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotMaker2022.LocalDataSet.RTMoveData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotMaker2022.LocalDataSet.RTMoveData.html",
+          "hash": "1l9mcwSQvnGHqxsAMwcNCN+QPGsIIKWIHztniW/x9R8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotMaker2022.LocalDataSet.ReachData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotMaker2022.LocalDataSet.ReachData.html",
+          "hash": "wbMcZWC6aIKegFMaUWUOoDooRVfj1K4GalmxG/Dm0U4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotMaker2022.LocalDataSet.ReelArray.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotMaker2022.LocalDataSet.ReelArray.html",
+          "hash": "oekK70dKE1/7fdJxlKun1algT6hJB7HHcOyCTpnjZcM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotMaker2022.LocalDataSet.ReelControlData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotMaker2022.LocalDataSet.ReelControlData.html",
+          "hash": "CTVqiD4vKFnBzD0aQ0VTtx+WlG4nFheCa8psD+GOwDk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotMaker2022.LocalDataSet.ReelControlElem3Reels.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotMaker2022.LocalDataSet.ReelControlElem3Reels.html",
+          "hash": "okcCnkfJSFKn/R/YB7iLHxtGRqxYEtt2QlfvfC4IQvM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotMaker2022.LocalDataSet.ReelPosData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotMaker2022.LocalDataSet.ReelPosData.html",
+          "hash": "7Kp6F2a049Zf6rlr4pUYQoVOHCbnTS+3BZ2XJVNXh60="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotMaker2022.LocalDataSet.ReelPosElemData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotMaker2022.LocalDataSet.ReelPosElemData.html",
+          "hash": "O/iEirMAYQXMVEk1rfbgQaybo57a10gx45tFbRvrT94="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotMaker2022.LocalDataSet.SlipBaseData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotMaker2022.LocalDataSet.SlipBaseData.html",
+          "hash": "Z3GbiWzGWq6Sh92kJn89ZNui6ON9yn18RF0WY9rkjkA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotMaker2022.LocalDataSet.SoftwareInformation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotMaker2022.LocalDataSet.SoftwareInformation.html",
+          "hash": "HJEyo9sF+P8n0mTEoz4Qfx8q5REZn5L/KG6w+oSvSHo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotMaker2022.LocalDataSet.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotMaker2022.LocalDataSet.html",
+          "hash": "AtgkGWZjjq0kqYu7V+qchQrQUH1Cl+DagKttul+FwO4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotMaker2022.MainROMDataManagerSingleton.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotMaker2022.MainROMDataManagerSingleton.html",
+          "hash": "bMWcAwEInJ1Q4wDU9HnNjXYWZCHVawKVN2eU/YvsrS8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotMaker2022.UserBaseData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotMaker2022.UserBaseData.html",
+          "hash": "cn6FX7XLqO22g9f5MaLmKpk0UoZ+y2EkYyuslMgPQfI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotMaker2022.main_function.MainReelManager.GetCastResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotMaker2022.main_function.MainReelManager.GetCastResult.html",
+          "hash": "iKRu8ZJ0E3bZ5tWO2ATtw1xSrsscYktOdnoCyu2j8rM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotMaker2022.main_function.MainReelManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotMaker2022.main_function.MainReelManager.html",
+          "hash": "+G9mgDVGxJChs0F6a2ldBDAqFyHN1HLRDYixmxiqKQ4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotMaker2022.main_function.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotMaker2022.main_function.html",
+          "hash": "5cklQBoia6LwvnJgHtxvNy4MzCunldCTBRKe2QXyMlI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/SlotMaker2022.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/SlotMaker2022.html",
+          "hash": "2ynaeHd9MqiLNZ5Ai5x7A+wN5e0hjNzBWkvvXWUo0GA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/index.html",
+          "hash": "HA87lgZXWu1tIz9EnnBiHD1leWDll/ljoAVn0DkdIfA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html",
+          "hash": "4J9dpzlwW3iz4Gn1qAOdb/pJqUQ8O8KFG47aLeTxLWQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/intro.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/intro.html",
+          "hash": "/YBPsbYEvxlJRzae0BtC7hvKEvdUyYF94MGDrIb4oiQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html",
+          "hash": "n/pYOrPVHEbZiuKKT8TebKwfqMtOuHUy7QKWEgvLRdg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    }
+  ],
+  "incremental_info": [
+    {
+      "status": {
+        "can_incremental": false,
+        "details": "Cannot build incrementally because last build info is missing.",
+        "incrementalPhase": "build",
+        "total_file_count": 0,
+        "skipped_file_count": 0,
+        "full_build_reason_code": "NoAvailableBuildCache"
+      },
+      "processors": {
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 3,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 98,
+          "skipped_file_count": 0
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        }
+      }
+    },
+    {
+      "status": {
+        "can_incremental": false,
+        "details": "Cannot support incremental post processing, the reason is: last post processor info is null.",
+        "incrementalPhase": "postProcessing",
+        "total_file_count": 0,
+        "skipped_file_count": 0
+      },
+      "processors": {}
+    }
+  ],
+  "version_info": {},
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}

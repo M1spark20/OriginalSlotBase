@@ -1,0 +1,754 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class EffectDataManagerSingleton
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class EffectDataManagerSingleton
+   ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="SlotEffectMaker2023.Singleton.EffectDataManagerSingleton">
+  
+  
+  <h1 id="SlotEffectMaker2023_Singleton_EffectDataManagerSingleton" data-uid="SlotEffectMaker2023.Singleton.EffectDataManagerSingleton" class="text-break">Class EffectDataManagerSingleton
+  </h1>
+  <div class="markdown level0 summary"><p>メインROMデータ管理を行うシングルトン。
+データ上に1つだけ存在させるために Singleton パターンを採用しています。</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">EffectDataManagerSingleton</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="SlotEffectMaker2023.Singleton.html">SlotEffectMaker2023.Singleton</a></h6>
+  <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
+  <h5 id="SlotEffectMaker2023_Singleton_EffectDataManagerSingleton_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class EffectDataManagerSingleton</code></pre>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="SlotEffectMaker2023_Singleton_EffectDataManagerSingleton_Collection_" data-uid="SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.Collection*"></a>
+  <h4 id="SlotEffectMaker2023_Singleton_EffectDataManagerSingleton_Collection" data-uid="SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.Collection">Collection</h4>
+  <div class="markdown level1 summary"><p>リーチ目コレクション。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CollectionData Collection { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SlotEffectMaker2023.Data.CollectionData.html">CollectionData</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotEffectMaker2023_Singleton_EffectDataManagerSingleton_ColorMap_" data-uid="SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.ColorMap*"></a>
+  <h4 id="SlotEffectMaker2023_Singleton_EffectDataManagerSingleton_ColorMap" data-uid="SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.ColorMap">ColorMap</h4>
+  <div class="markdown level1 summary"><p>演出色マップ管理。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ColorMapDataManager ColorMap { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SlotEffectMaker2023.Data.ColorMapDataManager.html">ColorMapDataManager</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotEffectMaker2023_Singleton_EffectDataManagerSingleton_CounterCond_" data-uid="SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.CounterCond*"></a>
+  <h4 id="SlotEffectMaker2023_Singleton_EffectDataManagerSingleton_CounterCond" data-uid="SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.CounterCond">CounterCond</h4>
+  <div class="markdown level1 summary"><p>フラグカウント条件。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FlagCounterSet CounterCond { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SlotEffectMaker2023.Data.FlagCounterSet.html">FlagCounterSet</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotEffectMaker2023_Singleton_EffectDataManagerSingleton_GameAchieve_" data-uid="SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.GameAchieve*"></a>
+  <h4 id="SlotEffectMaker2023_Singleton_EffectDataManagerSingleton_GameAchieve" data-uid="SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.GameAchieve">GameAchieve</h4>
+  <div class="markdown level1 summary"><p>Steam用実績管理。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GameAchievementList GameAchieve { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SlotEffectMaker2023.Data.GameAchievementList.html">GameAchievementList</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotEffectMaker2023_Singleton_EffectDataManagerSingleton_HistoryConf_" data-uid="SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.HistoryConf*"></a>
+  <h4 id="SlotEffectMaker2023_Singleton_EffectDataManagerSingleton_HistoryConf" data-uid="SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.HistoryConf">HistoryConf</h4>
+  <div class="markdown level1 summary"><p>ボーナス履歴用コンフィグ。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HistoryConfig HistoryConf { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SlotEffectMaker2023.Data.HistoryConfig.html">HistoryConfig</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotEffectMaker2023_Singleton_EffectDataManagerSingleton_SoundIDList_" data-uid="SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.SoundIDList*"></a>
+  <h4 id="SlotEffectMaker2023_Singleton_EffectDataManagerSingleton_SoundIDList" data-uid="SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.SoundIDList">SoundIDList</h4>
+  <div class="markdown level1 summary"><p>読込音源一覧。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;SoundID&gt; SoundIDList { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="SlotEffectMaker2023.Data.SoundID.html">SoundID</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotEffectMaker2023_Singleton_EffectDataManagerSingleton_SoundPlayList_" data-uid="SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.SoundPlayList*"></a>
+  <h4 id="SlotEffectMaker2023_Singleton_EffectDataManagerSingleton_SoundPlayList" data-uid="SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.SoundPlayList">SoundPlayList</h4>
+  <div class="markdown level1 summary"><p>サウンド再生データ一覧。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;SoundPlayData&gt; SoundPlayList { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="SlotEffectMaker2023.Data.SoundPlayData.html">SoundPlayData</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotEffectMaker2023_Singleton_EffectDataManagerSingleton_Timeline_" data-uid="SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.Timeline*"></a>
+  <h4 id="SlotEffectMaker2023_Singleton_EffectDataManagerSingleton_Timeline" data-uid="SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.Timeline">Timeline</h4>
+  <div class="markdown level1 summary"><p>サブ基板処理内容。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SlotTimeline Timeline { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SlotEffectMaker2023.Data.SlotTimeline.html">SlotTimeline</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotEffectMaker2023_Singleton_EffectDataManagerSingleton_TimerList_" data-uid="SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.TimerList*"></a>
+  <h4 id="SlotEffectMaker2023_Singleton_EffectDataManagerSingleton_TimerList" data-uid="SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.TimerList">TimerList</h4>
+  <div class="markdown level1 summary"><p>生成タイマ一覧。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TimerList TimerList { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SlotEffectMaker2023.Data.TimerList.html">TimerList</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotEffectMaker2023_Singleton_EffectDataManagerSingleton_VarList_" data-uid="SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.VarList*"></a>
+  <h4 id="SlotEffectMaker2023_Singleton_EffectDataManagerSingleton_VarList" data-uid="SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.VarList">VarList</h4>
+  <div class="markdown level1 summary"><p>生成変数一覧。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public VarList VarList { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SlotEffectMaker2023.Data.VarList.html">VarList</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="SlotEffectMaker2023_Singleton_EffectDataManagerSingleton_BackupData_" data-uid="SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.BackupData*"></a>
+  <h4 id="SlotEffectMaker2023_Singleton_EffectDataManagerSingleton_BackupData" data-uid="SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.BackupData">BackupData()</h4>
+  <div class="markdown level1 summary"><p>データを backup.bak ファイルにバックアップとして書き出します。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool BackupData()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>常に true を返します。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotEffectMaker2023_Singleton_EffectDataManagerSingleton_GetInstance_" data-uid="SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.GetInstance*"></a>
+  <h4 id="SlotEffectMaker2023_Singleton_EffectDataManagerSingleton_GetInstance" data-uid="SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.GetInstance">GetInstance()</h4>
+  <div class="markdown level1 summary"><p>シングルトンインスタンスを取得します。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static EffectDataManagerSingleton GetInstance()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.html">EffectDataManagerSingleton</a></td>
+        <td><p>EffectDataManagerSingleton の唯一のインスタンス。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotEffectMaker2023_Singleton_EffectDataManagerSingleton_GetSoundID_" data-uid="SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.GetSoundID*"></a>
+  <h4 id="SlotEffectMaker2023_Singleton_EffectDataManagerSingleton_GetSoundID_System_String_" data-uid="SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.GetSoundID(System.String)">GetSoundID(String)</h4>
+  <div class="markdown level1 summary"><p>指定された SoundID 名に対応する SoundID オブジェクトを取得します。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SoundID GetSoundID(string pSoundIDName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">pSoundIDName</span></td>
+        <td><p>検索する SoundID 名。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SlotEffectMaker2023.Data.SoundID.html">SoundID</a></td>
+        <td><p>対応する SoundID オブジェクト、存在しない場合は null。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotEffectMaker2023_Singleton_EffectDataManagerSingleton_GetSoundIDNameList_" data-uid="SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.GetSoundIDNameList*"></a>
+  <h4 id="SlotEffectMaker2023_Singleton_EffectDataManagerSingleton_GetSoundIDNameList" data-uid="SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.GetSoundIDNameList">GetSoundIDNameList()</h4>
+  <div class="markdown level1 summary"><p>登録されている SoundID の名前一覧を取得します。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string[] GetSoundIDNameList()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span>[]</td>
+        <td><p>SoundID の名前文字列配列。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotEffectMaker2023_Singleton_EffectDataManagerSingleton_GetSoundPlayer_" data-uid="SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.GetSoundPlayer*"></a>
+  <h4 id="SlotEffectMaker2023_Singleton_EffectDataManagerSingleton_GetSoundPlayer_System_String_" data-uid="SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.GetSoundPlayer(System.String)">GetSoundPlayer(String)</h4>
+  <div class="markdown level1 summary"><p>指定されたプレイヤー名に対応する SoundPlayData オブジェクトを取得します。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SoundPlayData GetSoundPlayer(string pPlayerName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">pPlayerName</span></td>
+        <td><p>検索するプレイヤー名。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SlotEffectMaker2023.Data.SoundPlayData.html">SoundPlayData</a></td>
+        <td><p>対応する SoundPlayData オブジェクト、存在しない場合は null。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotEffectMaker2023_Singleton_EffectDataManagerSingleton_GetSoundPlayerNameList_" data-uid="SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.GetSoundPlayerNameList*"></a>
+  <h4 id="SlotEffectMaker2023_Singleton_EffectDataManagerSingleton_GetSoundPlayerNameList" data-uid="SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.GetSoundPlayerNameList">GetSoundPlayerNameList()</h4>
+  <div class="markdown level1 summary"><p>登録されている SoundPlayData の ShifterName 一覧を取得します。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string[] GetSoundPlayerNameList()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span>[]</td>
+        <td><p>SoundPlayData の ShifterName 文字列配列。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotEffectMaker2023_Singleton_EffectDataManagerSingleton_ReadData_" data-uid="SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.ReadData*"></a>
+  <h4 id="SlotEffectMaker2023_Singleton_EffectDataManagerSingleton_ReadData" data-uid="SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.ReadData">ReadData()</h4>
+  <div class="markdown level1 summary"><p>デフォルトの読み込み処理を実行します。
+Effect.bytes ファイルからデータを読み込み、バックアップを生成します。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ReadData()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>読み込みに成功した場合は true、失敗した場合は false を返します。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotEffectMaker2023_Singleton_EffectDataManagerSingleton_ReadData_" data-uid="SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.ReadData*"></a>
+  <h4 id="SlotEffectMaker2023_Singleton_EffectDataManagerSingleton_ReadData_UnityEngine_TextAsset_" data-uid="SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.ReadData(UnityEngine.TextAsset)">ReadData(UnityEngine.TextAsset)</h4>
+  <div class="markdown level1 summary"><p>Unity 用の読み込み処理を実行します。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ReadData(UnityEngine.TextAsset data)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEngine.TextAsset</span></td>
+        <td><span class="parametername">data</span></td>
+        <td><p>読み込む TextAsset。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>読み込みに成功した場合は true、失敗した場合は false を返します。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotEffectMaker2023_Singleton_EffectDataManagerSingleton_Rename_" data-uid="SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.Rename*"></a>
+  <h4 id="SlotEffectMaker2023_Singleton_EffectDataManagerSingleton_Rename_SlotEffectMaker2023_Data_EChangeNameType_System_String_System_String_" data-uid="SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.Rename(SlotEffectMaker2023.Data.EChangeNameType,System.String,System.String)">Rename(EChangeNameType, String, String)</h4>
+  <div class="markdown level1 summary"><p>指定された名前変更タイプに従い、各データセット内の名前を更新します。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Rename(EChangeNameType type, string src, string dst)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SlotEffectMaker2023.Data.EChangeNameType.html">EChangeNameType</a></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>変更対象の名前の種類。</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">src</span></td>
+        <td><p>変更前の名前。</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">dst</span></td>
+        <td><p>変更後の名前。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotEffectMaker2023_Singleton_EffectDataManagerSingleton_SaveData_" data-uid="SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.SaveData*"></a>
+  <h4 id="SlotEffectMaker2023_Singleton_EffectDataManagerSingleton_SaveData" data-uid="SlotEffectMaker2023.Singleton.EffectDataManagerSingleton.SaveData">SaveData()</h4>
+  <div class="markdown level1 summary"><p>データを Effect.bytes ファイルに書き出します。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool SaveData()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>常に true を返します。</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

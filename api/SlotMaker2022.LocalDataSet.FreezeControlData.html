@@ -1,0 +1,486 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class LocalDataSet.FreezeControlData
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class LocalDataSet.FreezeControlData
+   ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="SlotMaker2022.LocalDataSet.FreezeControlData">
+  
+  
+  <h1 id="SlotMaker2022_LocalDataSet_FreezeControlData" data-uid="SlotMaker2022.LocalDataSet.FreezeControlData" class="text-break">Class LocalDataSet.FreezeControlData
+  </h1>
+  <div class="markdown level0 summary"><p>フリーズ制御データを管理するクラスです。
+フリーズの種類やタイミング、抽選条件などを保持し、シリアライズ/デシリアライズを提供します。</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">LocalDataSet.FreezeControlData</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="SlotMaker2022.ILocalDataInterface.html">ILocalDataInterface</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="SlotMaker2022.html">SlotMaker2022</a></h6>
+  <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
+  <h5 id="SlotMaker2022_LocalDataSet_FreezeControlData_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class FreezeControlData : ILocalDataInterface</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  
+  
+  <a id="SlotMaker2022_LocalDataSet_FreezeControlData__ctor_" data-uid="SlotMaker2022.LocalDataSet.FreezeControlData.#ctor*"></a>
+  <h4 id="SlotMaker2022_LocalDataSet_FreezeControlData__ctor" data-uid="SlotMaker2022.LocalDataSet.FreezeControlData.#ctor">FreezeControlData()</h4>
+  <div class="markdown level1 summary"><p>デフォルトの抽選設定でインスタンスを初期化します。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FreezeControlData()</code></pre>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="SlotMaker2022_LocalDataSet_FreezeControlData_Condition_" data-uid="SlotMaker2022.LocalDataSet.FreezeControlData.Condition*"></a>
+  <h4 id="SlotMaker2022_LocalDataSet_FreezeControlData_Condition" data-uid="SlotMaker2022.LocalDataSet.FreezeControlData.Condition">Condition</h4>
+  <div class="markdown level1 summary"><p>抽選条件(データは IFreezeCond 実装で読み込み・判定される)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public byte Condition { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotMaker2022_LocalDataSet_FreezeControlData_ControlType_" data-uid="SlotMaker2022.LocalDataSet.FreezeControlData.ControlType*"></a>
+  <h4 id="SlotMaker2022_LocalDataSet_FreezeControlData_ControlType" data-uid="SlotMaker2022.LocalDataSet.FreezeControlData.ControlType">ControlType</h4>
+  <div class="markdown level1 summary"><p>フリーズ抽選タイプ</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public LocalDataSet.FreezeControlData.FreezeControlType ControlType { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SlotMaker2022.LocalDataSet.FreezeControlData.FreezeControlType.html">LocalDataSet.FreezeControlData.FreezeControlType</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotMaker2022_LocalDataSet_FreezeControlData_ControlTypeName_" data-uid="SlotMaker2022.LocalDataSet.FreezeControlData.ControlTypeName*"></a>
+  <h4 id="SlotMaker2022_LocalDataSet_FreezeControlData_ControlTypeName" data-uid="SlotMaker2022.LocalDataSet.FreezeControlData.ControlTypeName">ControlTypeName</h4>
+  <div class="markdown level1 summary"><p>抽選タイプ名</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string ControlTypeName { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotMaker2022_LocalDataSet_FreezeControlData_RandVal_" data-uid="SlotMaker2022.LocalDataSet.FreezeControlData.RandVal*"></a>
+  <h4 id="SlotMaker2022_LocalDataSet_FreezeControlData_RandVal" data-uid="SlotMaker2022.LocalDataSet.FreezeControlData.RandVal">RandVal</h4>
+  <div class="markdown level1 summary"><p>抽選分母</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public byte RandVal { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotMaker2022_LocalDataSet_FreezeControlData_ShiftGameNum_" data-uid="SlotMaker2022.LocalDataSet.FreezeControlData.ShiftGameNum*"></a>
+  <h4 id="SlotMaker2022_LocalDataSet_FreezeControlData_ShiftGameNum" data-uid="SlotMaker2022.LocalDataSet.FreezeControlData.ShiftGameNum">ShiftGameNum</h4>
+  <div class="markdown level1 summary"><p>ゲーム数シフト</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public byte ShiftGameNum { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotMaker2022_LocalDataSet_FreezeControlData_Timing_" data-uid="SlotMaker2022.LocalDataSet.FreezeControlData.Timing*"></a>
+  <h4 id="SlotMaker2022_LocalDataSet_FreezeControlData_Timing" data-uid="SlotMaker2022.LocalDataSet.FreezeControlData.Timing">Timing</h4>
+  <div class="markdown level1 summary"><p>フリーズ発生タイミング・操作</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public LocalDataSet.FreezeControlData.FreezeTiming Timing { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SlotMaker2022.LocalDataSet.FreezeControlData.FreezeTiming.html">LocalDataSet.FreezeControlData.FreezeTiming</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotMaker2022_LocalDataSet_FreezeControlData_TimingName_" data-uid="SlotMaker2022.LocalDataSet.FreezeControlData.TimingName*"></a>
+  <h4 id="SlotMaker2022_LocalDataSet_FreezeControlData_TimingName" data-uid="SlotMaker2022.LocalDataSet.FreezeControlData.TimingName">TimingName</h4>
+  <div class="markdown level1 summary"><p>発生タイミング名</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string TimingName { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotMaker2022_LocalDataSet_FreezeControlData_WaitID_" data-uid="SlotMaker2022.LocalDataSet.FreezeControlData.WaitID*"></a>
+  <h4 id="SlotMaker2022_LocalDataSet_FreezeControlData_WaitID" data-uid="SlotMaker2022.LocalDataSet.FreezeControlData.WaitID">WaitID</h4>
+  <div class="markdown level1 summary"><p>フリーズ待機時間ID</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public byte WaitID { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="SlotMaker2022_LocalDataSet_FreezeControlData_ReadData_" data-uid="SlotMaker2022.LocalDataSet.FreezeControlData.ReadData*"></a>
+  <h4 id="SlotMaker2022_LocalDataSet_FreezeControlData_ReadData_BinaryReader__System_Int32_" data-uid="SlotMaker2022.LocalDataSet.FreezeControlData.ReadData(BinaryReader@,System.Int32)">ReadData(ref BinaryReader, Int32)</h4>
+  <div class="markdown level1 summary"><p>バイナリストリームからデータを読み込み、インスタンスを初期化します。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ReadData(ref BinaryReader fs, int version)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">BinaryReader</span></td>
+        <td><span class="parametername">fs</span></td>
+        <td><p>読み込み元の BinaryReader 参照</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">version</span></td>
+        <td><p>データバージョン</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>読み込みが成功した場合に true を返します</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotMaker2022_LocalDataSet_FreezeControlData_StoreData_" data-uid="SlotMaker2022.LocalDataSet.FreezeControlData.StoreData*"></a>
+  <h4 id="SlotMaker2022_LocalDataSet_FreezeControlData_StoreData_BinaryWriter__System_Int32_" data-uid="SlotMaker2022.LocalDataSet.FreezeControlData.StoreData(BinaryWriter@,System.Int32)">StoreData(ref BinaryWriter, Int32)</h4>
+  <div class="markdown level1 summary"><p>インスタンスのデータをバイナリストリームに書き込みます。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool StoreData(ref BinaryWriter fs, int version)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">BinaryWriter</span></td>
+        <td><span class="parametername">fs</span></td>
+        <td><p>書き込み先の BinaryWriter 参照</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">version</span></td>
+        <td><p>データバージョン</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>書き込みが成功した場合に true を返します</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="SlotMaker2022.ILocalDataInterface.html">ILocalDataInterface</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

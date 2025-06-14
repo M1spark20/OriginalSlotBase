@@ -1,0 +1,598 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class SlotTimer
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class SlotTimer
+   ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="SlotEffectMaker2023.Action.SlotTimer">
+  
+  
+  <h1 id="SlotEffectMaker2023_Action_SlotTimer" data-uid="SlotEffectMaker2023.Action.SlotTimer" class="text-break">Class SlotTimer
+  </h1>
+  <div class="markdown level0 summary"><p>単一のタイマーを管理するクラス。
+名前、経過時間、状態制御を保持します。</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">SlotTimer</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="SlotEffectMaker2023.Action.html">SlotEffectMaker2023.Action</a></h6>
+  <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
+  <h5 id="SlotEffectMaker2023_Action_SlotTimer_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class SlotTimer</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  
+  
+  <a id="SlotEffectMaker2023_Action_SlotTimer__ctor_" data-uid="SlotEffectMaker2023.Action.SlotTimer.#ctor*"></a>
+  <h4 id="SlotEffectMaker2023_Action_SlotTimer__ctor_System_String_System_Boolean_" data-uid="SlotEffectMaker2023.Action.SlotTimer.#ctor(System.String,System.Boolean)">SlotTimer(String, Boolean)</h4>
+  <div class="markdown level1 summary"><p>コンストラクタ。タイマー名と保存フラグを設定します。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SlotTimer(string pTimerName, bool pStoreActivate)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">pTimerName</span></td>
+        <td><p>タイマーの識別名</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">pStoreActivate</span></td>
+        <td><p>稼働状況を保存するかどうか</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="SlotEffectMaker2023_Action_SlotTimer_elapsedTime_" data-uid="SlotEffectMaker2023.Action.SlotTimer.elapsedTime*"></a>
+  <h4 id="SlotEffectMaker2023_Action_SlotTimer_elapsedTime" data-uid="SlotEffectMaker2023.Action.SlotTimer.elapsedTime">elapsedTime</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float? elapsedTime { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Single</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotEffectMaker2023_Action_SlotTimer_isActivate_" data-uid="SlotEffectMaker2023.Action.SlotTimer.isActivate*"></a>
+  <h4 id="SlotEffectMaker2023_Action_SlotTimer_isActivate" data-uid="SlotEffectMaker2023.Action.SlotTimer.isActivate">isActivate</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool isActivate { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotEffectMaker2023_Action_SlotTimer_isPaused_" data-uid="SlotEffectMaker2023.Action.SlotTimer.isPaused*"></a>
+  <h4 id="SlotEffectMaker2023_Action_SlotTimer_isPaused" data-uid="SlotEffectMaker2023.Action.SlotTimer.isPaused">isPaused</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool isPaused { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotEffectMaker2023_Action_SlotTimer_lastElapsed_" data-uid="SlotEffectMaker2023.Action.SlotTimer.lastElapsed*"></a>
+  <h4 id="SlotEffectMaker2023_Action_SlotTimer_lastElapsed" data-uid="SlotEffectMaker2023.Action.SlotTimer.lastElapsed">lastElapsed</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float? lastElapsed { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.Single</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotEffectMaker2023_Action_SlotTimer_resumeTime_" data-uid="SlotEffectMaker2023.Action.SlotTimer.resumeTime*"></a>
+  <h4 id="SlotEffectMaker2023_Action_SlotTimer_resumeTime" data-uid="SlotEffectMaker2023.Action.SlotTimer.resumeTime">resumeTime</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float resumeTime { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Single</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotEffectMaker2023_Action_SlotTimer_timerName_" data-uid="SlotEffectMaker2023.Action.SlotTimer.timerName*"></a>
+  <h4 id="SlotEffectMaker2023_Action_SlotTimer_timerName" data-uid="SlotEffectMaker2023.Action.SlotTimer.timerName">timerName</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string timerName { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="SlotEffectMaker2023_Action_SlotTimer_Activate_" data-uid="SlotEffectMaker2023.Action.SlotTimer.Activate*"></a>
+  <h4 id="SlotEffectMaker2023_Action_SlotTimer_Activate" data-uid="SlotEffectMaker2023.Action.SlotTimer.Activate">Activate()</h4>
+  <div class="markdown level1 summary"><p>タイマーを有効化してカウントを開始します（オフセットなし）。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Activate()</code></pre>
+  </div>
+  
+  
+  <a id="SlotEffectMaker2023_Action_SlotTimer_Activate_" data-uid="SlotEffectMaker2023.Action.SlotTimer.Activate*"></a>
+  <h4 id="SlotEffectMaker2023_Action_SlotTimer_Activate_System_Single_" data-uid="SlotEffectMaker2023.Action.SlotTimer.Activate(System.Single)">Activate(Single)</h4>
+  <div class="markdown level1 summary"><p>タイマーを有効化してカウントを開始します。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Activate(float offset)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Single</span></td>
+        <td><span class="parametername">offset</span></td>
+        <td><p>開始時のオフセット時間</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotEffectMaker2023_Action_SlotTimer_GetActionFlag_" data-uid="SlotEffectMaker2023.Action.SlotTimer.GetActionFlag*"></a>
+  <h4 id="SlotEffectMaker2023_Action_SlotTimer_GetActionFlag_System_Single_System_Boolean_" data-uid="SlotEffectMaker2023.Action.SlotTimer.GetActionFlag(System.Single,System.Boolean)">GetActionFlag(Single, Boolean)</h4>
+  <div class="markdown level1 summary"><p>経過時間が判定時間を超えたか取得します。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool GetActionFlag(float judgeTime, bool trigHold)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Single</span></td>
+        <td><span class="parametername">judgeTime</span></td>
+        <td><p>判定基準時間</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">trigHold</span></td>
+        <td><p>トリガーホールドフラグ</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>条件を満たす場合は true</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotEffectMaker2023_Action_SlotTimer_GetStoreFlag_" data-uid="SlotEffectMaker2023.Action.SlotTimer.GetStoreFlag*"></a>
+  <h4 id="SlotEffectMaker2023_Action_SlotTimer_GetStoreFlag" data-uid="SlotEffectMaker2023.Action.SlotTimer.GetStoreFlag">GetStoreFlag()</h4>
+  <div class="markdown level1 summary"><p>タイマー保存時に保存フラグが有効かを確認します。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool GetStoreFlag()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>保存対象なら true</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotEffectMaker2023_Action_SlotTimer_Reset_" data-uid="SlotEffectMaker2023.Action.SlotTimer.Reset*"></a>
+  <h4 id="SlotEffectMaker2023_Action_SlotTimer_Reset" data-uid="SlotEffectMaker2023.Action.SlotTimer.Reset">Reset()</h4>
+  <div class="markdown level1 summary"><p>タイマーの経過時間をリセットします（オフセットなし）。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Reset()</code></pre>
+  </div>
+  
+  
+  <a id="SlotEffectMaker2023_Action_SlotTimer_Reset_" data-uid="SlotEffectMaker2023.Action.SlotTimer.Reset*"></a>
+  <h4 id="SlotEffectMaker2023_Action_SlotTimer_Reset_System_Single_" data-uid="SlotEffectMaker2023.Action.SlotTimer.Reset(System.Single)">Reset(Single)</h4>
+  <div class="markdown level1 summary"><p>タイマーの経過時間をリセットします。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Reset(float offset)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Single</span></td>
+        <td><span class="parametername">offset</span></td>
+        <td><p>リセット後のオフセット時間</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotEffectMaker2023_Action_SlotTimer_SetDisabled_" data-uid="SlotEffectMaker2023.Action.SlotTimer.SetDisabled*"></a>
+  <h4 id="SlotEffectMaker2023_Action_SlotTimer_SetDisabled" data-uid="SlotEffectMaker2023.Action.SlotTimer.SetDisabled">SetDisabled()</h4>
+  <div class="markdown level1 summary"><p>タイマーを無効化します。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetDisabled()</code></pre>
+  </div>
+  
+  
+  <a id="SlotEffectMaker2023_Action_SlotTimer_SetPaused_" data-uid="SlotEffectMaker2023.Action.SlotTimer.SetPaused*"></a>
+  <h4 id="SlotEffectMaker2023_Action_SlotTimer_SetPaused_System_Boolean_" data-uid="SlotEffectMaker2023.Action.SlotTimer.SetPaused(System.Boolean)">SetPaused(Boolean)</h4>
+  <div class="markdown level1 summary"><p>タイマーの一時停止状態を設定します。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetPaused(bool pauseFlag)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">pauseFlag</span></td>
+        <td><p>一時停止する場合は true</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotEffectMaker2023_Action_SlotTimer_SetResumeTimeOnReload_" data-uid="SlotEffectMaker2023.Action.SlotTimer.SetResumeTimeOnReload*"></a>
+  <h4 id="SlotEffectMaker2023_Action_SlotTimer_SetResumeTimeOnReload_System_Single_" data-uid="SlotEffectMaker2023.Action.SlotTimer.SetResumeTimeOnReload(System.Single)">SetResumeTimeOnReload(Single)</h4>
+  <div class="markdown level1 summary"><p>再開時間を設定します。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetResumeTimeOnReload(float pResumeTime)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Single</span></td>
+        <td><span class="parametername">pResumeTime</span></td>
+        <td><p>再開時の経過時間オフセット</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotEffectMaker2023_Action_SlotTimer_Update_" data-uid="SlotEffectMaker2023.Action.SlotTimer.Update*"></a>
+  <h4 id="SlotEffectMaker2023_Action_SlotTimer_Update_System_Single_" data-uid="SlotEffectMaker2023.Action.SlotTimer.Update(System.Single)">Update(Single)</h4>
+  <div class="markdown level1 summary"><p>タイマーを更新し、経過時間を積算します。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Update(float deltaTime)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Single</span></td>
+        <td><span class="parametername">deltaTime</span></td>
+        <td><p>前フレームからの経過時間</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

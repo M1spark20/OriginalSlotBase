@@ -1,0 +1,512 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class ColorMapDataManager
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class ColorMapDataManager
+   ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="SlotEffectMaker2023.Data.ColorMapDataManager">
+  
+  
+  <h1 id="SlotEffectMaker2023_Data_ColorMapDataManager" data-uid="SlotEffectMaker2023.Data.ColorMapDataManager" class="text-break">Class ColorMapDataManager
+  </h1>
+  <div class="markdown level0 summary"><p>ColorMapList と ColorMapShifter をまとめて管理するデータクラス。</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">ColorMapDataManager</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="SlotMaker2022.ILocalDataInterface.html">ILocalDataInterface</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="SlotEffectMaker2023.Data.html">SlotEffectMaker2023.Data</a></h6>
+  <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
+  <h5 id="SlotEffectMaker2023_Data_ColorMapDataManager_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class ColorMapDataManager : ILocalDataInterface</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  
+  
+  <a id="SlotEffectMaker2023_Data_ColorMapDataManager__ctor_" data-uid="SlotEffectMaker2023.Data.ColorMapDataManager.#ctor*"></a>
+  <h4 id="SlotEffectMaker2023_Data_ColorMapDataManager__ctor" data-uid="SlotEffectMaker2023.Data.ColorMapDataManager.#ctor">ColorMapDataManager()</h4>
+  <div class="markdown level1 summary"><p>コンストラクタ。内部リストを初期化します。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ColorMapDataManager()</code></pre>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="SlotEffectMaker2023_Data_ColorMapDataManager_mapList_" data-uid="SlotEffectMaker2023.Data.ColorMapDataManager.mapList*"></a>
+  <h4 id="SlotEffectMaker2023_Data_ColorMapDataManager_mapList" data-uid="SlotEffectMaker2023.Data.ColorMapDataManager.mapList">mapList</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;ColorMapList&gt; mapList { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="SlotEffectMaker2023.Data.ColorMapList.html">ColorMapList</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotEffectMaker2023_Data_ColorMapDataManager_shifter_" data-uid="SlotEffectMaker2023.Data.ColorMapDataManager.shifter*"></a>
+  <h4 id="SlotEffectMaker2023_Data_ColorMapDataManager_shifter" data-uid="SlotEffectMaker2023.Data.ColorMapDataManager.shifter">shifter</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;ColorMapShifter&gt; shifter { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="SlotEffectMaker2023.Data.ColorMapShifter.html">ColorMapShifter</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="SlotEffectMaker2023_Data_ColorMapDataManager_GetMapList_" data-uid="SlotEffectMaker2023.Data.ColorMapDataManager.GetMapList*"></a>
+  <h4 id="SlotEffectMaker2023_Data_ColorMapDataManager_GetMapList_System_String_" data-uid="SlotEffectMaker2023.Data.ColorMapDataManager.GetMapList(System.String)">GetMapList(String)</h4>
+  <div class="markdown level1 summary"><p>指定した名前のマップリストを取得します。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ColorMapList GetMapList(string name)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>マップリスト名</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SlotEffectMaker2023.Data.ColorMapList.html">ColorMapList</a></td>
+        <td><p>該当する ColorMapList、存在しない場合は null</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotEffectMaker2023_Data_ColorMapDataManager_GetMapListName_" data-uid="SlotEffectMaker2023.Data.ColorMapDataManager.GetMapListName*"></a>
+  <h4 id="SlotEffectMaker2023_Data_ColorMapDataManager_GetMapListName" data-uid="SlotEffectMaker2023.Data.ColorMapDataManager.GetMapListName">GetMapListName()</h4>
+  <div class="markdown level1 summary"><p>全てのマップリスト名を配列で取得します。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string[] GetMapListName()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span>[]</td>
+        <td><p>マップリスト名の配列</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotEffectMaker2023_Data_ColorMapDataManager_GetShifter_" data-uid="SlotEffectMaker2023.Data.ColorMapDataManager.GetShifter*"></a>
+  <h4 id="SlotEffectMaker2023_Data_ColorMapDataManager_GetShifter_System_String_" data-uid="SlotEffectMaker2023.Data.ColorMapDataManager.GetShifter(System.String)">GetShifter(String)</h4>
+  <div class="markdown level1 summary"><p>指定した名前のシフタを取得します。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ColorMapShifter GetShifter(string name)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>シフタ名</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SlotEffectMaker2023.Data.ColorMapShifter.html">ColorMapShifter</a></td>
+        <td><p>該当する ColorMapShifter、存在しない場合は null</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotEffectMaker2023_Data_ColorMapDataManager_GetShifterName_" data-uid="SlotEffectMaker2023.Data.ColorMapDataManager.GetShifterName*"></a>
+  <h4 id="SlotEffectMaker2023_Data_ColorMapDataManager_GetShifterName" data-uid="SlotEffectMaker2023.Data.ColorMapDataManager.GetShifterName">GetShifterName()</h4>
+  <div class="markdown level1 summary"><p>全てのシフタ名を配列で取得します。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string[] GetShifterName()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span>[]</td>
+        <td><p>シフタ名の配列</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotEffectMaker2023_Data_ColorMapDataManager_ReadData_" data-uid="SlotEffectMaker2023.Data.ColorMapDataManager.ReadData*"></a>
+  <h4 id="SlotEffectMaker2023_Data_ColorMapDataManager_ReadData_BinaryReader__System_Int32_" data-uid="SlotEffectMaker2023.Data.ColorMapDataManager.ReadData(BinaryReader@,System.Int32)">ReadData(ref BinaryReader, Int32)</h4>
+  <div class="markdown level1 summary"><p>バイナリ形式からデータを読み込みます。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ReadData(ref BinaryReader fs, int version)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">BinaryReader</span></td>
+        <td><span class="parametername">fs</span></td>
+        <td><p>BinaryReader の参照</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">version</span></td>
+        <td><p>保存バージョン</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>読み込みが成功したか（常に true）</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotEffectMaker2023_Data_ColorMapDataManager_Rename_" data-uid="SlotEffectMaker2023.Data.ColorMapDataManager.Rename*"></a>
+  <h4 id="SlotEffectMaker2023_Data_ColorMapDataManager_Rename_SlotEffectMaker2023_Data_EChangeNameType_System_String_System_String_" data-uid="SlotEffectMaker2023.Data.ColorMapDataManager.Rename(SlotEffectMaker2023.Data.EChangeNameType,System.String,System.String)">Rename(EChangeNameType, String, String)</h4>
+  <div class="markdown level1 summary"><p>効果名変更イベントに応じて内部データの名前を更新します。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Rename(EChangeNameType type, string src, string dst)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="SlotEffectMaker2023.Data.EChangeNameType.html">EChangeNameType</a></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>変更タイプ</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">src</span></td>
+        <td><p>元の名前</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">dst</span></td>
+        <td><p>新しい名前</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="SlotEffectMaker2023_Data_ColorMapDataManager_StoreData_" data-uid="SlotEffectMaker2023.Data.ColorMapDataManager.StoreData*"></a>
+  <h4 id="SlotEffectMaker2023_Data_ColorMapDataManager_StoreData_BinaryWriter__System_Int32_" data-uid="SlotEffectMaker2023.Data.ColorMapDataManager.StoreData(BinaryWriter@,System.Int32)">StoreData(ref BinaryWriter, Int32)</h4>
+  <div class="markdown level1 summary"><p>データをバイナリ形式で保存します。</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool StoreData(ref BinaryWriter fs, int version)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">BinaryWriter</span></td>
+        <td><span class="parametername">fs</span></td>
+        <td><p>BinaryWriter の参照</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">version</span></td>
+        <td><p>保存バージョン</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>保存に成功したか（常に true）</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="SlotMaker2022.ILocalDataInterface.html">ILocalDataInterface</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
