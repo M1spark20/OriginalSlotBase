@@ -5,6 +5,10 @@ using UnityEngine;
 
 namespace SlotEffectMaker2023.Action
 {
+    /// <summary>
+    /// 停止パターン履歴を保持する要素クラス。
+    /// リール停止位置、すべりコマ数、停止順、BET数、成立フラグなどを管理します。
+    /// </summary>
     public class PatternHistoryElem : SlotMaker2022.ILocalDataInterface
     {
         public List<byte> ReelPos { get; set; }     // 停止位置
@@ -15,6 +19,9 @@ namespace SlotEffectMaker2023.Action
         public byte BonusID { get; set; }           // 成立ボーナス(非表示)
         public int InEffect { get; set; }           // 演出ID
 
+        /// <summary>
+        /// コンストラクタ。リストを初期化し、デフォルト値を設定します。
+        /// </summary>
         public PatternHistoryElem()
         {
             ReelPos = new List<byte>();
@@ -25,6 +32,13 @@ namespace SlotEffectMaker2023.Action
             BonusID = 0;
             InEffect = 0;
         }
+
+        /// <summary>
+        /// 履歴データをバイナリ形式で保存します。
+        /// </summary>
+        /// <param name="fs">BinaryWriter の参照</param>
+        /// <param name="version">保存バージョン</param>
+        /// <returns>保存に成功したか（常に true）</returns>
         public bool StoreData(ref BinaryWriter fs, int version)
         {
             fs.Write(ReelPos.Count);
@@ -40,6 +54,13 @@ namespace SlotEffectMaker2023.Action
             fs.Write(InEffect);
             return true;
         }
+
+        /// <summary>
+        /// バイナリ形式から履歴データを読み込みます。
+        /// </summary>
+        /// <param name="fs">BinaryReader の参照</param>
+        /// <param name="version">保存バージョン</param>
+        /// <returns>読み込みに成功したか（常に true）</returns>
         public bool ReadData(ref BinaryReader fs, int version)
         {
             int dataCount = fs.ReadInt32();
@@ -56,6 +77,11 @@ namespace SlotEffectMaker2023.Action
             return true;
         }
     }
+
+    /// <summary>
+    /// ボーナス履歴を保持する要素クラス。
+    /// 入賞G、入賞日時、メダル差枚、損失ゲーム数、状態フラグなどを管理します。
+    /// </summary>
     public class BonusHistoryElem : SlotMaker2022.ILocalDataInterface
     {
         public int InGame { get; set; }         // 入賞G
@@ -67,7 +93,10 @@ namespace SlotEffectMaker2023.Action
         public bool IsActivate { get; set; }    // 当該ボーナスが入賞したか
         public bool IsFinished { get; set; }    // 当該ボーナスが終了したか
         public PatternHistoryElem InPattern { get; set; }   // 成立時出目
-        
+
+        /// <summary>
+        /// コンストラクタ。デフォルト値を設定します。
+        /// </summary>
         public BonusHistoryElem()
         {
             InGame = -1;
@@ -80,6 +109,13 @@ namespace SlotEffectMaker2023.Action
             IsFinished = false;
             InPattern = new PatternHistoryElem();
         }
+
+        /// <summary>
+        /// 履歴データをバイナリ形式で保存します。
+        /// </summary>
+        /// <param name="fs">BinaryWriter の参照</param>
+        /// <param name="version">保存バージョン</param>
+        /// <returns>保存に成功したか</returns>
         public bool StoreData(ref BinaryWriter fs, int version)
         {
             fs.Write(InGame);
@@ -92,6 +128,13 @@ namespace SlotEffectMaker2023.Action
             fs.Write(IsFinished);
             return InPattern.StoreData(ref fs, version);
         }
+
+        /// <summary>
+        /// バイナリ形式から履歴データを読み込みます。
+        /// </summary>
+        /// <param name="fs">BinaryReader の参照</param>
+        /// <param name="version">保存バージョン</param>
+        /// <returns>読み込みに成功したか</returns>
         public bool ReadData(ref BinaryReader fs, int version)
         {
             InGame = fs.ReadInt32();
@@ -105,6 +148,11 @@ namespace SlotEffectMaker2023.Action
             return InPattern.ReadData(ref fs, version);
         }
     }
+
+    /// <summary>
+    /// 残高グラフデータを管理するクラス。
+    /// リングバッファを用いて差枚推移を保存し、取得を提供します。
+    /// </summary>
     public class BalanceGraph : SlotMaker2022.ILocalDataInterface
     {
         public const int COUNT_INTERVAL = 10;
@@ -114,16 +162,31 @@ namespace SlotEffectMaker2023.Action
         private int RingBegin;
         private List<int> GraphData;    // リングバッファ
 
+        /// <summary>
+        /// コンストラクタ。内部状態を初期化します。
+        /// </summary>
         public BalanceGraph()
         {
             GameCounter = 0;
             RingBegin = 0;
             GraphData = new List<int>();
         }
+
+        /// <summary>
+        /// 読み込み後の初期化。データが空の場合は0を追加します。
+        /// </summary>
         public void Init()
-        {   // ファイル読込後に要素数がない場合は0を初期値に指定する
+        {
+            // ファイル読込後に要素数がない場合は0を初期値に指定する
             if (GraphData.Count == 0) GraphData.Add(0);
         }
+
+        /// <summary>
+        /// グラフデータをバイナリ形式で保存します。
+        /// </summary>
+        /// <param name="fs">BinaryWriter の参照</param>
+        /// <param name="version">保存バージョン</param>
+        /// <returns>保存に成功したか（常に true）</returns>
         public bool StoreData(ref BinaryWriter fs, int version)
         {
             fs.Write(GameCounter);
@@ -132,6 +195,13 @@ namespace SlotEffectMaker2023.Action
             foreach (var item in GraphData) fs.Write(item);
             return true;
         }
+
+        /// <summary>
+        /// バイナリ形式からグラフデータを読み込みます。
+        /// </summary>
+        /// <param name="fs">BinaryReader の参照</param>
+        /// <param name="version">保存バージョン</param>
+        /// <returns>読み込みに成功したか（常に true）</returns>
         public bool ReadData(ref BinaryReader fs, int version)
         {
             GameCounter = fs.ReadInt32();
@@ -141,6 +211,10 @@ namespace SlotEffectMaker2023.Action
             return true;
         }
 
+        /// <summary>
+        /// 一定間隔ごとに現在の差枚をリングバッファに追加します。
+        /// </summary>
+        /// <param name="bs">スロット基本データ</param>
         public void LatchGame(SlotBasicData bs)
         {
             if (++GameCounter < COUNT_INTERVAL) return;
@@ -156,23 +230,35 @@ namespace SlotEffectMaker2023.Action
             }
         }
 
+        /// <summary>
+        /// 指定位置とサイズに基づいてグラフ値を補間取得します。
+        /// </summary>
+        /// <param name="pos">取得位置インデックス（0～size-1）</param>
+        /// <param name="size">出力要素数</param>
+        /// <returns>補間後の値、範囲外アクセス時は null</returns>
         public float? GetValue(int pos, int size)
-        {   // pos: [0, (size - 1)]
+        {
+            // pos: [0, (size - 1)]
             // データが範囲外アクセスの場合nullを返す
             if (pos >= GraphData.Count) return null;
             // データ数がsizeを超過していない場合要素をそのまま返す
             if (GraphData.Count <= size) return GraphData[(pos + RingBegin) % GraphData.Count];
 
             // 超過している場合はデータ数と描画数に応じて計算位置を決定。0とCount-1が出るように調整
-            float referenceF = (GraphData.Count-1) / (float)(size-1) * pos;
+            float referenceF = (GraphData.Count - 1) / (float)(size - 1) * pos;
             int ref1 = ((int)referenceF + RingBegin) % GraphData.Count;
             int ref2 = (ref1 + 1) % GraphData.Count;
             float ratio = referenceF % 1f;
             return GraphData[ref1] * (1f - ratio) + GraphData[ref2] * ratio;
         }
     }
+    /// <summary>
+    /// 履歴管理クラス自体を管理するクラス。
+    /// PatternHist, BonusHist, Graph の読み書き・処理を統括します。
+    /// </summary>
     public class HistoryManager : SlotMaker2022.ILocalDataInterface
-    {	// 各種履歴管理クラス(Sav)
+    {
+        // 各種履歴管理クラス(Sav)
         public const int PATTERN_MAX = 32;
         private const int REEL_MAX = SlotMaker2022.LocalDataSet.REEL_MAX;
 
@@ -180,16 +266,30 @@ namespace SlotEffectMaker2023.Action
         public List<BonusHistoryElem> BonusHist { get; set; }
         public BalanceGraph Graph { get; set; }
 
+        /// <summary>
+        /// コンストラクタ。内部リストとグラフを初期化します。
+        /// </summary>
         public HistoryManager()
         {
             PatternHist = new List<PatternHistoryElem>();
             BonusHist = new List<BonusHistoryElem>();
             Graph = new BalanceGraph();
         }
+
+        /// <summary>
+        /// 読み込み後の初期化処理を行います。
+        /// </summary>
         public void Init()
         {
             Graph.Init();
         }
+
+        /// <summary>
+        /// 全履歴データをバイナリ形式で保存します。
+        /// </summary>
+        /// <param name="fs">BinaryWriter の参照</param>
+        /// <param name="version">保存バージョン</param>
+        /// <returns>保存に成功したか（常に true）</returns>
         public bool StoreData(ref BinaryWriter fs, int version)
         {
             fs.Write(PatternHist.Count);
@@ -199,17 +299,24 @@ namespace SlotEffectMaker2023.Action
             Graph.StoreData(ref fs, version);
             return true;
         }
+
+        /// <summary>
+        /// バイナリ形式から全履歴データを読み込みます。
+        /// </summary>
+        /// <param name="fs">BinaryReader の参照</param>
+        /// <param name="version">保存バージョン</param>
+        /// <returns>読み込みに成功したか</returns>
         public bool ReadData(ref BinaryReader fs, int version)
         {
             int dataCount = fs.ReadInt32();
-            for(int i=0; i<dataCount; ++i)
+            for (int i = 0; i < dataCount; ++i)
             {
                 PatternHistoryElem ph = new PatternHistoryElem();
                 ph.ReadData(ref fs, version);
                 PatternHist.Add(ph);
             }
             dataCount = fs.ReadInt32();
-            for(int i=0; i<dataCount; ++i)
+            for (int i = 0; i < dataCount; ++i)
             {
                 BonusHistoryElem bh = new BonusHistoryElem();
                 bh.ReadData(ref fs, version);
@@ -218,14 +325,20 @@ namespace SlotEffectMaker2023.Action
             if (!Graph.ReadData(ref fs, version)) return false;
             return true;
         }
+
+        /// <summary>
+        /// ボーナス回数を変数に転送します。
+        /// </summary>
+        /// <param name="vm">SlotValManager のインスタンス</param>
         public void Process(SlotValManager vm)
-        {   // ボーナス回数を変数に転送する([0]はボーナス総回数)
+        {
+            // ボーナス回数を変数に転送する([0]はボーナス総回数)
             List<int> bCount = new List<int>();
             for (int i = 0; i <= Data.HistoryConfig.BONUS_TYPE_MAX; ++i) bCount.Add(0);
 
             // ボーナス回数をカウント(ただし入賞前データはカウントしない)
             var confBase = Singleton.EffectDataManagerSingleton.GetInstance().HistoryConf;
-            foreach(var item in BonusHist)
+            foreach (var item in BonusHist)
             {
                 if (!item.IsActivate) continue;
                 ++bCount[0];
@@ -233,13 +346,20 @@ namespace SlotEffectMaker2023.Action
             }
 
             // 転送先を取得してボーナス回数を転送
-            for(int i=0; i<=Data.HistoryConfig.BONUS_TYPE_MAX; ++i)
+            for (int i = 0; i <= Data.HistoryConfig.BONUS_TYPE_MAX; ++i)
             {
                 var setFor = vm.GetVariable(confBase.BonusCountHolder[i]);
                 if (setFor == null) continue;
                 setFor.val = bCount[i];
             }
         }
+
+        /// <summary>
+        /// 出目履歴を記録します（通常時のみ）。
+        /// </summary>
+        /// <param name="bs">SlotBasicData のインスタンス</param>
+        /// <param name="rd">リール基本データリスト</param>
+        /// <param name="vm">SlotValManager のインスタンス</param>
         public void LatchHist(SlotBasicData bs, List<ReelBasicData> rd, SlotValManager vm)
         {
             // 出目履歴を記録する(通常時のみ)
@@ -278,6 +398,10 @@ namespace SlotEffectMaker2023.Action
             ShiftAdd(BonusHist, inData, -1);
             Debug.Log("BonusHist BonusFlag: " + inData.BonusFlag.ToString() + ", size:" + BonusHist.Count.ToString());
         }
+
+        /// <summary>
+        /// ボーナスリール開始時の処理を行います。
+        /// </summary>
         public void ReelStart()
         {
             if (BonusHist.Count <= 0) return;
@@ -286,10 +410,21 @@ namespace SlotEffectMaker2023.Action
             ++mod.LossGame;
             Debug.Log("Add LossGame: " + mod.LossGame.ToString());
         }
+
+        /// <summary>
+        /// 払い出し終了時にグラフ用データを追加します。
+        /// </summary>
+        /// <param name="bs">SlotBasicData のインスタンス</param>
         public void OnPayoutEnd(SlotBasicData bs)
         {
             Graph.LatchGame(bs);
         }
+
+        /// <summary>
+        /// ボーナス開始時の履歴記録を行います。
+        /// </summary>
+        /// <param name="bs">SlotBasicData のインスタンス</param>
+        /// <param name="vm">SlotValManager のインスタンス</param>
         public void StartBonus(SlotBasicData bs, SlotValManager vm)
         {
             if (BonusHist.Count <= 0) return;
@@ -304,6 +439,12 @@ namespace SlotEffectMaker2023.Action
             mod.IsActivate = true;
             Debug.Log("BonusHist Latch - InGame: " + mod.InGame.ToString() + ", InDate: " + mod.InDate.ToString() + ", MedalBef: " + mod.MedalBefore.ToString());
         }
+
+        /// <summary>
+        /// ボーナス終了時の履歴記録を行います。
+        /// </summary>
+        /// <param name="bs">SlotBasicData のインスタンス</param>
+        /// <param name="nowPayout">現在の払い出し枚数</param>
         public void FinishBonus(SlotBasicData bs, int nowPayout)
         {
             if (BonusHist.Count <= 0) return;
@@ -316,12 +457,19 @@ namespace SlotEffectMaker2023.Action
             Debug.Log("BonusHist Fin - MedalAfter: " + mod.MedalAfter.ToString());
         }
 
-        // シフトしての追加処理
-        private void ShiftAdd<T>(List<T> box, T data, int maxSize)
+        /// <summary>
+        /// リストにデータをシフト追加します。
+        /// </summary>
+        /// <typeparam name="U">リスト要素の型</param>
+        /// <param name="box">データ格納リスト</param>
+        /// <param name="data">追加データ</param>
+        /// <param name="maxSize">最大要素数（負値で無制限）</param>
+        private void ShiftAdd<U>(List<U> box, U data, int maxSize)
         {
             if (maxSize < 0 || box.Count < maxSize) box.Add(data);          // 仮登録、後で[0]で登録しなおし
             for (int i = box.Count - 1; i > 0; --i) box[i] = box[i - 1];    // データシフト
             box[0] = data;                                                  // 先頭にデータを登録
         }
     }
+
 }
