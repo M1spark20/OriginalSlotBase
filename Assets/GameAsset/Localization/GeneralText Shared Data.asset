@@ -276,6 +276,35 @@ MonoBehaviour:
     m_Key: MainScene/UICanvas/UIPanel/DataResetCaution/Window/Reboot/IDText
     m_Metadata:
       m_Items: []
+  - m_Id: 151069754782519296
+    m_Key: MainScene/UICanvas/UIPanel/MainMenu/Settings/ScrollView/Viewport/Content/ForceFlag/Exp
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151070321734979584
+    m_Key: MainScene/UICanvas/UIPanel/MainMenu/Settings/ScrollView/Viewport/Content/ForceFlag/Info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151070362688163840
+    m_Key: MainScene/UICanvas/UIPanel/MainMenu/Settings/ScrollView/Viewport/Content/ForceFlag/BonusPrize
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151070392362864640
+    m_Key: MainScene/UICanvas/UIPanel/MainMenu/Settings/ScrollView/Viewport/Content/ForceFlag/MinorPrize
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151070762648604672
+    m_Key: MainScene/UICanvas/UIPanel/MainMenu/Settings/ScrollView/Viewport/Content/ForceFlag/Switch/IDText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151071282645831680
+    m_Key: MainScene/UICanvas/UIPanel/MainMenu/Settings/ScrollView/Viewport/Content/ForceFlag
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151071499969499136
+    m_Key: MainScene/UICanvas/UIPanel/MainMenu/Settings/ScrollView/Viewport/Content/ForceFlag
+      1
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

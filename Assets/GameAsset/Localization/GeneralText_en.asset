@@ -329,6 +329,34 @@ MonoBehaviour:
     m_Localized: Reboot and Restore
     m_Metadata:
       m_Items: []
+  - m_Id: 151069754782519296
+    m_Localized: Data will not be saved until reboot by enabling force flag.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151070321734979584
+    m_Localized: Force Flag
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151070362688163840
+    m_Localized: BONUS prize
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151070392362864640
+    m_Localized: Minor prize
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151070762648604672
+    m_Localized: Enable Switch
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151071282645831680
+    m_Localized: None,#0,#1,#2,#8
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151071499969499136
+    m_Localized: None,#3,#4         A,#4         B,#5,#6,SP-E,SP-F,SP-A,SP-B,SP-C,SP-D
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
