@@ -7337,7 +7337,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0002208348}
+  m_AnchoredPosition: {x: 0, y: -0.000061032748}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &512259275
@@ -18052,10 +18052,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UIShowSlipCountSet, Assembly-CSharp
-        m_MethodName: ChangeShow
-        m_Mode: 6
+      - m_Target: {fileID: 2029766275}
+        m_TargetAssemblyTypeName: UISetForceFlag, Assembly-CSharp
+        m_MethodName: OnClickButtonEn
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -20363,8 +20363,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1644657025}
   m_HandleRect: {fileID: 1644657024}
   m_Direction: 2
-  m_Value: -0.0000013146031
-  m_Size: 0.6560719
+  m_Value: -0.00000018780048
+  m_Size: 0.65608335
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -20525,8 +20525,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 645678965}
   m_HandleRect: {fileID: 645678964}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 0.9999856
+  m_Value: 1
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -26265,7 +26265,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 325.00043}
+  m_AnchoredPosition: {x: 0, y: 325.00006}
   m_SizeDelta: {x: 0, y: 945}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1984000479
@@ -26946,10 +26946,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a1cb911e05485349af3a4bb0d1e6aa3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EnableButton: {fileID: 1366207180}
   BaseObject: {fileID: 91238815}
   Interval: {x: 100, y: -50}
-  BonusShow: None,#0,#1,#2,#8
-  MinorShow: None,#3,#4         A,#4         B,#5,#6,SP-E,SP-F,SP-A,SP-B,SP-C,SP-D
+  BonusShow: N/A,None,#0,#1,#2,#8
+  MinorShow: N/A,None,#3,#4         A,#4         B,#5,#6,SP-E,SP-F,SP-A,SP-B,SP-C,SP-D
+  ShowReturnPos: 7
 --- !u!222 &2029766276
 CanvasRenderer:
   m_ObjectHideFlags: 0

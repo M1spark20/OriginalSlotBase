@@ -16,6 +16,10 @@ namespace SlotEffectMaker2023.Action
         public bool ShowSlipCount { get; set; }
         public byte UseSaveDataID { get; set; }
         public bool ResetFlag { get; set; }
+        // (v4:20250815)強制フラグ：ゲーム終了まで有効・有効化中は記録なし/演出なしとなる
+        public bool ForceFlagEnable { get; set; }   // 保存しない
+        public int ForceFlagBonus { get; set; }     // 保存しない
+        public int ForceFlagMinor { get; set; }     // 保存しない
 
         public SystemData()
         {
@@ -29,6 +33,9 @@ namespace SlotEffectMaker2023.Action
             ShowSlipCount = false;
             UseSaveDataID = 0;
             ResetFlag = false;
+            ForceFlagEnable = false;
+            ForceFlagBonus = -1;
+            ForceFlagMinor = -1;
         }
         public bool StoreData(ref BinaryWriter fs, int version)
         {
@@ -44,6 +51,7 @@ namespace SlotEffectMaker2023.Action
                 fs.Write(UseSaveDataID);
                 fs.Write(ResetFlag);
             }
+            // v4での保存データはなし
             return true;
         }
         public bool ReadData(ref BinaryReader fs, int version)
@@ -61,6 +69,7 @@ namespace SlotEffectMaker2023.Action
                 UseSaveDataID = fs.ReadByte();
                 ResetFlag = fs.ReadBoolean();
             }
+            // v4での読込データはなし
             return true;
         }
     }

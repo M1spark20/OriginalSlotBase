@@ -6,16 +6,21 @@ using TMPro;
 
 public class UISetForceFlag : MonoBehaviour
 {
+	[SerializeField] private Button EnableButton;
 	[SerializeField] private GameObject BaseObject;
 	[SerializeField] private Vector2 Interval;
 	// #*でリール図柄を、その他で文字を表示。","で分割
 	[SerializeField] private string BonusShow;
 	[SerializeField] private string MinorShow;
+	// 改行位置の指定
+	[SerializeField] private int ShowReturnPos;
 	
 	private GameObject[] selectorB;
 	private GameObject[] selectorM;
+	private Image   imEn;
 	private Image[] imB;
 	private Image[] imM;
+	private TextMeshProUGUI   txEn;
 	private TextMeshProUGUI[] txB;
 	private TextMeshProUGUI[] txM;
 	private SlotEffectMaker2023.Action.SystemData sys;
@@ -34,6 +39,9 @@ public class UISetForceFlag : MonoBehaviour
 		selectorM = new GameObject[MinorCount];
 		imM = new Image[MinorCount];
 		txM = new TextMeshProUGUI[MinorCount];
+		imEn = EnableButton.GetComponent<Image>();
+		txEn = EnableButton.transform.Find("IDText").GetComponent<TextMeshProUGUI>();
+		// Singleton初期化
 		sys = SlotEffectMaker2023.Singleton.SlotDataSingleton.GetInstance().sysData;
 		var comaData = ReelChipHolder.GetInstance();	// Singleton
 		
@@ -57,15 +65,15 @@ public class UISetForceFlag : MonoBehaviour
 			imB[i] = selectorB[i].transform.Find("Button").GetComponent<Image>();
 			
 			// ボタン押下時のスクリプト登録
-        	var prm = i;	// 変数に入れないとデルタがうまく動かないらしい…
-        	selectorB[i].transform.Find("Button").GetComponent<Button>().onClick.AddListener(() => OnClickButton(prm));
+        	var prm = i-1;	// 変数に入れないとデルタがうまく動かないらしい…
+        	selectorB[i].transform.Find("Button").GetComponent<Button>().onClick.AddListener(() => OnClickButtonB(prm));
 		}
 		
 		// Instantiateする(Minor)
 		for(int i=0; i<MinorCount; ++i){
         	Debug.Log(bsMDec[i]);
 			selectorM[i] = Instantiate(BaseObject, this.transform);
-			selectorM[i].GetComponent<RectTransform>().anchoredPosition += new Vector2(Interval.x * (i%8), Interval.y * (1+(int)(i/8)));
+			selectorM[i].GetComponent<RectTransform>().anchoredPosition += new Vector2(Interval.x * (i%ShowReturnPos), Interval.y * (1+(int)(i/ShowReturnPos)));
 			
 			// 画像を載せて文字を更新する
 			imM[i] = selectorM[i].transform.Find("Image") .GetComponent<Image>();
@@ -82,20 +90,40 @@ public class UISetForceFlag : MonoBehaviour
 			imM[i] = selectorM[i].transform.Find("Button").GetComponent<Image>();
 			
 			// ボタン押下時のスクリプト登録
-        	var prm = i;	// 変数に入れないとデルタがうまく動かないらしい…
-        	selectorM[i].transform.Find("Button").GetComponent<Button>().onClick.AddListener(() => OnClickButton(prm));
+        	var prm = i-1;	// 変数に入れないとデルタがうまく動かないらしい…
+        	selectorM[i].transform.Find("Button").GetComponent<Button>().onClick.AddListener(() => OnClickButtonM(prm));
 		}
 	}
 	
 	private void Update(){
+		Color cl = sys.ForceFlagEnable ? Color.yellow : Color.white;
+		imEn.color = cl;
+		txEn.color = cl;
+		
 		for (int i=0; i<selectorB.Length; ++i){
-			Color cl = sys.InfoPos == i ? Color.yellow : Color.white;
+			selectorB[i].SetActive(sys.ForceFlagEnable);
+			cl = (sys.ForceFlagEnable && sys.ForceFlagBonus == i-1) ? Color.yellow : Color.white;
 			imB[i].color = cl;
 			txB[i].color = cl;
 		}
+		for (int i=0; i<selectorM.Length; ++i){
+			selectorM[i].SetActive(sys.ForceFlagEnable);
+			cl = (sys.ForceFlagEnable && sys.ForceFlagMinor == i-1) ? Color.yellow : Color.white;
+			imM[i].color = cl;
+			txM[i].color = cl;
+		}
 	}
 	
-	public void OnClickButton(int index){
-		sys.InfoPos = index;
+	// 強制フラグ有効化
+	public void OnClickButtonEn(){
+		sys.ForceFlagEnable = true;
+	}
+	// ボーナスフラグ設定
+	public void OnClickButtonB(int index){
+		sys.ForceFlagBonus = index;
+	}
+	// 小役フラグ設定
+	public void OnClickButtonM(int index){
+		sys.ForceFlagMinor = index;
 	}
 }
