@@ -61,14 +61,21 @@ public class UIDataFileManager : MonoBehaviour
     	ChangeShow(sys.ResetFlag);
     	
     	// File描画(Reset有効時はボタンをクリックさせない)
-    	if (sys.ResetFlag) ChangeFileID(defaultSaveID);
+    	// (20250824Add) 強制フラグ有効時もボタンをクリックさせない。かつ初期セーブデータにカーソルを戻す
+    	if (sys.ResetFlag || sys.ForceFlagEnable) ChangeFileID(defaultSaveID);
 		for (int i=0; i<BtnsFile.Length; ++i){
-			BtnsFile[i].interactable = !sys.ResetFlag;
+			BtnsFile[i].interactable = !sys.ResetFlag && !sys.ForceFlagEnable;
 			Color cl = sys.UseSaveDataID == i ? Color.yellow : Color.white;
 			ImFile[i].color = cl;
 			TextFile[i].color = cl;
 		}
 		FileChangeInfo.enabled = (sys.UseSaveDataID != defaultSaveID);
+		
+		// (20250824Add) 強制フラグ有効時はリセットを無効化する
+		if (sys.ForceFlagEnable) {
+			ChangeShow(false);
+			ResetBtnUI[1].interactable = false;
+		}
     }
     
     public void ChangeFileID(byte changeFor){
