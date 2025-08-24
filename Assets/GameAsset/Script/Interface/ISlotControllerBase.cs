@@ -243,6 +243,15 @@ public class SCWaitBeforeReelStart : ISlotControllerBase {
 			}
 		}
 		
+		// (20250824Add)強制フラグがある場合はcastとbonusを上書きする
+		if (slotData.sysData.ForceFlagEnable && slotData.sysData.ForceFlagBonus >= 0 && slotData.sysData.ForceFlagMinor >= 0){
+			castFlag  = (byte)slotData.sysData.ForceFlagMinor;
+			bonusFlag = (byte)slotData.sysData.ForceFlagBonus;
+			// 強制フラグ設定をリセットする
+			slotData.sysData.ForceFlagBonus = -1;
+			slotData.sysData.ForceFlagMinor = -1;
+		}
+		
 		// basicDataにフラグを設定する
 		basicData.SetCastFlag(bonusFlag, castFlag, mainROM.CastCommonData, mainROM.RTCommonData, timer);
 		// フリーズ抽選

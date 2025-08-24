@@ -211,20 +211,25 @@ public class SlotDataManager : MonoBehaviour
 		}
 	}
 	
-	// Steam実績確認時コールバック
+	// Steam実績確認時コールバック (20250824Add)強制フラグ有効時は実績を更新しない。
 	public void CheckAchievementAct(){
+		if (slotData.sysData.ForceFlagEnable) return;
+		
 		// システム変数のみ更新してから評価する
 		slotData.UpdateSysVar();
 		SteamAPI.OnGameStateChange();
 	}
 	
-	// セーブ時コールバック
+	// セーブ時コールバック (20250824Add)強制フラグ有効時は保存しない。
 	public void DataSaveAct(){
+		if (slotData.sysData.ForceFlagEnable) return;
 		slotData.SaveData(SavePath);
 		slotData.SaveSysData(SaveSysPath);
 	}
 	// Object無効化時にデータを保存する (20241020Add)データリセット時はバックアップを保存する
+	// (20250824Add)強制フラグ有効時は保存しない。
 	private void OnDisable(){
+		if (slotData.sysData.ForceFlagEnable) return;
 		if (slotData.sysData.ResetFlag) File.Copy(SavePath, BackupPath, true);
 		slotData.SaveSysData(SaveSysPath);
 	}
