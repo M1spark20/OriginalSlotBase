@@ -480,16 +480,17 @@ namespace SlotEffectMaker2023.Data
             if (inData == null) return;
 
             // operandによる値の計算(上から順に計算する、加減乗除の優先度は非考慮)
-            int ans = 0;
+            // (20250828fix)オーバーフロー対策のため、計算中の型をintからlongに変更
+            long ans = 0;
             foreach (var op in operands) ans = Operate(op, ans);
-            inData.val = ans;
+            inData.val = (int)ans;
         }
         public override void Rename(EChangeNameType type, string src, string dst)
         {
             if (type == EChangeNameType.Var && valInputFor.Equals(src)) valInputFor = dst;
             foreach (var item in operands) item.Rename(type, src, dst);
         }
-        private int Operate(OP operand, int opLeft)
+        private long Operate(OP operand, long opLeft)
         {   // 単体の計算処理
             // 変数データの取得
             int val = operand.fixVal;
