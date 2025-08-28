@@ -277,13 +277,14 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 26522252818124800
-    m_Localized: '[What''s New on V1.10 released on 21st October 2024]
+    m_Localized: '[What''s New on V1.10 released on 29th Aug 2025] 1st Anniversary!!
+      Thank you for playing!!
 
-      Extended
-      save data file number of 10. Add resetting function.
+      1-Button Operation is now available. Change
+      behaviour tapping reel side has change to 1-Button.
 
-      Add slot setting
-      "?" which will select from 1-6 at random.'
+      Force flag function
+      is born. (Data will not be saved when use.) / Fixed some minor bugs.'
     m_Metadata:
       m_Items: []
   - m_Id: 26524314935103488
