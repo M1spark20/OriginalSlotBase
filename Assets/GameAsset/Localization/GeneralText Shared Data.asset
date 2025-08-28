@@ -305,6 +305,10 @@ MonoBehaviour:
       1
     m_Metadata:
       m_Items: []
+  - m_Id: 156246252153868288
+    m_Key: MainScene/UICanvas/UIPanel/MainMenu/Settings/ScrollView/Viewport/Content/Order1Button/Info
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

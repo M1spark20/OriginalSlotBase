@@ -20,6 +20,8 @@ namespace SlotEffectMaker2023.Action
         public bool ForceFlagEnable { get; set; }   // 保存しない
         public int ForceFlagBonus { get; set; }     // 保存しない
         public int ForceFlagMinor { get; set; }     // 保存しない
+        // (v4:20250828)SingleButton押し順定義(2bit毎に停止リールを定義する: [3rd 2nd 1st])
+        public byte Order1Button { get; set; } 
 
         public SystemData()
         {
@@ -36,6 +38,7 @@ namespace SlotEffectMaker2023.Action
             ForceFlagEnable = false;
             ForceFlagBonus = -1;
             ForceFlagMinor = -1;
+            Order1Button = 0x24;    // 順押し
         }
         public bool StoreData(ref BinaryWriter fs, int version)
         {
@@ -51,7 +54,7 @@ namespace SlotEffectMaker2023.Action
                 fs.Write(UseSaveDataID);
                 fs.Write(ResetFlag);
             }
-            // v4での保存データはなし
+            if (version >= 4) fs.Write(Order1Button);
             return true;
         }
         public bool ReadData(ref BinaryReader fs, int version)
@@ -69,7 +72,7 @@ namespace SlotEffectMaker2023.Action
                 UseSaveDataID = fs.ReadByte();
                 ResetFlag = fs.ReadBoolean();
             }
-            // v4での読込データはなし
+            if (version >= 4) Order1Button = fs.ReadByte();
             return true;
         }
     }

@@ -153,6 +153,8 @@ public class SlotDataManager : MonoBehaviour
 				if(Input.GetKey    (KeyCode.DownArrow )) OnScreenHover(EGameButtonID.e2Reel);
 				if(Input.GetKeyDown(KeyCode.RightArrow)) OnScreenTouch(EGameButtonID.e3Reel);
 				if(Input.GetKey    (KeyCode.RightArrow)) OnScreenHover(EGameButtonID.e3Reel);
+				if(Input.GetKeyDown(KeyCode.Space     )) OnScreenTouch(EGameButtonID.eSingleButton);
+				if(Input.GetKey    (KeyCode.Space     )) OnScreenHover(EGameButtonID.eSingleButton);
 				// キー制御
 				for(int i=0; i<(int)EGameButtonID.eButtonMax; ++i){
 					if (GetKeyDownJoin[i]) controller.OnGetKeyDown((EGameButtonID)i);

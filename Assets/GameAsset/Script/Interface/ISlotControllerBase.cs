@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+// (20250828Add)1ボタン操作(eSingleButton)を追加。これに伴い各クラスに1ボタン操作追加
 public enum EGameButtonID {
-	eMaxBetAndStart, e1Bet, eMaxBet, e1Reel, e2Reel, e3Reel, eButtonMax
+	eMaxBetAndStart, e1Bet, eMaxBet, e1Reel, e2Reel, e3Reel, eSingleButton, eButtonMax
 }
 
 public interface ISlotControllerBase
@@ -79,7 +80,7 @@ public class SCWaitBet : ISlotControllerBase {
 		if (!(nextAddBetTime < 0)) return;
 		
 		// レバー時の処理: レバー有効ならリールを始動させる
-		if (pKeyID == EGameButtonID.eMaxBetAndStart && applyBet > 0 && timer.GetTimer("leverAvailable").isActivate){
+		if ((pKeyID == EGameButtonID.eMaxBetAndStart || pKeyID == EGameButtonID.eSingleButton) && applyBet > 0 && timer.GetTimer("leverAvailable").isActivate){
 			reelActivate = true; return;
 		}
 		
@@ -93,7 +94,7 @@ public class SCWaitBet : ISlotControllerBase {
 			}
 			
 			// MaxBet押下時の処理: 選択モードでの最大BET数を指定
-			if (pKeyID == EGameButtonID.eMaxBetAndStart || pKeyID == EGameButtonID.eMaxBet){ applyBet = currentMaxBet; }
+			if (pKeyID == EGameButtonID.eMaxBetAndStart || pKeyID == EGameButtonID.eMaxBet || pKeyID == EGameButtonID.eSingleButton){ applyBet = currentMaxBet; }
 			
 			// 1BET押下時の処理: 有効/無効はさておき+1BETする。ただし最大値を超えた場合は1BETに戻す
 			if (pKeyID == EGameButtonID.e1Bet){
@@ -288,6 +289,7 @@ public class SCReelOperation : ISlotControllerBase {
 	int   slip1st;			// 第1停止すべり数
 	int   stopReelCount;	// 停止処理済みリール数
 	int   reelFreezeTime;	// フリーズ時間(入力スキップを行う)
+	byte  singleMask;		// 1ボタンマスクbit数
 	
 	SlotMaker2022.main_function.MainReelManager reelManager;	// リール制御クラス
 	
@@ -316,6 +318,10 @@ public class SCReelOperation : ISlotControllerBase {
 		slip1st = -1;
 		stopReelCount = 0;
 		reelFreezeTime = 0;
+		// (20250828Add)1ボタンマスク生成
+		singleMask = 1;
+		while((singleMask << 1) < reelNum) singleMask <<= 1;
+		Debug.Log("Hoge:" + singleMask);
 		
 		// リール制御クラス初期化
 		reelManager = new SlotMaker2022.main_function.MainReelManager();
@@ -330,9 +336,12 @@ public class SCReelOperation : ISlotControllerBase {
 	
 	public void OnGetKeyDown(EGameButtonID pKeyID){
 		// リール停止入力を行う
+		byte order1Button = slotData.sysData.Order1Button;	// 押し順データを読み込む
 		if (pKeyID == EGameButtonID.e1Reel) StopReel(0);
 		if (pKeyID == EGameButtonID.e2Reel) StopReel(1);
 		if (pKeyID == EGameButtonID.e3Reel) StopReel(2);
+		// (20250828Add)1ボタン対応、一応リール数が増えたときの対策をしておく(リール数でマスクの大きさを変える)
+		if (pKeyID == EGameButtonID.eSingleButton) { StopReel( (order1Button >> (singleMask * stopReelCount)) & ((singleMask << 1) - 1) ); }
 	}
 	public void OnGetKey(EGameButtonID pKeyID){
 		// ねじり処理を行う
