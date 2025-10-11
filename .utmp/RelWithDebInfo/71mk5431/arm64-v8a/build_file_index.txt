@@ -1,0 +1,2 @@
+D:\UnityProject\OriginalSlotBase\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\CMakeLists.txt
+D:\UnityProject\OriginalSlotBase\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\FramePacing\CMakeLists.txt

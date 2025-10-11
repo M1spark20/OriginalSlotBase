@@ -37,7 +37,7 @@ namespace TweetWithScreenShot
             {
                 if (sinstance == null)
                 {
-                    sinstance = FindObjectOfType<TweetManager>();
+                    sinstance = FindFirstObjectByType<TweetManager>();
                     if (sinstance == null)
                     {
                         var obj = new GameObject(typeof(TweetManager).Name);
